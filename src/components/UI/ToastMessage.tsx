@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
-import Alert from '@mui/joy/Alert'
-import Typography from '@mui/joy/Typography'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
 import InfoIcon from '@mui/icons-material/Info'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
-import ErrorIcon from '@mui/icons-material/Error'
+import Alert from '@mui/joy/Alert'
+import Typography from '@mui/joy/Typography'
+import { useEffect, useState } from 'react'
+
 import { ToastSeverity } from './ToastMessageUtils'
 export interface ToastMessageProps {
   message: string
@@ -82,4 +83,3 @@ export default function ToastMessage({
     </Alert>
   )
 }
-

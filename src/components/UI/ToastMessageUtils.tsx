@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+
 import ToastMessage from './ToastMessage'
 
 export enum ToastSeverity {
