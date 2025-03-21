@@ -1,83 +1,56 @@
-import AspectRatio from '@mui/joy/AspectRatio'
 import Box from '@mui/joy/Box'
-import Container from '@mui/joy/Container'
 import { typographyClasses } from '@mui/joy/Typography'
 import * as React from 'react'
 
+import BasicContainer from './BasicContainer'
+
 export default function TwoSidedLayout({
-  children,
-  reversed,
-  imageSrc,
-  imageAlt,
+  leftChildren,
+  rightChildren,
 }: React.PropsWithChildren<{
-  reversed?: boolean
-  imageSrc: string
-  imageAlt: string
+  leftChildren: React.ReactNode
+  rightChildren: React.ReactNode
 }>) {
   return (
-    <Container
-      sx={[
-        (theme) => ({
-          position: 'relative',
-          minHeight: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          py: 10,
-          gap: 4,
-          [theme.breakpoints.up(834)]: {
-            flexDirection: 'row',
-            gap: 6,
-          },
-          [theme.breakpoints.up(1199)]: {
-            gap: 12,
-          },
-        }),
-        reversed
-          ? { flexDirection: 'column-reverse' }
-          : { flexDirection: 'column' },
-      ]}
-    >
+    <BasicContainer>
       <Box
         sx={(theme) => ({
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '1rem',
-          maxWidth: '80ch',
           textAlign: 'center',
-          flexShrink: 999,
+          width: '100%', // 在垂直排列时占满宽度
           [theme.breakpoints.up(834)]: {
-            minWidth: 420,
             alignItems: 'flex-start',
             textAlign: 'initial',
+            flexBasis: '50%', // 固定宽度为父容器的一半
           },
           [`& .${typographyClasses.root}`]: {
             textWrap: 'balance',
           },
         })}
       >
-        {children}
+        {leftChildren}
       </Box>
-      <AspectRatio
-        ratio={600 / 520}
-        variant="outlined"
-        maxHeight={300}
+      <Box
         sx={(theme) => ({
-          minWidth: 300,
-          alignSelf: 'stretch',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 2,
+          width: '100%',
           [theme.breakpoints.up(834)]: {
-            alignSelf: 'initial',
-            flexGrow: 1,
-            '--AspectRatio-maxHeight': '520px',
-            '--AspectRatio-minHeight': '400px',
+            alignItems: 'flex-start',
+            textAlign: 'initial',
+            flexBasis: '50%', // 固定宽度为父容器的一半
           },
-          borderRadius: 'sm',
-          bgcolor: 'background.level2',
-          flexBasis: '50%',
         })}
       >
-        <img src={imageSrc} alt={imageAlt} />
-      </AspectRatio>
-    </Container>
+        {rightChildren}
+      </Box>
+    </BasicContainer>
   )
 }

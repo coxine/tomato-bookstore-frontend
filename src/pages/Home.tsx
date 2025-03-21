@@ -1,12 +1,15 @@
-import ArrowForward from '@mui/icons-material/ArrowForward'
+import { Typography } from '@mui/joy'
 import Box from '@mui/joy/Box'
-import Button from '@mui/joy/Button'
-import Link from '@mui/joy/Link'
-import Typography from '@mui/joy/Typography'
 
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+import BasicContainer from '../components/layouts/BasicContainer'
 import TwoSidedLayout from '../components/layouts/TwoSidedLayout'
+
+import AuthorCarousel from './Home/AuthorCarousel'
+import BookCarousel from './Home/BookCarousel'
+import HomePageImage from './Home/HomePageImage'
+import HomePageWelcome from './Home/HomePageWelcome'
 
 export default function Home() {
   return (
@@ -19,47 +22,46 @@ export default function Home() {
           [theme.getColorSchemeSelector('dark')]: {
             backgroundColor: 'rgba(19 19 24 / 0.6)',
           },
+          height: '100vh',
+          overflowY: 'scroll',
+          scrollSnapType: 'y mandatory',
+          '& > div': {
+            scrollSnapAlign: 'start',
+          },
         })}
       >
-        <TwoSidedLayout imageSrc="/home-book.png" imageAlt="home-book">
+        <TwoSidedLayout
+          leftChildren={<HomePageWelcome />}
+          rightChildren={<HomePageImage />}
+        />
+        <BasicContainer>
           <Typography
             level="h1"
+            component="h2"
+            textAlign="center"
             sx={{
-              fontWeight: 'xl',
-              fontSize: 'clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)',
+              writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
+              mb: 2,
             }}
           >
-            A large headlinerer about our product features & services
+            优秀作者
           </Typography>
+          <AuthorCarousel />
+        </BasicContainer>
+        <BasicContainer>
           <Typography
-            textColor="text.secondary"
-            sx={{ fontSize: 'lg', lineHeight: 'lg' }}
+            level="h1"
+            component="h2"
+            textAlign="center"
+            sx={{
+              writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
+              mb: 2,
+            }}
           >
-            A descriptive secondary text placeholder. Use it to explain your
-            business offer better.
+            精选言情小说
           </Typography>
-
-          <Link href="/login" sx={{ display: 'block', width: '100%' }}>
-            <Button
-              size="lg"
-              endDecorator={<ArrowForward />}
-              sx={{ width: '100%' }}
-            >
-              登录
-            </Button>
-          </Link>
-
-          <Link href="/login" sx={{ display: 'block', width: '100%' }}>
-            <Button
-              size="lg"
-              endDecorator={<ArrowForward />}
-              variant="soft"
-              sx={{ width: '100%' }}
-            >
-              注册
-            </Button>
-          </Link>
-        </TwoSidedLayout>
+          <BookCarousel />
+        </BasicContainer>
       </Box>
       <Footer />
     </>
