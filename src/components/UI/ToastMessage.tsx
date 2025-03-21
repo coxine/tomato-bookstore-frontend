@@ -11,7 +11,7 @@ export enum ToastSeverity {
   Success = 'success',
   Neutral = 'neutral',
   Warning = 'warning',
-  Danger = 'danger'
+  Danger = 'danger',
 }
 
 export interface ToastMessageProps {
@@ -91,7 +91,6 @@ export default function ToastMessage({
   )
 }
 
-// 新增导出方法，实现动态挂载 ToastMessage
 export function showToast({
   title,
   message,
