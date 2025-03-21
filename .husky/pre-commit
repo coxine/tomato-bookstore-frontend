@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Lint 检查
+echo "\033[1;33m正在执行: Lint\033[0m"
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "\033[1;31mLint 检查失败，请检查代码格式。\033[0m"
+  exit 1
+else
+  echo "\033[1;32mLint 通过。\033[0m"
+fi
+
+# Typecheck 检查
+echo "\033[1;33m正在执行: Typecheck\033[0m"
+npm run typecheck
+if [ $? -ne 0 ]; then
+  echo "\033[1;31mTypecheck 失败，请检查类型错误。\033[0m"
+  exit 1
+else
+  echo "\033[1;32mTypecheck 通过。\033[0m"
+fi
+
+# 格式化代码
+echo "\033[1;33m正在执行: Format\033[0m"
+npm run format
+if [ $? -ne 0 ]; then
+  echo "\033[1;31mFormat 失败，请检查格式化日志。\033[0m"
+  exit 1
+else
+  echo "\033[1;32mFormat 执行成功。\033[0m"
+fi
+
+if ! git diff --quiet; then
+  echo "\033[1;33m脚本对代码进行了格式化，产生了未 commit 的更改...\033[0m"
+  echo "\033[1;33m请检查代码格式化的结果是否符合预期。\033[0m"
+  echo "\033[1;33m如果没有问题，请执行:\033[0m"
+  echo "git add ."
+  echo "\033[1;33m后重新 commit。\033[0m"
+  exit 1
+fi
+
+echo "\033[1;32m所有检查通过，提交代码。\033[0m"
