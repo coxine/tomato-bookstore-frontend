@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react'
-import { createRoot } from 'react-dom/client'
 import Alert from '@mui/joy/Alert'
 import Typography from '@mui/joy/Typography'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import InfoIcon from '@mui/icons-material/Info'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import ErrorIcon from '@mui/icons-material/Error'
-
-export enum ToastSeverity {
-  Success = 'success',
-  Neutral = 'neutral',
-  Warning = 'warning',
-  Danger = 'danger',
-}
-
+import { ToastSeverity } from './ToastMessageUtils'
 export interface ToastMessageProps {
   message: string
   title: string
@@ -91,28 +83,3 @@ export default function ToastMessage({
   )
 }
 
-export function showToast({
-  title,
-  message,
-  severity = ToastSeverity.Success,
-  duration = 3000,
-}: Omit<ToastMessageProps, 'onClose'>) {
-  const container = document.createElement('div')
-  document.body.appendChild(container)
-  const root = createRoot(container)
-
-  const handleClose = () => {
-    root.unmount()
-    container.remove()
-  }
-
-  root.render(
-    <ToastMessage
-      title={title}
-      message={message}
-      severity={severity}
-      duration={duration}
-      onClose={handleClose}
-    />
-  )
-}
