@@ -11,6 +11,7 @@ import Typography from '@mui/joy/Typography'
 import * as React from 'react'
 import './Login.css'
 
+import { userLogin } from '../api/user'
 import ColorSchemeToggle from '../components/UI/ColorSchemeToggle'
 import { ToastSeverity, showToast } from '../components/UI/ToastMessageUtils'
 
@@ -29,12 +30,27 @@ const handleSubmit = (event: React.FormEvent<SignInFormElement>) => {
     username: formElements.username.value,
     password: formElements.password.value,
   }
+
   console.log(data)
-  showToast({
-    title: '登录成功',
-    message: `${data.username}，欢迎使用西红柿读书!`,
-    severity: ToastSeverity.Success,
-    duration: 3000,
+
+  // TODO: 测试未完成
+  userLogin(data).then((res) => {
+    if (res.data.code === 200) {
+      showToast({
+        title: '登录成功',
+        message: `${data.username}，欢迎使用西红柿读书!`,
+        severity: ToastSeverity.Success,
+        duration: 3000,
+      })
+      // TODO: 增加登录成功的路径跳转
+    } else if (res.data.code === 400) {
+      showToast({
+        title: '登录失败',
+        message: res.data.msg,
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+    }
   })
 }
 
