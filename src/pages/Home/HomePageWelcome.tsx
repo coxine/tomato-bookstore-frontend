@@ -32,7 +32,7 @@ export default function HomePageWelcome() {
         </Button>
       </Link>
 
-      <Link href="/login" sx={{ display: 'block', width: '100%' }}>
+      <Link href="/register" sx={{ display: 'block', width: '100%' }}>
         <Button
           size="lg"
           endDecorator={<ArrowForward />}
