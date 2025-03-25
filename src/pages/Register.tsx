@@ -51,8 +51,6 @@ export default function Login() {
 
     let errors = ''
 
-    console.log(data)
-
     if (formElements.password.value != formElements.confirmPassword.value) {
       console.log('error: 1')
       errors = '两次输入的密码不一致！'
@@ -73,7 +71,9 @@ export default function Login() {
             severity: ToastSeverity.Success,
             duration: 3000,
           })
-          navigate('/login')
+          setTimeout(() => {
+            navigate('/login')
+          }, 3000)
         } else if (res.data.code === '400') {
           showToast({
             title: '注册失败',
@@ -119,7 +119,7 @@ export default function Login() {
           <Grid container spacing={2}>
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>用户名</FormLabel>
+                <FormLabel>用户名 *</FormLabel>
                 <Input
                   color="neutral"
                   variant="soft"
@@ -132,14 +132,14 @@ export default function Login() {
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>真实姓名</FormLabel>
+                <FormLabel>真实姓名 *</FormLabel>
                 <Input color="neutral" variant="soft" type="text" name="name" />
               </FormControl>
             </Grid>
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>密码</FormLabel>
+                <FormLabel>密码 *</FormLabel>
                 <Input
                   color="neutral"
                   variant="soft"
@@ -170,7 +170,7 @@ export default function Login() {
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>确定密码</FormLabel>
+                <FormLabel>确定密码 *</FormLabel>
                 <Input
                   color="neutral"
                   variant="soft"
