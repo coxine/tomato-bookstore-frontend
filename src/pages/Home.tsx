@@ -62,8 +62,8 @@ export default function Home() {
           </Typography>
           <BookCarousel />
         </BasicContainer>
+        <Footer />
       </Box>
-      <Footer />
     </>
   )
 }

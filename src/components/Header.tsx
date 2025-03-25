@@ -11,6 +11,11 @@ export default function Header() {
       color="primary"
       invertedColors
       sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        zIndex: 999,
         display: 'flex',
         alignItems: 'center',
         flexGrow: 1,
