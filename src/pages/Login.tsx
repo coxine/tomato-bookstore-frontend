@@ -6,7 +6,7 @@ import Link from '@mui/joy/Link'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
 import * as React from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { userLogin } from '../api/user'
 import AuthLayout from '../components/layouts/AuthLayout'
@@ -21,7 +21,7 @@ interface SignInFormElement extends HTMLFormElement {
 }
 
 export default function Login() {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const handleSubmit = (event: React.FormEvent<SignInFormElement>) => {
     event.preventDefault()
     const formElements = event.currentTarget.elements
@@ -29,8 +29,6 @@ export default function Login() {
       username: formElements.username.value,
       password: formElements.password.value,
     }
-
-    console.log(data)
 
     userLogin(data).then((res) => {
       if (res.data.code === '200') {
@@ -40,7 +38,7 @@ export default function Login() {
           severity: ToastSeverity.Success,
           duration: 3000,
         })
-        // TODO: 增加登录成功的路径跳转
+        navigate('/profile')
       } else if (res.data.code === '400') {
         showToast({
           title: '登录失败',

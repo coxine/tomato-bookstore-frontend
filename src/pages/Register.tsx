@@ -71,9 +71,7 @@ export default function Login() {
             severity: ToastSeverity.Success,
             duration: 3000,
           })
-          setTimeout(() => {
-            navigate('/login')
-          }, 3000)
+          navigate('/login')
         } else if (res.data.code === '400') {
           showToast({
             title: '注册失败',
