@@ -32,6 +32,8 @@ export default function Login() {
 
     userLogin(data).then((res) => {
       if (res.data.code === '200') {
+        sessionStorage.setItem('token', res.data.data)
+        sessionStorage.setItem('isLoggedIn', 'true')
         showToast({
           title: '登录成功',
           message: `${data.username}，欢迎使用西红柿读书!`,

@@ -3,6 +3,8 @@ import Button from '@mui/joy/Button'
 import Link from '@mui/joy/Link'
 import Typography from '@mui/joy/Typography'
 
+const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
+
 export default function HomePageWelcome() {
   return (
     <>
@@ -22,26 +24,41 @@ export default function HomePageWelcome() {
         在西红柿读书网，你可以看书、买书，从而在软攻 II 的大作业中取得好成绩：）
       </Typography>
 
-      <Link href="/login" sx={{ display: 'block', width: '100%' }}>
-        <Button
-          size="lg"
-          endDecorator={<ArrowForward />}
-          sx={{ width: '100%' }}
-        >
-          登录
-        </Button>
-      </Link>
+      {!isLoggedIn && (
+        <>
+          <Link href="/login" sx={{ display: 'block', width: '100%' }}>
+            <Button
+              size="lg"
+              endDecorator={<ArrowForward />}
+              sx={{ width: '100%' }}
+            >
+              登录
+            </Button>
+          </Link>
+          <Link href="/register" sx={{ display: 'block', width: '100%' }}>
+            <Button
+              size="lg"
+              endDecorator={<ArrowForward />}
+              variant="soft"
+              sx={{ width: '100%' }}
+            >
+              注册
+            </Button>
+          </Link>
+        </>
+      )}
 
-      <Link href="/register" sx={{ display: 'block', width: '100%' }}>
-        <Button
-          size="lg"
-          endDecorator={<ArrowForward />}
-          variant="soft"
-          sx={{ width: '100%' }}
-        >
-          注册
-        </Button>
-      </Link>
+      {isLoggedIn && (
+        <Link href="/profile" sx={{ display: 'block', width: '100%' }}>
+          <Button
+            size="lg"
+            endDecorator={<ArrowForward />}
+            sx={{ width: '100%' }}
+          >
+            进入个人中心
+          </Button>
+        </Link>
+      )}
     </>
   )
 }
