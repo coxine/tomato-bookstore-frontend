@@ -8,7 +8,7 @@ const authorList: Author[] = [
   {
     name: '刘钦老师',
     tags: ['传奇大师', '传奇大师'],
-    description: '代表作《Java和她的小软攻》',
+    description: '代表作《软件开发的技术基础》',
     avatarURL: 'https://example.com/avatar1.jpg',
   },
 ]

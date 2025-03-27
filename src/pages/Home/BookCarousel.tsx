@@ -6,7 +6,7 @@ import BookCard from './BookCard'
 
 const bookList: Book[] = [
   {
-    name: 'Java和她的小软攻',
+    name: '软件开发的技术基础',
     tags: ['编程', 'Java'],
     author: '刘钦老师',
     coverURL: 'https://bed.cos.tg/file/1742573518219_image.png',
