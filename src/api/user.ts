@@ -17,7 +17,7 @@ interface UserInfo {
   telephone?: string
   email?: string
   location?: string
-  role: string
+  role: 'ADMIN' | 'USER'
 }
 
 export const userGetInfo = (username: string) => {

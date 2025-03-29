@@ -15,6 +15,7 @@ import Sidebar from '../components/Sidebar'
 import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
 import type { Profile } from '../types/profile'
 
+import Loading from './Load'
 import EditProfileCard from './Profile/EditProfileCard'
 import ProfileCard from './Profile/ProfileCard'
 
@@ -112,14 +113,14 @@ export default function Profile() {
               </TabList>
               <TabPanel value={0}>
                 {profileData === undefined ? (
-                  <Typography>加载中...</Typography>
+                  <Loading />
                 ) : (
                   <ProfileCard profile={profileData} />
                 )}
               </TabPanel>
               <TabPanel value={1}>
                 {profileData === undefined ? (
-                  <Typography>加载中...</Typography>
+                  <Loading />
                 ) : (
                   <EditProfileCard profile={profileData} />
                 )}

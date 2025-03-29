@@ -60,7 +60,7 @@ export default function ToastMessage({
         top: 16,
         right: 16,
         width: { xs: '60%', sm: '40%', md: '20%' },
-        zIndex: (theme) => theme.zIndex.modal,
+        zIndex: 12306,
         alignItems: 'flex-start',
         transition: 'opacity 0.5s',
         opacity: visible ? 1 : 0,

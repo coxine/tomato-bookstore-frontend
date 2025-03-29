@@ -47,7 +47,7 @@ export default function Login() {
       telephone: formElements.telephone.value,
       email: formElements.email.value,
       location: formElements.location.value,
-      role: 'USER',
+      role: 'USER' as 'ADMIN' | 'USER',
     }
 
     let errors = ''
