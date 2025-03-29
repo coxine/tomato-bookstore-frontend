@@ -9,17 +9,17 @@ interface UserLoginInfo {
 }
 
 interface UserInfo {
+  id?: number
   username: string
-  password?: string // just need when logining
-  name: string
-  avater?: string
+  password?: string
+  name?: string
+  avatar?: string
   telephone?: string
   email?: string
   location?: string
-  role?: string
+  role: string
 }
 
-// TODO: 测试未完成
 export const userGetInfo = (username: string) => {
   return axios
     .get<ApiResponse<UserInfo>>(`${USER_MODULE}/${username}`)
@@ -30,11 +30,9 @@ export const userGetInfo = (username: string) => {
 }
 
 export const userRegister = (userInfo: UserInfo) => {
-  userInfo.role = 'USER'
   return axios
     .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
     .then((res) => {
-      // 目前创建用户还未得到设置返回内容
       return res
     })
 }
@@ -42,6 +40,14 @@ export const userRegister = (userInfo: UserInfo) => {
 export const userLogin = (userLoginInfo: UserLoginInfo) => {
   return axios
     .post<ApiResponse<string>>(`${USER_MODULE}/login`, userLoginInfo)
+    .then((res) => {
+      return res
+    })
+}
+
+export const userUpdate = (userUpdateInfo: UserInfo) => {
+  return axios
+    .put<ApiResponse<null>>(`${USER_MODULE}`, userUpdateInfo)
     .then((res) => {
       return res
     })

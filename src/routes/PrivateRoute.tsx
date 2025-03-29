@@ -7,5 +7,11 @@ interface PrivateRouteProps {
 
 export default function PrivateRoute({ children }: PrivateRouteProps) {
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
-  return isLoggedIn ? children : <Navigate to="/login" replace />
+  if (!isLoggedIn) {
+    sessionStorage.removeItem('username')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('isLoggedIn')
+    return <Navigate to="/login" replace />
+  }
+  return children
 }

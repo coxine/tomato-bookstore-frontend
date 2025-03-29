@@ -32,6 +32,7 @@ export default function Login() {
 
     userLogin(data).then((res) => {
       if (res.data.code === '200') {
+        sessionStorage.setItem('username', formElements.username.value)
         sessionStorage.setItem('token', res.data.data)
         sessionStorage.setItem('isLoggedIn', 'true')
         showToast({
