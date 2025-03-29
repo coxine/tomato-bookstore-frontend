@@ -99,7 +99,7 @@ export default function Login() {
   }
   return (
     <AuthLayout>
-      <Stack sx={{ gap: 4, mb: 2 }}>
+      <Stack sx={{ gap: 4, mb: 1 }}>
         <Stack sx={{ gap: 1 }}>
           <Typography component="h1" level="h3">
             注册
@@ -112,7 +112,7 @@ export default function Login() {
         </Stack>
       </Stack>
 
-      <Stack sx={{ gap: 4, mt: 2 }}>
+      <Stack sx={{ gap: 4 }}>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid xs={12} sm={6}>

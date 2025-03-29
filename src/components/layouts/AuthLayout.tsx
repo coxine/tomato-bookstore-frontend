@@ -22,10 +22,9 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
           display: 'flex',
           justifyContent: 'flex-end',
           backdropFilter: 'blur(20px)',
-          borderRadius: '0.5vw',
+          borderRadius: 'sm',
           margin: '2rem auto',
-
-          width: { xs: '100%', sm: '80vw', md: '50vw' },
+          width: { xs: '90%', sm: '80vw', md: '50vw' },
           backgroundColor: 'rgba(255 255 255 / 0.6)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundColor: 'rgba(19 19 24 / 0.6)',
@@ -37,7 +36,6 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
-
             minHeight: { xs: '40vh', md: '80vh' },
             px: 2,
           }}
@@ -65,10 +63,9 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
               display: 'flex',
               flexDirection: 'column',
               maxWidth: '100%',
-
               my: 'auto',
               py: 2,
-              pb: 5,
+              pb: 1,
               gap: 2,
               width: 400,
               mx: 'auto',

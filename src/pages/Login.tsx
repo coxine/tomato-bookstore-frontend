@@ -61,7 +61,7 @@ export default function Login() {
 
   return (
     <AuthLayout>
-      <Stack sx={{ gap: 4, mb: 2 }}>
+      <Stack sx={{ gap: 4, mb: 1 }}>
         <Stack sx={{ gap: 1 }}>
           <Typography component="h1" level="h3">
             登录
@@ -75,7 +75,7 @@ export default function Login() {
         </Stack>
       </Stack>
 
-      <Stack sx={{ gap: 4, mt: 2 }}>
+      <Stack sx={{ gap: 4 }}>
         <form onSubmit={handleSubmit}>
           <FormControl required>
             <FormLabel>用户名</FormLabel>
