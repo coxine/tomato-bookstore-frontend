@@ -1,3 +1,4 @@
+import { Link } from '@mui/joy'
 import Box from '@mui/joy/Box'
 import Sheet from '@mui/joy/Sheet'
 import Typography from '@mui/joy/Typography'
@@ -26,13 +27,15 @@ export default function Header() {
       <Box
         sx={{ flex: 1, display: 'flex', gap: 1, px: 2, alignItems: 'center' }}
       >
-        <Typography
-          level="h4"
-          component="h1"
-          sx={{ display: 'flex', alignItems: 'center' }}
-        >
-          🍅 西红柿读书
-        </Typography>
+        <Link href="/" underline='none'>
+          <Typography
+            level="h4"
+            component="h1"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            🍅 西红柿读书
+          </Typography>
+        </Link>
       </Box>
       <Box sx={{ display: 'flex', flexShrink: 0, gap: 2 }}>
         <ColorSchemeToggle />

@@ -18,7 +18,7 @@ export default function Home() {
       <Box
         sx={(theme) => ({
           width: '100%',
-          backgroundColor: 'rgba(255 255 255 / 0.6)',
+          backgroundColor: 'rgba(245 245 245 / 0.6)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundColor: 'rgba(19 19 24 / 0.6)',
           },
