@@ -3,9 +3,9 @@ import Button from '@mui/joy/Button'
 import Link from '@mui/joy/Link'
 import Typography from '@mui/joy/Typography'
 
-const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
-
 export default function HomePageWelcome() {
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
+
   return (
     <>
       <Typography
