@@ -1,19 +1,19 @@
-import Box from '@mui/joy/Box';
-import * as React from 'react';
+import Box from '@mui/joy/Box'
+import * as React from 'react'
 
 export default function Toggler({
   defaultExpanded = false,
   renderToggle,
   children,
 }: {
-  defaultExpanded?: boolean;
-  children: React.ReactNode;
+  defaultExpanded?: boolean
+  children: React.ReactNode
   renderToggle: (params: {
-    open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  }) => React.ReactNode;
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  }) => React.ReactNode
 }) {
-  const [open, setOpen] = React.useState(defaultExpanded);
+  const [open, setOpen] = React.useState(defaultExpanded)
   return (
     <React.Fragment>
       {renderToggle({ open, setOpen })}
@@ -32,5 +32,5 @@ export default function Toggler({
         {children}
       </Box>
     </React.Fragment>
-  );
+  )
 }

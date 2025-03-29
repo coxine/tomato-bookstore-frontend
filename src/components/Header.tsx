@@ -27,7 +27,7 @@ export default function Header() {
       <Box
         sx={{ flex: 1, display: 'flex', gap: 1, px: 2, alignItems: 'center' }}
       >
-        <Link href="/" underline='none'>
+        <Link href="/" underline="none">
           <Typography
             level="h4"
             component="h1"

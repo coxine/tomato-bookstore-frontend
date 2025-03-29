@@ -1,10 +1,18 @@
-import { Box, Tabs, TabList, Tab, Typography, tabClasses, TabPanel } from '@mui/joy';
+import {
+  Box,
+  Tabs,
+  TabList,
+  Tab,
+  Typography,
+  tabClasses,
+  TabPanel,
+} from '@mui/joy'
 
-import Sidebar from '../components/Sidebar';
-import type { Profile } from '../types/profile';
+import Sidebar from '../components/Sidebar'
+import type { Profile } from '../types/profile'
 
-import EditProfileCard from './Profile/EditProfileCard';
-import ProfileCard from './Profile/ProfileCard';
+import EditProfileCard from './Profile/EditProfileCard'
+import ProfileCard from './Profile/ProfileCard'
 
 const profileData: Profile = {
   username: 'johndoe',
@@ -12,8 +20,8 @@ const profileData: Profile = {
   avatar: 'https://example.com/avatar.jpg',
   telephone: '13812345678',
   email: 'john.doe@example.com',
-  location: 'New York'
-};
+  location: 'New York',
+}
 
 export default function Profile() {
   return (
@@ -75,13 +83,16 @@ export default function Profile() {
                   编辑信息
                 </Tab>
               </TabList>
-              <TabPanel value={0} ><ProfileCard profile={profileData} /></TabPanel>
-              <TabPanel value={1} ><EditProfileCard profile={profileData} /></TabPanel>
+              <TabPanel value={0}>
+                <ProfileCard profile={profileData} />
+              </TabPanel>
+              <TabPanel value={1}>
+                <EditProfileCard profile={profileData} />
+              </TabPanel>
             </Tabs>
           </Box>
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
-

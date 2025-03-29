@@ -1,25 +1,25 @@
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy';
-import { useState } from 'react';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
+import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
+import { useState } from 'react'
 
-import InfoCard from '../../components/UI/InfoCard';
-import { Profile } from '../../types/profile';
+import InfoCard from '../../components/UI/InfoCard'
+import { Profile } from '../../types/profile'
 
 interface EditProfileCardProps {
-  profile: Profile;
+  profile: Profile
 }
 
 export default function EditProfileCard({ profile }: EditProfileCardProps) {
   const [formData, setFormData] = useState({
-    ...profile
-  });
+    ...profile,
+  })
 
   const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleSubmit = () => {
-    console.log(formData);
+    console.log(formData)
   }
 
   return (
@@ -38,7 +38,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.username}
-              onChange={e => handleChange('username', e.target.value)}
+              onChange={(e) => handleChange('username', e.target.value)}
             />
           </FormControl>
         </Stack>
@@ -48,7 +48,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.name}
-              onChange={e => handleChange('name', e.target.value)}
+              onChange={(e) => handleChange('name', e.target.value)}
             />
           </FormControl>
         </Stack>
@@ -58,7 +58,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.avatar}
-              onChange={e => handleChange('avatar', e.target.value)}
+              onChange={(e) => handleChange('avatar', e.target.value)}
             />
           </FormControl>
         </Stack>
@@ -68,7 +68,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.telephone}
-              onChange={e => handleChange('telephone', e.target.value)}
+              onChange={(e) => handleChange('telephone', e.target.value)}
               placeholder="1xxxxxxxxxx"
             />
           </FormControl>
@@ -81,7 +81,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
               type="email"
               startDecorator={<EmailRoundedIcon />}
               value={formData.email}
-              onChange={e => handleChange('email', e.target.value)}
+              onChange={(e) => handleChange('email', e.target.value)}
               placeholder="email"
             />
           </FormControl>
@@ -92,11 +92,11 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.location}
-              onChange={e => handleChange('location', e.target.value)}
+              onChange={(e) => handleChange('location', e.target.value)}
             />
           </FormControl>
         </Stack>
       </Stack>
-    </InfoCard >
+    </InfoCard>
   )
 }

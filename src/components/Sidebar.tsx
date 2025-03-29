@@ -1,21 +1,21 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import Box from '@mui/joy/Box';
-import GlobalStyles from '@mui/joy/GlobalStyles';
-import Input from '@mui/joy/Input';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
-import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
-import ListItemContent from '@mui/joy/ListItemContent';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import { Link } from 'react-router-dom';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
+import Box from '@mui/joy/Box'
+import GlobalStyles from '@mui/joy/GlobalStyles'
+import Input from '@mui/joy/Input'
+import List from '@mui/joy/List'
+import ListItem from '@mui/joy/ListItem'
+import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton'
+import ListItemContent from '@mui/joy/ListItemContent'
+import Sheet from '@mui/joy/Sheet'
+import Typography from '@mui/joy/Typography'
+import { Link } from 'react-router-dom'
 
-import ColorSchemeToggle from './UI/ColorSchemeToggle';
-import Toggler from './UI/Toggler';
-
+import ColorSchemeToggle from './UI/ColorSchemeToggle'
+import Toggler from './UI/Toggler'
 
 export default function Sidebar() {
   return (
@@ -73,7 +73,11 @@ export default function Sidebar() {
         <Typography level="title-lg">🍅 西红柿读书</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      <Input
+        size="sm"
+        startDecorator={<SearchRoundedIcon />}
+        placeholder="Search"
+      />
       <Box
         sx={{
           minHeight: 0,
@@ -109,21 +113,28 @@ export default function Sidebar() {
             <Toggler
               defaultExpanded
               renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}><ShoppingCartRoundedIcon />
+                <ListItemButton onClick={() => setOpen(!open)}>
+                  <ShoppingCartRoundedIcon />
                   <ListItemContent>
                     <Typography level="title-sm">订单</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={[
-                      open ? { transform: 'rotate(180deg)' } : { transform: 'none' },
+                      open
+                        ? { transform: 'rotate(180deg)' }
+                        : { transform: 'none' },
                     ]}
                   />
                 </ListItemButton>
               )}
             >
               <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}><ListItemButton>待支付</ListItemButton></ListItem>
-                <ListItem><ListItemButton>待收货</ListItemButton></ListItem>
+                <ListItem sx={{ mt: 0.5 }}>
+                  <ListItemButton>待支付</ListItemButton>
+                </ListItem>
+                <ListItem>
+                  <ListItemButton>待收货</ListItemButton>
+                </ListItem>
               </List>
             </Toggler>
           </ListItem>
@@ -139,9 +150,7 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton
-              role="menuitem"
-            >
+            <ListItemButton role="menuitem">
               <AccountCircleIcon />
               <ListItemContent>
                 <Link to="/profile">
@@ -153,5 +162,5 @@ export default function Sidebar() {
         </List>
       </Box>
     </Sheet>
-  );
+  )
 }
