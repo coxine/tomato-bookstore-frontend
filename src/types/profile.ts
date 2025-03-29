@@ -5,4 +5,5 @@ export type Profile = {
   telephone?: string
   email?: string
   location?: string
+  role: 'ADMIN' | 'USER'
 }

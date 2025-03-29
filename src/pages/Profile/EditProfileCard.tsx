@@ -2,7 +2,9 @@ import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useState } from 'react'
 
+import { userUpdate } from '../../api/user'
 import InfoCard from '../../components/UI/InfoCard'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Profile } from '../../types/profile'
 
 interface EditProfileCardProps {
@@ -19,7 +21,23 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
   }
 
   const handleSubmit = () => {
-    console.log(formData)
+    userUpdate(formData).then((res) => {
+      if (res.data.code == '200') {
+        showToast({
+          title: '修改成功',
+          message: '数据更新完成!',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错，获取用户数据失败，请重新登录尝试!',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
   }
 
   return (
@@ -38,6 +56,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               value={formData.username}
+              disabled
               onChange={(e) => handleChange('username', e.target.value)}
             />
           </FormControl>
@@ -52,7 +71,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             />
           </FormControl>
         </Stack>
-        <Stack spacing={1}>
+        {/* <Stack spacing={1}>
           <FormLabel>头像 URL</FormLabel>
           <FormControl>
             <Input
@@ -61,7 +80,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
               onChange={(e) => handleChange('avatar', e.target.value)}
             />
           </FormControl>
-        </Stack>
+        </Stack> */}
         <Stack spacing={1}>
           <FormLabel>手机号</FormLabel>
           <FormControl>

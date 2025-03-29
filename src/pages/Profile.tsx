@@ -7,23 +7,51 @@ import {
   tabClasses,
   TabPanel,
 } from '@mui/joy'
+import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 
+import { userGetInfo } from '../api/user'
 import Sidebar from '../components/Sidebar'
+import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
 import type { Profile } from '../types/profile'
 
+import Loading from './Load'
 import EditProfileCard from './Profile/EditProfileCard'
 import ProfileCard from './Profile/ProfileCard'
 
-const profileData: Profile = {
-  username: 'johndoe',
-  name: 'John Doe',
-  avatar: 'https://example.com/avatar.jpg',
-  telephone: '13812345678',
-  email: 'john.doe@example.com',
-  location: 'New York',
-}
-
 export default function Profile() {
+  const username = sessionStorage.getItem('username')
+  const [profileData, setProfileData] = useState<Profile>()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (username != null) {
+        userGetInfo(username).then((res) => {
+          if (res.data.code == '200') {
+            setProfileData(res.data.data)
+          } else {
+            showToast({
+              title: '未知消息码',
+              message: '服务器出错，获取用户数据失败，请重新登录尝试!',
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+          }
+        })
+      } else {
+        showToast({
+          title: '未登录',
+          message: '请重新登录尝试!',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+        return <Navigate to="/login" replace />
+      }
+    }
+
+    fetchUser()
+  }, [username])
+
   return (
     <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
       <Sidebar />
@@ -84,10 +112,18 @@ export default function Profile() {
                 </Tab>
               </TabList>
               <TabPanel value={0}>
-                <ProfileCard profile={profileData} />
+                {profileData === undefined ? (
+                  <Loading />
+                ) : (
+                  <ProfileCard profile={profileData} />
+                )}
               </TabPanel>
               <TabPanel value={1}>
-                <EditProfileCard profile={profileData} />
+                {profileData === undefined ? (
+                  <Loading />
+                ) : (
+                  <EditProfileCard profile={profileData} />
+                )}
               </TabPanel>
             </Tabs>
           </Box>

@@ -47,18 +47,17 @@ export default function Login() {
       telephone: formElements.telephone.value,
       email: formElements.email.value,
       location: formElements.location.value,
+      role: 'USER' as 'ADMIN' | 'USER',
     }
 
     let errors = ''
 
     if (formElements.password.value != formElements.confirmPassword.value) {
-      console.log('error: 1')
       errors = '两次输入的密码不一致！'
     } else if (
       formElements.telephone.value &&
       !telephoneRex.test(formElements.telephone.value)
     ) {
-      console.log('error: 2')
       errors = '电话号码不合法！'
     }
 
@@ -82,7 +81,7 @@ export default function Login() {
         } else {
           showToast({
             title: '未知消息码',
-            message: `服务器出错!`,
+            message: '服务器出错!',
             severity: ToastSeverity.Warning,
             duration: 3000,
           })
