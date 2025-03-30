@@ -1,4 +1,5 @@
 import { ApiResponse } from '../types/apiResponse'
+import { Profile } from '../types/profile'
 import { axios } from '../utils/require'
 
 import { USER_MODULE } from './_prefix'
@@ -8,28 +9,16 @@ interface UserLoginInfo {
   password: string
 }
 
-interface UserInfo {
-  id?: number
-  username: string
-  password?: string
-  name?: string
-  avatar?: string
-  telephone?: string
-  email?: string
-  location?: string
-  role: 'ADMIN' | 'USER'
-}
-
 export const userGetInfo = (username: string) => {
   return axios
-    .get<ApiResponse<UserInfo>>(`${USER_MODULE}/${username}`)
+    .get<ApiResponse<Profile>>(`${USER_MODULE}/${username}`)
     .then((res) => {
       // .then部分由于没有其他处理，目前略显冗余，但方便以后增加逻辑(后均相同)
       return res
     })
 }
 
-export const userRegister = (userInfo: UserInfo) => {
+export const userRegister = (userInfo: Profile) => {
   return axios
     .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
     .then((res) => {
@@ -45,7 +34,7 @@ export const userLogin = (userLoginInfo: UserLoginInfo) => {
     })
 }
 
-export const userUpdate = (userUpdateInfo: UserInfo) => {
+export const userUpdate = (userUpdateInfo: Profile) => {
   return axios
     .put<ApiResponse<null>>(`${USER_MODULE}`, userUpdateInfo)
     .then((res) => {

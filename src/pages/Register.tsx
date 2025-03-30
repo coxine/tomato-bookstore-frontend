@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom'
 import { userRegister } from '../api/user'
 import AuthLayout from '../components/layouts/AuthLayout'
 import { ToastSeverity, showToast } from '../components/UI/ToastMessageUtils'
+import { checkUserInfoLen } from '../utils/check'
 
 // 默认注册的时候不传入头像，存储为NULL，并在头像使用的时候使用默认头像
 interface FormElements extends HTMLFormControlsCollection {
@@ -30,12 +31,16 @@ interface RegisterFormElement extends HTMLFormElement {
   readonly elements: FormElements
 }
 
-export default function Login() {
+export default function Register() {
   const telephoneRex = /^1\d{10}$/
   const navigate = useNavigate()
   const [errors, setErrors] = React.useState<Record<string, string>>({
+    username: '',
     password: '',
+    name: '',
     telephone: '',
+    email: '',
+    location: '',
   })
 
   const handleSubmit = (event: React.FormEvent<RegisterFormElement>) => {
@@ -51,18 +56,15 @@ export default function Login() {
       role: 'USER' as 'ADMIN' | 'USER',
     }
 
-    let errors = ''
+    let errorMessage = ''
 
-    if (formElements.password.value != formElements.confirmPassword.value) {
-      errors = '两次输入的密码不一致！'
-    } else if (
-      formElements.telephone.value &&
-      !telephoneRex.test(formElements.telephone.value)
-    ) {
-      errors = '电话号码不合法！'
-    }
+    Object.keys(errors).forEach((key) => {
+      if (key in errors && errors[key]) {
+        errorMessage = errors[key] // 目前默认会展示最后一个错误
+      }
+    })
 
-    if (!errors) {
+    if (!errorMessage) {
       userRegister(data).then((res) => {
         if (res.data.code === '200') {
           showToast({
@@ -91,7 +93,7 @@ export default function Login() {
     } else {
       showToast({
         title: '注册失败',
-        message: errors,
+        message: errorMessage,
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
@@ -129,14 +131,43 @@ export default function Login() {
                   type="text"
                   name="username"
                   autoComplete="username"
+                  onChange={(e) => {
+                    if (checkUserInfoLen('username', e.target.value)) {
+                      setErrors((prev) => ({ ...prev, username: '用户名过长' }))
+                    } else {
+                      setErrors((prev) => ({ ...prev, username: '' }))
+                    }
+                  }}
                 />
+                {errors.username && (
+                  <FormHelperText sx={{ color: 'red' }}>
+                    {errors.username}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>真实姓名 *</FormLabel>
-                <Input color="neutral" variant="soft" type="text" name="name" />
+                <FormLabel>姓名 *</FormLabel>
+                <Input
+                  color="neutral"
+                  variant="soft"
+                  type="text"
+                  name="name"
+                  onChange={(e) => {
+                    if (checkUserInfoLen('name', e.target.value)) {
+                      setErrors((prev) => ({ ...prev, name: '姓名过长' }))
+                    } else {
+                      setErrors((prev) => ({ ...prev, name: '' }))
+                    }
+                  }}
+                />
+                {errors.name && (
+                  <FormHelperText sx={{ color: 'red' }}>
+                    {errors.name}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
 
@@ -156,7 +187,9 @@ export default function Login() {
                       ) as HTMLInputElement
                     )?.value
                     // 实时验证
-                    if (password !== confirmPassword) {
+                    if (checkUserInfoLen('password', password)) {
+                      setErrors((prev) => ({ ...prev, passsword: '密码过长' }))
+                    } else if (password !== confirmPassword) {
                       setErrors((prev) => ({ ...prev, password: '密码不一致' }))
                     } else {
                       setErrors((prev) => ({ ...prev, password: '' }))
@@ -187,7 +220,9 @@ export default function Login() {
                       ) as HTMLInputElement
                     )?.value
                     // 实时验证
-                    if (password !== confirmPassword) {
+                    if (checkUserInfoLen('password', password)) {
+                      setErrors((prev) => ({ ...prev, passsword: '密码过长' }))
+                    } else if (password !== confirmPassword) {
                       setErrors((prev) => ({ ...prev, password: '密码不一致' }))
                     } else {
                       setErrors((prev) => ({ ...prev, password: '' }))
@@ -204,7 +239,7 @@ export default function Login() {
 
             <Grid xs={12}>
               <FormControl>
-                <FormLabel>电话号码</FormLabel>
+                <FormLabel>手机号</FormLabel>
                 <Input
                   color="neutral"
                   variant="soft"
@@ -213,12 +248,17 @@ export default function Login() {
                   onChange={(e) => {
                     const telephone = e.target.value
                     // 实时验证
-                    if (!telephone || telephoneRex.test(telephone)) {
+                    if (checkUserInfoLen('telephone', telephone)) {
+                      setErrors((prev) => ({
+                        ...prev,
+                        telephone: '手机号过长',
+                      }))
+                    } else if (!telephone || telephoneRex.test(telephone)) {
                       setErrors((prev) => ({ ...prev, telephone: '' }))
                     } else {
                       setErrors((prev) => ({
                         ...prev,
-                        telephone: '电话号码不合法',
+                        telephone: '手机号不合法',
                       }))
                     }
                   }}
@@ -239,7 +279,19 @@ export default function Login() {
                   variant="soft"
                   type="email"
                   name="email"
+                  onChange={(e) => {
+                    if (checkUserInfoLen('email', e.target.value)) {
+                      setErrors((prev) => ({ ...prev, email: '邮箱过长' }))
+                    } else {
+                      setErrors((prev) => ({ ...prev, email: '' }))
+                    }
+                  }}
                 />
+                {errors.email && (
+                  <FormHelperText sx={{ color: 'red' }}>
+                    {errors.email}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
 
@@ -251,7 +303,19 @@ export default function Login() {
                   variant="soft"
                   type="text"
                   name="location"
+                  onChange={(e) => {
+                    if (checkUserInfoLen('location', e.target.value)) {
+                      setErrors((prev) => ({ ...prev, location: '地址过长' }))
+                    } else {
+                      setErrors((prev) => ({ ...prev, location: '' }))
+                    }
+                  }}
                 />
+                {errors.location && (
+                  <FormHelperText sx={{ color: 'red' }}>
+                    {errors.location}
+                  </FormHelperText>
+                )}
               </FormControl>
             </Grid>
           </Grid>
