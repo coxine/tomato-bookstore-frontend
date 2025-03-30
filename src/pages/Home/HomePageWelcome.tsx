@@ -2,6 +2,7 @@ import ArrowForward from '@mui/icons-material/ArrowForward'
 import Button from '@mui/joy/Button'
 import Link from '@mui/joy/Link'
 import Typography from '@mui/joy/Typography'
+import { Link as RouterLink } from 'react-router-dom'
 
 export default function HomePageWelcome() {
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
@@ -26,7 +27,11 @@ export default function HomePageWelcome() {
 
       {!isLoggedIn && (
         <>
-          <Link href="/login" sx={{ display: 'block', width: '100%' }}>
+          <Link
+            component={RouterLink}
+            to="/login"
+            sx={{ display: 'block', width: '100%' }}
+          >
             <Button
               size="lg"
               endDecorator={<ArrowForward />}
@@ -35,7 +40,11 @@ export default function HomePageWelcome() {
               登录
             </Button>
           </Link>
-          <Link href="/register" sx={{ display: 'block', width: '100%' }}>
+          <Link
+            component={RouterLink}
+            to="/register"
+            sx={{ display: 'block', width: '100%', color: 'danger.500' }}
+          >
             <Button
               size="lg"
               endDecorator={<ArrowForward />}
@@ -49,7 +58,11 @@ export default function HomePageWelcome() {
       )}
 
       {isLoggedIn && (
-        <Link href="/profile" sx={{ display: 'block', width: '100%' }}>
+        <Link
+          component={RouterLink}
+          to="/profile"
+          sx={{ display: 'block', width: '100%' }}
+        >
           <Button
             size="lg"
             endDecorator={<ArrowForward />}

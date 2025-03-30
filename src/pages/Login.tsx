@@ -7,6 +7,7 @@ import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 
 import { userLogin } from '../api/user'
 import AuthLayout from '../components/layouts/AuthLayout'
@@ -68,9 +69,13 @@ export default function Login() {
             登录
           </Typography>
           <Typography level="body-sm">
-            新用户?{' '}
-            <Link href="/register" level="title-sm">
-              注册!
+            新用户？
+            <Link
+              component={RouterLink}
+              to="/register"
+              sx={{ fontWeight: 'lg', color: 'primary.500' }}
+            >
+              注册
             </Link>
           </Typography>
         </Stack>

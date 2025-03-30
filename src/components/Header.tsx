@@ -1,7 +1,7 @@
-import { Link } from '@mui/joy'
 import Box from '@mui/joy/Box'
 import Sheet from '@mui/joy/Sheet'
 import Typography from '@mui/joy/Typography'
+import { Link } from 'react-router-dom'
 
 import ColorSchemeToggle from './UI/ColorSchemeToggle'
 
@@ -27,7 +27,7 @@ export default function Header() {
       <Box
         sx={{ flex: 1, display: 'flex', gap: 1, px: 2, alignItems: 'center' }}
       >
-        <Link href="/" underline="none">
+        <Link to="/">
           <Typography
             level="h4"
             component="h1"
