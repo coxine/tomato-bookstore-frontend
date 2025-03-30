@@ -34,7 +34,9 @@ export default function InfoCard({
     >
       <Card>
         <Box>
-          <Typography level="title-md">{title}</Typography>
+          <Typography level="title-md" fontWeight="lg">
+            {title}
+          </Typography>
           <Typography level="body-sm">{description}</Typography>
         </Box>
         <Divider />

@@ -12,10 +12,10 @@ import { Navigate } from 'react-router-dom'
 
 import { userGetInfo } from '../api/user'
 import Sidebar from '../components/Sidebar'
+import Loading from '../components/UI/Loading'
 import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
 import type { Profile } from '../types/profile'
 
-import Loading from './Load'
 import EditProfileCard from './Profile/EditProfileCard'
 import ProfileCard from './Profile/ProfileCard'
 

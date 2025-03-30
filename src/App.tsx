@@ -4,6 +4,7 @@ import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
+import Custom404 from './pages/404'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
@@ -36,6 +37,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/404" element={<Custom404 />} />
             <Route
               path="/profile"
               element={
