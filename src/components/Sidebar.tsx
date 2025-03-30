@@ -28,7 +28,7 @@ export default function Sidebar() {
           md: 'none',
         },
         transition: 'transform 0.4s, width 0.4s',
-        zIndex: 10000,
+        zIndex: 1200,
         height: '100dvh',
         width: 'var(--Sidebar-width)',
         top: 0,
@@ -55,7 +55,7 @@ export default function Sidebar() {
         className="Sidebar-overlay"
         sx={{
           position: 'fixed',
-          zIndex: 9998,
+          zIndex: 1198,
           top: 0,
           left: 0,
           width: '100vw',

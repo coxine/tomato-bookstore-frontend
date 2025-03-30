@@ -16,7 +16,7 @@ export default function Header() {
         top: 0,
         left: 0,
         width: '100%',
-        zIndex: 999,
+        zIndex: 1000, // Header
         display: 'flex',
         alignItems: 'center',
         flexGrow: 1,
