@@ -57,7 +57,20 @@ export default function HomePageWelcome() {
         </>
       )}
 
-      {isLoggedIn && (
+      {isLoggedIn && (<>
+        <Link
+          component={RouterLink}
+          to="/books"
+          sx={{ display: 'block', width: '100%' }}
+        >
+          <Button
+            size="lg"
+            endDecorator={<ArrowForward />}
+            sx={{ width: '100%' }}
+          >
+            购买书籍
+          </Button>
+        </Link>
         <Link
           component={RouterLink}
           to="/profile"
@@ -66,11 +79,13 @@ export default function HomePageWelcome() {
           <Button
             size="lg"
             endDecorator={<ArrowForward />}
+            variant="soft"
             sx={{ width: '100%' }}
           >
             进入个人中心
           </Button>
         </Link>
+      </>
       )}
     </>
   )

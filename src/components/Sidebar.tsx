@@ -3,6 +3,7 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
+import StoreIcon from '@mui/icons-material/Store';
 import Box from '@mui/joy/Box'
 import GlobalStyles from '@mui/joy/GlobalStyles'
 import Input from '@mui/joy/Input'
@@ -108,7 +109,16 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-
+          <ListItem>
+            <ListItemButton>
+              <StoreIcon />
+              <ListItemContent>
+                <Link to="/books">
+                  <Typography level="title-sm">购买书籍</Typography>
+                </Link>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
           <ListItem nested>
             <Toggler
               defaultExpanded
