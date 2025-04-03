@@ -56,7 +56,6 @@ function App() {
               }
             />
           </Routes>
-
         </Router>
       </CssVarsProvider>
     </>

@@ -74,13 +74,22 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
     }
   }
 
+  const handleAvatarUpdate = () => {
+    console.log('Update avatar')
+  }
+
   return (
     <InfoCard
       title="编辑资料"
       actions={
-        <Button size="sm" variant="solid" onClick={handleSubmit}>
-          保存
-        </Button>
+        <>
+          <Button size="sm" variant="outlined" onClick={handleAvatarUpdate}>
+            更改头像
+          </Button>
+          <Button size="sm" variant="solid" onClick={handleSubmit}>
+            保存
+          </Button>
+        </>
       }
     >
       <Stack spacing={2} sx={{ flexGrow: 1 }}>

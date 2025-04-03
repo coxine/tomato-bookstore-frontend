@@ -1,7 +1,4 @@
-import {
-  Box,
-  Typography,
-} from '@mui/joy'
+import { Box, Typography } from '@mui/joy'
 
 import Sidebar from '../components/Sidebar'
 
