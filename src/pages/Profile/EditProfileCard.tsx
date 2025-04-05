@@ -140,7 +140,12 @@ export default function EditProfileCard({
     target: { files: FileList | null }
   }) => {
     if (!event.target.files) {
-      alert('文件上传错误！请重新尝试')
+      showToast({
+        title: '图片上传失败',
+        message: '图片上传错误！请重新尝试',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
       return
     }
     const file = event.target.files[0]
@@ -148,7 +153,12 @@ export default function EditProfileCard({
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('请选择有效的图片文件')
+      showToast({
+        title: '图片上传失败',
+        message: '请选择有效的图片文件',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
       return
     }
 
