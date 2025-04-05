@@ -7,8 +7,7 @@ import {
   tabClasses,
   TabPanel,
 } from '@mui/joy'
-import { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
 
 import { userGetInfo } from '../api/user'
 import Sidebar from '../components/Sidebar'
@@ -22,37 +21,33 @@ import ProfileCard from './Profile/ProfileCard'
 export default function Profile() {
   const username = sessionStorage.getItem('username')
   const [profileData, setProfileData] = useState<Profile>()
-  const [infoChanged, setInfoChanged] = useState(false)
+  const fetchUser = useCallback(async () => {
+    if (username != null) {
+      userGetInfo(username).then((res) => {
+        if (res.data.code === '200') {
+          setProfileData(res.data.data)
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错，获取用户数据失败，请重新登录尝试!',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    } else {
+      showToast({
+        title: '未登录',
+        message: '请重新登录尝试!',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+    }
+  }, [username])
 
   useEffect(() => {
-    setInfoChanged(false)
-    const fetchUser = async () => {
-      if (username != null) {
-        userGetInfo(username).then((res) => {
-          if (res.data.code == '200') {
-            setProfileData(res.data.data)
-          } else {
-            showToast({
-              title: '未知消息码',
-              message: '服务器出错，获取用户数据失败，请重新登录尝试!',
-              severity: ToastSeverity.Warning,
-              duration: 3000,
-            })
-          }
-        })
-      } else {
-        showToast({
-          title: '未登录',
-          message: '请重新登录尝试!',
-          severity: ToastSeverity.Warning,
-          duration: 3000,
-        })
-        return <Navigate to="/login" replace />
-      }
-    }
-
     fetchUser()
-  }, [username, infoChanged])
+  }, [fetchUser])
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
@@ -126,9 +121,7 @@ export default function Profile() {
                 ) : (
                   <EditProfileCard
                     profile={profileData}
-                    infoChange={() => {
-                      setInfoChanged(true)
-                    }}
+                    infoChange={fetchUser}
                   />
                 )}
               </TabPanel>
