@@ -116,6 +116,13 @@ export default function EditProfileCard({
             handleChange('avatar', res.data.data).then((data) => {
               userInfoSubmit(data)
             })
+          } else if (res.data.code == '400') {
+            showToast({
+              title: '提交失败',
+              message: res.data.msg,
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
           } else {
             showToast({
               title: '未知消息码',
