@@ -6,6 +6,7 @@ export enum ToastSeverity {
   Success = 'success',
   Neutral = 'neutral',
   Warning = 'warning',
+  Primary = 'primary',
   Danger = 'danger',
 }
 
