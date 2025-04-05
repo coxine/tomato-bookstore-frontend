@@ -7,104 +7,140 @@ import Input from '@mui/joy/Input'
 import Link from '@mui/joy/Link'
 import Stack from '@mui/joy/Stack'
 import Typography from '@mui/joy/Typography'
-import * as React from 'react'
-import { Link as RouterLink } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 
 import { userRegister } from '../api/user'
 import AuthLayout from '../components/layouts/AuthLayout'
-import { ToastSeverity, showToast } from '../components/UI/ToastMessageUtils'
-import { checkUserInfoLen } from '../utils/check'
+import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
+import { Profile } from '../types/profile'
+import { profileValidators } from '../utils/validator/profileValidator'
 
-// 默认注册的时候不传入头像，存储为NULL，并在头像使用的时候使用默认头像
-interface FormElements extends HTMLFormControlsCollection {
-  username: HTMLInputElement
-  password: HTMLInputElement
-  confirmPassword: HTMLInputElement
-  name: HTMLInputElement
-  telephone: HTMLInputElement
-  email: HTMLInputElement
-  location: HTMLInputElement
-}
-
-interface RegisterFormElement extends HTMLFormElement {
-  readonly elements: FormElements
+type FormData = {
+  username: string
+  password: string
+  confirmPassword: string
+  name: string
+  telephone: string
+  email: string
+  location: string
 }
 
 export default function Register() {
-  const telephoneRex = /^1\d{10}$/
   const navigate = useNavigate()
-  const [errors, setErrors] = React.useState<Record<string, string>>({
+  const [formData, setFormData] = useState<FormData>({
     username: '',
     password: '',
+    confirmPassword: '',
     name: '',
     telephone: '',
     email: '',
     location: '',
   })
+  const [errors, setErrors] = useState<Partial<FormData>>({})
 
-  const handleSubmit = (event: React.FormEvent<RegisterFormElement>) => {
-    event.preventDefault()
-    showToast({
-      title: '注册中',
-      message: '请稍等...',
-      severity: ToastSeverity.Primary,
-      duration: 3000,
-    })
-    const formElements = event.currentTarget.elements
-    const data = {
-      username: formElements.username.value,
-      password: formElements.password.value,
-      name: formElements.name.value,
-      telephone: formElements.telephone.value,
-      email: formElements.email.value,
-      location: formElements.location.value,
-      role: 'USER' as 'ADMIN' | 'USER',
+  const handleChange = (field: keyof FormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+
+    // 对 Profile 对象中对应的字段执行校验
+    if (field in profileValidators) {
+      const result = profileValidators[field](value)
+      setErrors((prev) => ({
+        ...prev,
+        [field]: result.valid ? '' : result.message,
+      }))
     }
 
-    let errorMessage = ''
+    // 另外单独校验密码与确认密码是否一致
+    if (field === 'password' || field === 'confirmPassword') {
+      const pwd = field === 'password' ? value : formData.password
+      const confirmPwd =
+        field === 'confirmPassword' ? value : formData.confirmPassword
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword:
+          pwd && confirmPwd && pwd !== confirmPwd ? '密码不一致' : '',
+      }))
+    }
+  }
 
-    Object.keys(errors).forEach((key) => {
-      if (key in errors && errors[key]) {
-        errorMessage = errors[key] // 目前默认会展示最后一个错误
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const requiredFields: (keyof FormData)[] = [
+      'username',
+      'password',
+      'confirmPassword',
+      'name',
+    ]
+    for (const field of requiredFields) {
+      if (!formData[field]) {
+        showToast({
+          title: '注册失败',
+          message: `${field} 为必填项`,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+        return
       }
-    })
+    }
 
-    if (!errorMessage) {
-      userRegister(data).then((res) => {
-        if (res.data.code === '200') {
-          showToast({
-            title: '注册成功',
-            message: `${data.username}，欢迎使用西红柿读书!`,
-            severity: ToastSeverity.Success,
-            duration: 3000,
-          })
-          navigate('/login')
-        } else if (res.data.code === '400') {
-          showToast({
-            title: '注册失败',
-            message: res.data.msg,
-            severity: ToastSeverity.Danger,
-            duration: 3000,
-          })
-        } else {
-          showToast({
-            title: '未知消息码',
-            message: '服务器出错!',
-            severity: ToastSeverity.Warning,
-            duration: 3000,
-          })
-        }
-      })
-    } else {
+    // 如果存在错误，展示第一个错误信息
+    const errorMessage = Object.values(errors).find((msg) => msg)
+    if (errorMessage) {
       showToast({
         title: '注册失败',
         message: errorMessage,
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
+      return
     }
+
+    const data: Profile = {
+      username: formData.username,
+      password: formData.password,
+      name: formData.name,
+      telephone: formData.telephone,
+      email: formData.email,
+      location: formData.location,
+      role: 'USER',
+    }
+
+    showToast({
+      title: '注册中',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
+    })
+
+    userRegister(data).then((res) => {
+      if (res.data.code === '200') {
+        showToast({
+          title: '注册成功',
+          message: `${data.username}，欢迎使用西红柿读书!`,
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+        navigate('/login')
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '注册失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错!',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
   }
+
   return (
     <AuthLayout>
       <Stack sx={{ gap: 4, mb: 1 }}>
@@ -132,18 +168,12 @@ export default function Register() {
               <FormControl required>
                 <FormLabel>用户名 *</FormLabel>
                 <Input
+                  name="username"
+                  value={formData.username}
+                  onChange={(e) => handleChange('username', e.target.value)}
                   color="neutral"
                   variant="soft"
-                  type="text"
-                  name="username"
                   autoComplete="username"
-                  onChange={(e) => {
-                    if (checkUserInfoLen('username', e.target.value)) {
-                      setErrors((prev) => ({ ...prev, username: '用户名过长' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, username: '' }))
-                    }
-                  }}
                 />
                 {errors.username && (
                   <FormHelperText sx={{ color: 'red' }}>
@@ -157,17 +187,11 @@ export default function Register() {
               <FormControl required>
                 <FormLabel>姓名 *</FormLabel>
                 <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
                   color="neutral"
                   variant="soft"
-                  type="text"
-                  name="name"
-                  onChange={(e) => {
-                    if (checkUserInfoLen('name', e.target.value)) {
-                      setErrors((prev) => ({ ...prev, name: '姓名过长' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, name: '' }))
-                    }
-                  }}
                 />
                 {errors.name && (
                   <FormHelperText sx={{ color: 'red' }}>
@@ -181,32 +205,13 @@ export default function Register() {
               <FormControl required>
                 <FormLabel>密码 *</FormLabel>
                 <Input
+                  value={formData.password}
+                  onChange={(e) => handleChange('password', e.target.value)}
                   color="neutral"
                   variant="soft"
                   type="password"
                   name="password"
-                  onChange={(e) => {
-                    const password = e.target.value
-                    const confirmPassword = (
-                      document.querySelector(
-                        '[name="confirmPassword"]'
-                      ) as HTMLInputElement
-                    )?.value
-                    // 实时验证
-                    if (checkUserInfoLen('password', password)) {
-                      setErrors((prev) => ({ ...prev, passsword: '密码过长' }))
-                    } else if (password !== confirmPassword) {
-                      setErrors((prev) => ({ ...prev, password: '密码不一致' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, password: '' }))
-                    }
-                  }}
                 />
-                {errors.password && (
-                  <FormHelperText sx={{ color: 'red' }}>
-                    {errors.password}
-                  </FormHelperText>
-                )}
               </FormControl>
             </Grid>
 
@@ -214,30 +219,18 @@ export default function Register() {
               <FormControl required>
                 <FormLabel>确定密码 *</FormLabel>
                 <Input
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    handleChange('confirmPassword', e.target.value)
+                  }
                   color="neutral"
                   variant="soft"
-                  type="password"
-                  name="confirmPassword"
-                  onChange={(e) => {
-                    const confirmPassword = e.target.value
-                    const password = (
-                      document.querySelector(
-                        '[name="password"]'
-                      ) as HTMLInputElement
-                    )?.value
-                    // 实时验证
-                    if (checkUserInfoLen('password', password)) {
-                      setErrors((prev) => ({ ...prev, passsword: '密码过长' }))
-                    } else if (password !== confirmPassword) {
-                      setErrors((prev) => ({ ...prev, password: '密码不一致' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, password: '' }))
-                    }
-                  }}
                 />
-                {errors.password && (
+                {errors.confirmPassword && (
                   <FormHelperText sx={{ color: 'red' }}>
-                    {errors.password}
+                    {errors.confirmPassword}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -247,27 +240,12 @@ export default function Register() {
               <FormControl>
                 <FormLabel>手机号</FormLabel>
                 <Input
+                  onChange={(e) => handleChange('telephone', e.target.value)}
                   color="neutral"
                   variant="soft"
                   type="tel"
                   name="telephone"
-                  onChange={(e) => {
-                    const telephone = e.target.value
-                    // 实时验证
-                    if (checkUserInfoLen('telephone', telephone)) {
-                      setErrors((prev) => ({
-                        ...prev,
-                        telephone: '手机号过长',
-                      }))
-                    } else if (!telephone || telephoneRex.test(telephone)) {
-                      setErrors((prev) => ({ ...prev, telephone: '' }))
-                    } else {
-                      setErrors((prev) => ({
-                        ...prev,
-                        telephone: '手机号不合法',
-                      }))
-                    }
-                  }}
+                  value={formData.telephone}
                 />
                 {errors.telephone && (
                   <FormHelperText sx={{ color: 'red' }}>
@@ -281,17 +259,12 @@ export default function Register() {
               <FormControl>
                 <FormLabel>邮箱</FormLabel>
                 <Input
+                  onChange={(e) => handleChange('email', e.target.value)}
                   color="neutral"
                   variant="soft"
                   type="email"
                   name="email"
-                  onChange={(e) => {
-                    if (checkUserInfoLen('email', e.target.value)) {
-                      setErrors((prev) => ({ ...prev, email: '邮箱过长' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, email: '' }))
-                    }
-                  }}
+                  value={formData.email}
                 />
                 {errors.email && (
                   <FormHelperText sx={{ color: 'red' }}>
@@ -305,17 +278,11 @@ export default function Register() {
               <FormControl>
                 <FormLabel>地址</FormLabel>
                 <Input
+                  onChange={(e) => handleChange('location', e.target.value)}
                   color="neutral"
                   variant="soft"
-                  type="text"
                   name="location"
-                  onChange={(e) => {
-                    if (checkUserInfoLen('location', e.target.value)) {
-                      setErrors((prev) => ({ ...prev, location: '地址过长' }))
-                    } else {
-                      setErrors((prev) => ({ ...prev, location: '' }))
-                    }
-                  }}
+                  value={formData.location}
                 />
                 {errors.location && (
                   <FormHelperText sx={{ color: 'red' }}>
