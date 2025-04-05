@@ -20,12 +20,12 @@ export default function BookCard({ book, index }: BookCardProps) {
     >
       <Box
         component="img"
-        src={book.coverURL}
-        alt={book.name}
+        src={book.cover}
+        alt={book.title}
         sx={{ width: 80, height: 80, mx: 'auto', mt: 2, objectFit: 'cover' }}
       />
       <CardContent>
-        <Typography level="title-lg">{book.name}</Typography>
+        <Typography level="title-lg">{book.title}</Typography>
         <Typography
           color="primary"
           level="body-sm"
@@ -33,12 +33,9 @@ export default function BookCard({ book, index }: BookCardProps) {
             overflow: 'auto',
           }}
         >
-          {book.tags.map((tag, idx) => (
+          {(book.tags ?? []).map((tag, idx) => (
             <Tag key={idx} text={tag} color="primary" fontSize="sm" />
           ))}
-        </Typography>
-        <Typography level="body-sm" sx={{ mt: 1 }}>
-          {book.author}
         </Typography>
       </CardContent>
     </Card>

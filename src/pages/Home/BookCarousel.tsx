@@ -6,10 +6,10 @@ import BookCard from './BookCard'
 
 const bookList: Book[] = [
   {
-    name: '软件开发的技术基础',
+    id: '1',
+    title: '软件开发的技术基础',
     tags: ['编程', 'Java'],
-    author: '刘钦老师',
-    coverURL: 'https://bed.cos.tg/file/1742573518219_image.png',
+    cover: 'https://bed.cos.tg/file/1742573518219_image.png',
   },
 ]
 export default function BookCarousel() {
