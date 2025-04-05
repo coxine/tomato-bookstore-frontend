@@ -1,4 +1,5 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
@@ -17,6 +18,12 @@ import { Link } from 'react-router-dom'
 
 import ColorSchemeToggle from './UI/ColorSchemeToggle'
 import Toggler from './UI/Toggler'
+
+const exitLogin = () => {
+  sessionStorage.removeItem('isLoggedIn')
+  sessionStorage.removeItem('token')
+  sessionStorage.removeItem('username')
+}
 
 export default function Sidebar() {
   return (
@@ -165,6 +172,16 @@ export default function Sidebar() {
               <ListItemContent>
                 <Link to="/profile">
                   <Typography level="title-sm">个人中心</Typography>
+                </Link>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton role="menuitem" onClick={exitLogin}>
+              <ExitToAppIcon />
+              <ListItemContent>
+                <Link to="/">
+                  <Typography level="title-sm">退出登录</Typography>
                 </Link>
               </ListItemContent>
             </ListItemButton>

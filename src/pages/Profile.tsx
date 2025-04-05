@@ -22,8 +22,10 @@ import ProfileCard from './Profile/ProfileCard'
 export default function Profile() {
   const username = sessionStorage.getItem('username')
   const [profileData, setProfileData] = useState<Profile>()
+  const [infoChanged, setInfoChanged] = useState(false)
 
   useEffect(() => {
+    setInfoChanged(false)
     const fetchUser = async () => {
       if (username != null) {
         userGetInfo(username).then((res) => {
@@ -50,7 +52,7 @@ export default function Profile() {
     }
 
     fetchUser()
-  }, [username])
+  }, [username, infoChanged])
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
@@ -122,7 +124,12 @@ export default function Profile() {
                 {profileData === undefined ? (
                   <Loading />
                 ) : (
-                  <EditProfileCard profile={profileData} />
+                  <EditProfileCard
+                    profile={profileData}
+                    infoChange={() => {
+                      setInfoChanged(true)
+                    }}
+                  />
                 )}
               </TabPanel>
             </Tabs>
