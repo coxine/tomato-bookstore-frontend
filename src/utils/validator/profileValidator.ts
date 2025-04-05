@@ -2,7 +2,7 @@ import { Profile } from '../../types/profile'
 
 // 定义字段长度规则（与 Profile 类型同步）
 const PROFILE_MAX_LENGTH: Record<keyof Profile, number> = {
-  id: 255,
+  id: 255, // useless
   username: 50,
   password: 100,
   name: 50,
@@ -27,13 +27,21 @@ export const profileValidators: Record<
   (value: string) => ValidatorResult
 > = {
   username: (value: string) =>
-    checkProfileLength('username', value)
-      ? { valid: false, message: '用户名过长' }
-      : { valid: true },
+    !value || /^[a-zA-Z0-9!@#$%^&*()\-_+=]*$/.test(value)
+      ? checkProfileLength('username', value)
+        ? { valid: false, message: '用户名过长' }
+        : { valid: true }
+      : { valid: false, message: '用户名包含非法字符' },
   name: (value: string) =>
     checkProfileLength('name', value)
       ? { valid: false, message: '姓名过长' }
       : { valid: true },
+  password: (value: string) =>
+    !value || /^[a-zA-Z0-9!@#$%^&*()\-_+=]*$/.test(value)
+      ? checkProfileLength('password', value)
+        ? { valid: false, message: '密码过长' }
+        : { valid: true }
+      : { valid: false, message: '密码包含非法字符' },
   telephone: (value: string) =>
     !value || /^1\d{10}$/.test(value)
       ? { valid: true }
