@@ -3,7 +3,6 @@ import {
   EmailRounded,
   LocalPhoneRounded,
   LocationOnRounded,
-  PersonRounded,
   UploadRounded,
   SaveRounded,
 } from '@mui/icons-material'
@@ -74,6 +73,13 @@ export default function EditProfileCard({
           title: '提交成功',
           message: '数据更新完成!',
           severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Warning,
           duration: 3000,
         })
       } else {
@@ -216,7 +222,6 @@ export default function EditProfileCard({
       }
     >
       <Stack spacing={2} sx={{ flexGrow: 1 }}>
-        {renderInput('用户名', 'username', <PersonRounded />)}
         {renderInput('姓名', 'name', <BadgeRounded />)}
         {renderInput(
           '手机号',
