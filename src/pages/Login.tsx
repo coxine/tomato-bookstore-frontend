@@ -25,6 +25,12 @@ export default function Login() {
   const navigate = useNavigate()
   const handleSubmit = (event: React.FormEvent<SignInFormElement>) => {
     event.preventDefault()
+    showToast({
+      title: '登录中',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
+    })
     const formElements = event.currentTarget.elements
     const data = {
       username: formElements.username.value,

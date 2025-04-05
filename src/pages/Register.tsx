@@ -45,6 +45,12 @@ export default function Register() {
 
   const handleSubmit = (event: React.FormEvent<RegisterFormElement>) => {
     event.preventDefault()
+    showToast({
+      title: '注册中',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
+    })
     const formElements = event.currentTarget.elements
     const data = {
       username: formElements.username.value,
