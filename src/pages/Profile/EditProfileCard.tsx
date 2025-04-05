@@ -1,4 +1,12 @@
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
+import {
+  BadgeRounded,
+  EmailRounded,
+  LocalPhoneRounded,
+  LocationOnRounded,
+  PersonRounded,
+  UploadRounded,
+  SaveRounded,
+} from '@mui/icons-material'
 import {
   Button,
   FormControl,
@@ -6,9 +14,11 @@ import {
   FormLabel,
   Input,
   Stack,
+  styled,
 } from '@mui/joy'
 import * as React from 'react'
 
+import { imageUpload } from '../../api/picture'
 import { userUpdate } from '../../api/user'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -17,9 +27,25 @@ import { checkUserInfoLen } from '../../utils/check'
 
 interface EditProfileCardProps {
   profile: Profile
+  infoChange: () => void
 }
 
-export default function EditProfileCard({ profile }: EditProfileCardProps) {
+const VisuallyHiddenInput = styled('input')`
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+  width: 1px;
+`
+
+export default function EditProfileCard({
+  profile,
+  infoChange,
+}: EditProfileCardProps) {
   const telephoneRex = /^1\d{10}$/
   const [errors, setErrors] = React.useState<Record<string, string>>({
     username: '',
@@ -29,12 +55,43 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
     email: '',
     location: '',
   })
+  const [avatar, setAvatar] = React.useState<File | null>()
   const [formData, setFormData] = React.useState({
     ...profile,
   })
 
-  const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  const handleChange = React.useCallback(
+    (field: string, value: string): Promise<Profile> => {
+      return new Promise((resolve) => {
+        setFormData((prev) => {
+          const newState = { ...prev, [field]: value }
+          resolve(newState) // 解析最新状态
+          return newState
+        })
+      })
+    },
+    []
+  )
+
+  const userInfoSubmit = (infoData: Profile) => {
+    userUpdate(infoData).then((res) => {
+      if (res.data.code == '200') {
+        infoChange()
+        showToast({
+          title: '提交成功',
+          message: '数据更新完成!',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '错误！提交用户信息失败，请重新尝试提交!',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
   }
 
   const handleSubmit = () => {
@@ -47,23 +104,35 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
     })
 
     if (!errorMessage) {
-      userUpdate(formData).then((res) => {
-        if (res.data.code == '200') {
-          showToast({
-            title: '修改成功',
-            message: '数据更新完成!',
-            severity: ToastSeverity.Success,
-            duration: 3000,
-          })
-        } else {
-          showToast({
-            title: '未知消息码',
-            message: '服务器出错，获取用户数据失败，请重新登录尝试!',
-            severity: ToastSeverity.Warning,
-            duration: 3000,
-          })
-        }
-      })
+      if (!avatar) {
+        console.log('no avatar')
+        userInfoSubmit(formData)
+      } else {
+        console.log('has avatar')
+        const avatarFile = new FormData()
+        avatarFile.append('file', avatar)
+        imageUpload(avatarFile).then(async (res) => {
+          if (res.data.code == '200') {
+            handleChange('avatar', res.data.data).then((data) => {
+              userInfoSubmit(data)
+            })
+          } else if (res.data.code == '400') {
+            showToast({
+              title: '提交失败',
+              message: res.data.msg,
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+          } else {
+            showToast({
+              title: '未知消息码',
+              message: '错误！提交用户头像失败，请重新尝试提交!',
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+          }
+        })
+      }
     } else {
       showToast({
         title: '提交失败',
@@ -74,8 +143,39 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
     }
   }
 
-  const handleAvatarUpdate = () => {
-    console.log('Update avatar')
+  const handleAvatarUpdate = (event: {
+    target: { files: FileList | null }
+  }) => {
+    if (!event.target.files) {
+      showToast({
+        title: '图片上传失败',
+        message: '图片上传错误！请重新尝试',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    const file = event.target.files[0]
+
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      showToast({
+        title: '图片上传失败',
+        message: '请选择有效的图片文件',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+
+    setAvatar(file)
+    showToast({
+      title: '图片选择成功',
+      message: '记得点击提交!',
+      severity: ToastSeverity.Success,
+      duration: 3000,
+    })
   }
 
   return (
@@ -83,10 +183,25 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
       title="编辑资料"
       actions={
         <>
-          <Button size="sm" variant="outlined" onClick={handleAvatarUpdate}>
+          <Button
+            size="sm"
+            variant="outlined"
+            component="label"
+            startDecorator={<UploadRounded />}
+          >
             更改头像
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpdate}
+            />
           </Button>
-          <Button size="sm" variant="solid" onClick={handleSubmit}>
+          <Button
+            size="sm"
+            variant="solid"
+            startDecorator={<SaveRounded />}
+            onClick={handleSubmit}
+          >
             保存
           </Button>
         </>
@@ -98,6 +213,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
           <FormControl>
             <Input
               size="sm"
+              startDecorator={<PersonRounded />}
               value={formData.username}
               disabled
               onChange={(e) => {
@@ -121,6 +237,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
           <FormControl>
             <Input
               size="sm"
+              startDecorator={<BadgeRounded />}
               value={formData.name}
               onChange={(e) => {
                 handleChange('name', e.target.value)
@@ -153,6 +270,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
           <FormControl>
             <Input
               size="sm"
+              startDecorator={<LocalPhoneRounded />}
               value={formData.telephone}
               placeholder="1xxxxxxxxxx"
               onChange={(e) => {
@@ -188,7 +306,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
             <Input
               size="sm"
               type="email"
-              startDecorator={<EmailRoundedIcon />}
+              startDecorator={<EmailRounded />}
               value={formData.email}
               placeholder="email"
               onChange={(e) => {
@@ -212,6 +330,7 @@ export default function EditProfileCard({ profile }: EditProfileCardProps) {
           <FormControl>
             <Input
               size="sm"
+              startDecorator={<LocationOnRounded />}
               value={formData.location}
               onChange={(e) => {
                 handleChange('location', e.target.value)
