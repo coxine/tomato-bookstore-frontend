@@ -1,8 +1,10 @@
 import { Box, Typography, Table, Button, Divider } from '@mui/joy'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 
 import Sidebar from '../components/Sidebar'
 import { Book } from '../types/book'
+import { Specification } from '../types/specification'
 
 const bookDetails: Book = {
   id: '101',
@@ -114,14 +116,36 @@ export default function BookDetails() {
               </Typography>
               <Table>
                 <tbody>
-                  {(bookDetails.specifications ?? []).map((spec) => (
-                    <tr key={spec.id}>
-                      <td style={{ fontWeight: 500, width: 120 }}>
-                        {spec.item}
-                      </td>
-                      <td>{spec.value}</td>
-                    </tr>
-                  ))}
+                  {(bookDetails.specifications ?? [])
+                    .reduce(
+                      (rows, spec, index) => {
+                        if (index % 2 === 0) {
+                          rows.push([spec])
+                        } else {
+                          rows[rows.length - 1].push(spec)
+                        }
+                        return rows
+                      },
+                      [] as Array<Array<Specification>>
+                    )
+                    .map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((spec) => (
+                          <React.Fragment key={spec.id}>
+                            <td style={{ fontWeight: 500, width: 120 }}>
+                              {spec.item}
+                            </td>
+                            <td>{spec.value}</td>
+                          </React.Fragment>
+                        ))}
+                        {row.length < 2 && (
+                          <>
+                            <td style={{ width: 120 }}></td>
+                            <td></td>
+                          </>
+                        )}
+                      </tr>
+                    ))}
                 </tbody>
               </Table>
             </Box>
