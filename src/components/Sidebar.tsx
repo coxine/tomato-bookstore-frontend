@@ -1,4 +1,5 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -29,6 +30,7 @@ const exitLogin = () => {
 }
 
 export default function Sidebar() {
+  const isAdmin = sessionStorage.getItem('role') === 'ADMIN'
   return (
     <Sheet
       className="Sidebar"
@@ -180,6 +182,18 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
+          {isAdmin && (
+            <ListItem>
+              <ListItemButton role="menuitem">
+                <AdminPanelSettingsIcon />
+                <ListItemContent>
+                  <Link to="/dashboard">
+                    <Typography level="title-sm">管理中心</Typography>
+                  </Link>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+          )}
           <ListItem>
             <ListItemButton role="menuitem" onClick={exitLogin}>
               <ExitToAppIcon />

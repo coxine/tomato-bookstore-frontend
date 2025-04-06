@@ -7,10 +7,12 @@ import './App.css'
 import Custom404 from './pages/404'
 import BookDetails from './pages/BookDetails'
 import Books from './pages/Books'
+import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
+import AdminRoute from './routes/AdminRoute'
 import PrivateRoute from './routes/PrivateRoute'
 
 const customTheme = extendTheme({
@@ -62,6 +64,14 @@ function App() {
                 <PrivateRoute>
                   <BookDetails />
                 </PrivateRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <AdminRoute>
+                  <Dashboard />
+                </AdminRoute>
               }
             />
           </Routes>
