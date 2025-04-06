@@ -23,11 +23,7 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
       }
     >
       {' '}
-      <Stack
-        direction="row"
-        spacing={3}
-        sx={{ display: { xs: 'none', md: 'flex' }, my: 1 }}
-      >
+      <Stack direction="row" spacing={3} sx={{ display: 'flex', my: 1 }}>
         <Stack direction="column" spacing={1}>
           <Avatar src={profile.avatar} alt={profile.name} size="lg" />
         </Stack>

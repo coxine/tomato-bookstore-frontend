@@ -1,4 +1,5 @@
 import { Box, Typography, Grid } from '@mui/joy'
+import { Link } from 'react-router-dom'
 
 import Bookcard from '../components/BookCard'
 import Sidebar from '../components/Sidebar'
@@ -70,13 +71,10 @@ export default function Books() {
             }}
           >
             {bookList.map((book) => (
-              <Grid
-                key={book.id}
-                xs={6}
-                sm={4}
-                md={2.4}
-              >
-                <Bookcard book={book} />
+              <Grid key={book.id} xs={6} sm={4} md={2.4}>
+                <Link to={`/books/${book.id}`}>
+                  <Bookcard book={book} />
+                </Link>
               </Grid>
             ))}
           </Grid>

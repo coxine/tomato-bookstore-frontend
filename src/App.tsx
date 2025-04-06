@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
 import Custom404 from './pages/404'
+import BookDetails from './pages/BookDetails'
 import Books from './pages/Books'
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -52,6 +53,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Books />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/books/:id"
+              element={
+                <PrivateRoute>
+                  <BookDetails />
                 </PrivateRoute>
               }
             />
