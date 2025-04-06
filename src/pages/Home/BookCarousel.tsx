@@ -77,11 +77,11 @@ export default function BookCarousel() {
     >
       {bookList.map((book) => (
         <Grid
-          xs={6} // Two columns in xs mode
+          xs={6}
           sm={2.7}
           key={book.id}
           sx={{
-            flex: { xs: '1 1 50%', sm: '0 0 auto' }, // Ensure 50% width in xs mode
+            flex: { xs: '1 1 50%', sm: '0 0 auto' },
             minWidth: { xs: 'auto', sm: 200 },
           }}
         >

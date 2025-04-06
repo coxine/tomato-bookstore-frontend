@@ -9,30 +9,6 @@ import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
 import { Book } from '../types/book'
 import { Specification } from '../types/specification'
 
-// const bookDetails: Book = {
-//   id: '101',
-//   title: '深入理解Java虚拟机',
-//   price: 99.5,
-//   rate: 9.5,
-//   description: 'Java开发者必读经典，全面讲解JVM工作原理',
-//   cover: 'https://bed.cos.tg/file/1742573518219_image.png',
-//   detail: '本书详细讲解了Java虚拟机的体系结构、内存管理、字节码执行等核心内容',
-//   specifications: [
-//     { id: '1001', item: '作者', value: '周志明', productId: '101' },
-//     {
-//       id: '1002',
-//       item: '副标题',
-//       value: 'JVM高级特性与最佳实践',
-//       productId: '101',
-//     },
-//     { id: '1003', item: 'ISBN', value: '9787111421900', productId: '101' },
-//     { id: '1004', item: '装帧', value: '平装', productId: '101' },
-//     { id: '1005', item: '页数', value: '540', productId: '101' },
-//     { id: '1006', item: '出版社', value: '机械工业出版社', productId: '101' },
-//     { id: '1007', item: '出版日期', value: '2013-09-01', productId: '101' },
-//   ],
-// }
-
 export default function BookDetails() {
   const { id } = useParams()
   console.log('Book ID:', id)
