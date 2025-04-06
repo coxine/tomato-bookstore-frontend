@@ -1,17 +1,19 @@
-import { Box, Typography, Table, Button, Divider } from '@mui/joy'
-import React, { useCallback, useEffect, useState } from 'react'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout'
+import { Box, Typography, Button, Divider } from '@mui/joy'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { productGetInfo } from '../api/products'
-import Sidebar from '../components/Sidebar'
+import MainLayout from '../components/layouts/MainLayout'
+import SpecificationTable from '../components/SpecificationTable'
 import Loading from '../components/UI/Loading'
 import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
 import { Book } from '../types/book'
-import { Specification } from '../types/specification'
 
 export default function BookDetails() {
+  const breadcrumbsItems = [{ label: '购买书籍', link: '/books' }]
   const { id } = useParams()
-  console.log('Book ID:', id)
   const navigate = useNavigate()
   const [bookDetails, setBookDetails] = useState<Book>()
 
@@ -45,138 +47,120 @@ export default function BookDetails() {
   }, [fetchBook])
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-      <Sidebar />
-      <Box
-        component="main"
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'auto',
-          px: { xs: 2, md: 6 },
-          pt: { xs: 'calc(12px + var(--Header-height))', md: 3 },
-        }}
-      >
-        <Typography level="h2" component="h1" sx={{ mb: 3 }}>
-          书籍详情
-        </Typography>
-
-        {bookDetails === undefined ? (
-          <Loading />
-        ) : (
+    <MainLayout title="书籍详情" breadcrumbsItems={breadcrumbsItems}>
+      {bookDetails === undefined ? (
+        <Loading />
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: 4,
+          }}
+        >
           <Box
             sx={{
+              flex: 1,
               display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              gap: 4,
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              px: 2,
             }}
           >
             <Box
+              component="img"
+              src={bookDetails.cover}
+              alt={bookDetails.title}
               sx={{
-                flex: 1,
+                width: '100%',
+                height: 'auto',
                 maxWidth: 480,
-                display: 'flex',
+                maxHeight: 400,
+                objectFit: 'contain',
+                borderRadius: 2,
               }}
-            >
-              <img
-                src={bookDetails.cover}
-                alt={bookDetails.title}
-                style={{ width: '100%', borderRadius: 12 }}
-              />
+            />
+          </Box>
+
+          <Box
+            sx={{
+              flex: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            <Typography level="h3" component="h2">
+              {bookDetails.title}
+            </Typography>
+
+            <Typography level="h4" sx={{ color: 'danger.500' }}>
+              <Typography
+                level="body-md"
+                sx={{ color: 'danger.500', fontSize: '1.3rem' }}
+              >
+                ¥{' '}
+                <span style={{ fontSize: '1.7rem' }}>
+                  {bookDetails.price?.toFixed(2) ?? '0.00'}
+                </span>
+              </Typography>
+            </Typography>
+
+            <Divider />
+
+            {bookDetails.description && (
+              <Box>
+                <Typography level="title-lg" sx={{ mb: 1 }}>
+                  商品描述
+                </Typography>
+                <Typography level="body-md">
+                  {bookDetails.description}
+                </Typography>
+              </Box>
+            )}
+
+            <Box>
+              <Typography level="title-lg" sx={{ mb: 1 }}>
+                用户评价
+              </Typography>
+              <Typography level="body-md" sx={{ color: 'warning.500' }}>
+                评分: {bookDetails.rate} / 10
+              </Typography>
+              {/* 未来可增加评分功能 */}
             </Box>
-
-            <Box
-              sx={{
-                flex: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                pl: { xs: 0, md: 16 },
-                gap: 2,
-              }}
-            >
-              <Typography level="h3" component="h2">
-                {bookDetails.title}
-              </Typography>
-
-              <Typography level="h4" sx={{ color: 'danger.500' }}>
-                <Typography
-                  level="body-md"
-                  sx={{ color: 'danger.500', fontSize: '1.3rem' }}
-                >
-                  ¥{' '}
-                  <span style={{ fontSize: '2rem' }}>
-                    {bookDetails.price?.toFixed(2) ?? '0.00'}
-                  </span>
-                </Typography>
-              </Typography>
-
-              <Divider />
-              <Typography level="body-md">{bookDetails.description}</Typography>
-
-              <Box>
-                <Typography level="title-lg" sx={{ mb: 1 }}>
-                  用户评价
-                </Typography>
-                <Typography level="body-md" sx={{ color: 'warning.500' }}>
-                  评分: {bookDetails.rate} / 10
-                </Typography>
-                {/* 未来可增加评分功能 */}
-              </Box>
-              <Box>
-                <Typography level="title-lg" sx={{ mb: 1 }}>
-                  规格参数
-                </Typography>
-                <Table>
-                  <tbody>
-                    {(bookDetails.specifications ?? [])
-                      .reduce(
-                        (rows, spec, index) => {
-                          if (index % 2 === 0) {
-                            rows.push([spec])
-                          } else {
-                            rows[rows.length - 1].push(spec)
-                          }
-                          return rows
-                        },
-                        [] as Array<Array<Specification>>
-                      )
-                      .map((row, rowIndex) => (
-                        <tr key={rowIndex}>
-                          {row.map((spec) => (
-                            <React.Fragment key={spec.id}>
-                              <td style={{ fontWeight: 500, width: 120 }}>
-                                {spec.item}
-                              </td>
-                              <td>{spec.value}</td>
-                            </React.Fragment>
-                          ))}
-                          {row.length < 2 && (
-                            <>
-                              <td style={{ width: 120 }}></td>
-                              <td></td>
-                            </>
-                          )}
-                        </tr>
-                      ))}
-                  </tbody>
-                </Table>
-              </Box>
-
-              <Box>
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Button color="warning" variant="soft">
-                    加入购物车
-                  </Button>
-                  <Button color="danger" variant="solid">
-                    立即购买
-                  </Button>
+            {bookDetails.specifications &&
+              bookDetails.specifications.length > 0 && (
+                <Box>
+                  <Typography level="title-lg" sx={{ mb: 1 }}>
+                    规格参数
+                  </Typography>
+                  <SpecificationTable
+                    specifications={bookDetails.specifications}
+                  />
                 </Box>
+              )}
+
+            <Box>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button
+                  color="warning"
+                  variant="solid"
+                  startDecorator={<AddShoppingCartIcon />}
+                >
+                  加入购物车
+                </Button>
+                <Button
+                  color="danger"
+                  variant="solid"
+                  startDecorator={<ShoppingCartCheckoutIcon />}
+                >
+                  立即购买
+                </Button>
               </Box>
             </Box>
           </Box>
-        )}
-      </Box>
-    </Box>
+        </Box>
+      )}
+    </MainLayout>
   )
 }
