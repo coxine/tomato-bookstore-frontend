@@ -27,6 +27,7 @@ export default function ToastMessage({
     <CheckCircleIcon key="success" />,
     <InfoIcon key="neutral" />,
     <WarningAmberIcon key="warning" />,
+    <InfoIcon key="primary" />,
     <ErrorIcon key="danger" />,
   ]
 
