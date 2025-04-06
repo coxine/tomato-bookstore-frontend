@@ -9,7 +9,7 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 
-import { userLogin } from '../api/user'
+import { userGetRole, userLogin } from '../api/user'
 import AuthLayout from '../components/layouts/AuthLayout'
 import { ToastSeverity, showToast } from '../components/UI/ToastMessageUtils'
 
@@ -39,16 +39,29 @@ export default function Login() {
 
     userLogin(data).then((res) => {
       if (res.data.code === '200') {
-        sessionStorage.setItem('username', formElements.username.value)
         sessionStorage.setItem('token', res.data.data)
-        sessionStorage.setItem('isLoggedIn', 'true')
-        showToast({
-          title: '登录成功',
-          message: `${data.username}，欢迎使用西红柿读书!`,
-          severity: ToastSeverity.Success,
-          duration: 3000,
+        userGetRole(formElements.username.value).then((res) => {
+          if (res.data.code === '200') {
+            sessionStorage.setItem('username', formElements.username.value)
+            sessionStorage.setItem('isLoggedIn', 'true')
+            sessionStorage.setItem('role', res.data.data)
+            showToast({
+              title: '登录成功',
+              message: `${data.username}，欢迎使用西红柿读书!`,
+              severity: ToastSeverity.Success,
+              duration: 3000,
+            })
+            navigate('/profile')
+          } else {
+            sessionStorage.removeItem('token')
+            showToast({
+              title: '未知消息码',
+              message: `服务器出错! 请重新尝试登录`,
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+          }
         })
-        navigate('/profile')
       } else if (res.data.code === '400') {
         showToast({
           title: '登录失败',

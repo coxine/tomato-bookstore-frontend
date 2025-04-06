@@ -23,6 +23,7 @@ const exitLogin = () => {
   sessionStorage.removeItem('isLoggedIn')
   sessionStorage.removeItem('token')
   sessionStorage.removeItem('username')
+  sessionStorage.removeItem('role')
 }
 
 export default function Sidebar() {

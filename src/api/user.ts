@@ -18,6 +18,19 @@ export const userGetInfo = (username: string) => {
     })
 }
 
+export const userGetRole = (username: string) => {
+  return userGetInfo(username).then((res) => {
+    return {
+      // 保持原有风格
+      ...res,
+      data: {
+        ...res.data,
+        data: res.data.data.role,
+      },
+    }
+  })
+}
+
 export const userRegister = (userInfo: Profile) => {
   return axios
     .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
