@@ -2,11 +2,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
 import StoreIcon from '@mui/icons-material/Store'
 import Box from '@mui/joy/Box'
 import GlobalStyles from '@mui/joy/GlobalStyles'
+import IconButton from '@mui/joy/IconButton'
 import Input from '@mui/joy/Input'
 import List from '@mui/joy/List'
 import ListItem from '@mui/joy/ListItem'
@@ -15,6 +17,8 @@ import ListItemContent from '@mui/joy/ListItemContent'
 import Sheet from '@mui/joy/Sheet'
 import Typography from '@mui/joy/Typography'
 import { Link } from 'react-router-dom'
+
+import { closeSidebar, toggleSidebar } from '../utils/sidebar'
 
 import ColorSchemeToggle from './UI/ColorSchemeToggle'
 import Toggler from './UI/Toggler'
@@ -64,7 +68,7 @@ export default function Sidebar() {
         className="Sidebar-overlay"
         sx={{
           position: 'fixed',
-          zIndex: 1198,
+          zIndex: 9998,
           top: 0,
           left: 0,
           width: '100vw',
@@ -77,9 +81,10 @@ export default function Sidebar() {
             lg: 'translateX(-100%)',
           },
         }}
+        onClick={() => closeSidebar()}
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Typography level="title-lg">🍅 西红柿读书</Typography>
+        <Typography level="title-lg">🍅 西红柿读书 </Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       <Input
@@ -189,6 +194,47 @@ export default function Sidebar() {
           </ListItem>
         </List>
       </Box>
+    </Sheet>
+  )
+}
+
+export function SidebarHeader() {
+  return (
+    <Sheet
+      sx={{
+        display: { xs: 'flex', md: 'none' },
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position: 'fixed',
+        top: 0,
+        width: '100vw',
+        height: 'var(--Header-height)',
+        zIndex: 1198,
+        p: 2,
+        gap: 1,
+        borderBottom: '1px solid',
+        borderColor: 'background.level1',
+        boxShadow: 'sm',
+      }}
+    >
+      <GlobalStyles
+        styles={(theme) => ({
+          ':root': {
+            '--Header-height': '52px',
+            [theme.breakpoints.up('md')]: {
+              '--Header-height': '0px',
+            },
+          },
+        })}
+      />
+      <IconButton
+        onClick={() => toggleSidebar()}
+        variant="outlined"
+        color="neutral"
+        size="sm"
+      >
+        <MenuRoundedIcon />
+      </IconButton>
     </Sheet>
   )
 }
