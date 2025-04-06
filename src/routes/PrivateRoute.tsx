@@ -11,6 +11,7 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
     sessionStorage.removeItem('username')
     sessionStorage.removeItem('token')
     sessionStorage.removeItem('isLoggedIn')
+    sessionStorage.removeItem('role')
     return <Navigate to="/404" replace />
   }
   return children
