@@ -10,11 +10,11 @@ import Typography from '@mui/joy/Typography'
 import React, { useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 
-import { userRegister } from '../api/user'
-import AuthLayout from '../components/layouts/AuthLayout'
-import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
-import { Profile } from '../types/profile'
-import { profileValidators } from '../utils/validator/profileValidator'
+import { userRegister } from '../../api/user'
+import AuthLayout from '../../components/layouts/AuthLayout'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
+import { Profile } from '../../types/profile'
+import { profileValidators } from '../../utils/validator/profileValidator'
 
 type FormData = {
   username: string

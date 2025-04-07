@@ -1,14 +1,14 @@
 import { Tabs, TabList, Tab, tabClasses, TabPanel } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
 
-import { userGetInfo } from '../api/user'
-import MainLayout from '../components/layouts/MainLayout'
-import Loading from '../components/UI/Loading'
-import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
-import type { Profile } from '../types/profile'
+import { userGetInfo } from '../../api/user'
+import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
+import type { Profile } from '../../types/profile'
 
-import EditProfileCard from './Profile/EditProfileCard'
-import ProfileCard from './Profile/ProfileCard'
+import EditProfileCard from './EditProfileCard'
+import ProfileCard from './ProfileCard'
 
 export default function Profile() {
   const username = sessionStorage.getItem('username')

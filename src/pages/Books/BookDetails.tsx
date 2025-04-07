@@ -1,36 +1,32 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout'
 import { Box, Typography, Button, Divider } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { productGetInfo } from '../api/products'
-import MainLayout from '../components/layouts/MainLayout'
-import SpecificationTable from '../components/SpecificationTable'
-import showAlertDialog from '../components/UI/AlertDialogUtils';
-import Loading from '../components/UI/Loading'
-import { showToast, ToastSeverity } from '../components/UI/ToastMessageUtils'
-import { Book } from '../types/book'
+import { productGetInfo } from '../../api/products'
+import MainLayout from '../../components/layouts/MainLayout'
+import SpecificationTable from '../../components/SpecificationTable'
+import showAlertDialog from '../../components/UI/AlertDialogUtils'
+import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
+import { Book } from '../../types/book'
 function confirmDelete() {
-  showAlertDialog(
-    '删除商品',
-    '您确定要删除此商品吗？',
-    (close) => (
-      <Button
-        color="danger"
-        variant="solid"
-        onClick={() => {
-          handleDelete()
-          close()
-        }}
-        startDecorator={<DeleteIcon />}
-      >
-        删除
-      </Button>
-    )
-  )
+  showAlertDialog('删除商品', '您确定要删除此商品吗？', (close) => (
+    <Button
+      color="danger"
+      variant="solid"
+      onClick={() => {
+        handleDelete()
+        close()
+      }}
+      startDecorator={<DeleteIcon />}
+    >
+      删除
+    </Button>
+  ))
 }
 function handleDelete() {
   showToast({
@@ -43,7 +39,6 @@ function handleDelete() {
     window.location.href = '/books'
   }, 1000)
 }
-
 
 export default function BookDetails() {
   const isAdmin = sessionStorage.getItem('role') === 'ADMIN'
@@ -153,9 +148,7 @@ export default function BookDetails() {
                 <Typography level="title-lg" sx={{ mb: 1 }}>
                   商品描述
                 </Typography>
-                <Typography level="body-md">
-                  {bookDetails.detail}
-                </Typography>
+                <Typography level="body-md">{bookDetails.detail}</Typography>
               </Box>
             )}
 
@@ -199,7 +192,11 @@ export default function BookDetails() {
               </Box>
               {isAdmin && (
                 <Box sx={{ display: 'flex', gap: 2, pt: 1 }}>
-                  <Button color="primary" variant="outlined" startDecorator={<EditIcon />}>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    startDecorator={<EditIcon />}
+                  >
                     编辑商品
                   </Button>
                   <Button
@@ -215,8 +212,7 @@ export default function BookDetails() {
             </Box>
           </Box>
         </Box>
-      )
-      }
-    </MainLayout >
+      )}
+    </MainLayout>
   )
 }

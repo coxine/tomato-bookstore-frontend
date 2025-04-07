@@ -4,14 +4,14 @@ import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
-import Custom404 from './pages/404'
-import BookDetails from './pages/BookDetails'
+import Login from './pages/Auth/Login'
+import Register from './pages/Auth/Register'
 import Books from './pages/Books'
+import BookDetails from './pages/Books/BookDetails'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
-import Login from './pages/Login'
+import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
-import Register from './pages/Register'
 import AdminRoute from './routes/AdminRoute'
 import PrivateRoute from './routes/PrivateRoute'
 
@@ -41,7 +41,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/404" element={<Custom404 />} />
+            <Route path="/404" element={<NotFound />} />
             <Route
               path="/profile"
               element={

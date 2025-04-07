@@ -9,9 +9,9 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 
-import { userGetRole, userLogin } from '../api/user'
-import AuthLayout from '../components/layouts/AuthLayout'
-import { ToastSeverity, showToast } from '../components/UI/ToastMessageUtils'
+import { userGetRole, userLogin } from '../../api/user'
+import AuthLayout from '../../components/layouts/AuthLayout'
+import { ToastSeverity, showToast } from '../../components/UI/ToastMessageUtils'
 
 interface FormElements extends HTMLFormControlsCollection {
   username: HTMLInputElement

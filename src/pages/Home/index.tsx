@@ -1,15 +1,15 @@
 import { Typography } from '@mui/joy'
 import Box from '@mui/joy/Box'
 
-import Footer from '../components/Footer'
-import Header from '../components/Header'
-import BasicContainer from '../components/layouts/BasicContainer'
-import TwoSidedLayout from '../components/layouts/TwoSidedLayout'
+import Footer from '../../components/Footer'
+import Header from '../../components/Header'
+import BasicContainer from '../../components/layouts/BasicContainer'
+import TwoSidedLayout from '../../components/layouts/TwoSidedLayout'
 
-import AuthorCarousel from './Home/AuthorCarousel'
-import BookCarousel from './Home/BookCarousel'
-import HomePageImage from './Home/HomePageImage'
-import HomePageWelcome from './Home/HomePageWelcome'
+import AuthorCarousel from './AuthorCarousel'
+import BookCarousel from './BookCarousel'
+import HomePageImage from './HomePageImage'
+import HomePageWelcome from './HomePageWelcome'
 
 export default function Home() {
   return (
