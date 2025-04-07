@@ -17,7 +17,12 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
     <InfoCard
       title={`${profile.username} 的资料`}
       actions={
-        <IconButton onClick={() => setShowSensitive((prev) => !prev)}>
+        <IconButton
+          onClick={() => setShowSensitive((prev) => !prev)}
+          variant="soft"
+          color="primary"
+          size="sm"
+        >
           {showSensitive ? <VisibilityOffIcon /> : <VisibilityIcon />}
         </IconButton>
       }

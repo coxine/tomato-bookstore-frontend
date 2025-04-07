@@ -199,7 +199,8 @@ export default function EditProfileCard({
         <>
           <Button
             size="sm"
-            variant="outlined"
+            color="primary"
+            variant="plain"
             component="label"
             startDecorator={<UploadRounded />}
           >
@@ -212,7 +213,7 @@ export default function EditProfileCard({
           </Button>
           <Button
             size="sm"
-            variant="solid"
+            variant="soft"
             startDecorator={<SaveRounded />}
             onClick={handleSubmit}
           >

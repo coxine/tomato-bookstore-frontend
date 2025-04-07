@@ -1,7 +1,12 @@
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import SaveIcon from '@mui/icons-material/Save'
 import {
   Button,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
   Stack,
   Textarea,
@@ -117,7 +122,12 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
     <InfoCard
       title="编辑书籍信息"
       actions={
-        <Button size="sm" variant="solid" onClick={handleSubmit}>
+        <Button
+          size="sm"
+          variant="soft"
+          onClick={handleSubmit}
+          startDecorator={<SaveIcon />}
+        >
           保存
         </Button>
       }
@@ -181,14 +191,14 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
                     }
                   />
                 </FormControl>
-                <Button
-                  variant="outlined"
+                <IconButton
+                  variant="soft"
                   color="danger"
                   size="sm"
                   onClick={() => removeSpecification(index)}
                 >
-                  删除
-                </Button>
+                  <DeleteIcon />
+                </IconButton>
               </Stack>
             ))}
           <Stack direction="row" spacing={1} alignItems="center">
@@ -212,9 +222,14 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
                 }
               />
             </FormControl>
-            <Button variant="solid" size="sm" onClick={addSpecification}>
-              添加规格
-            </Button>
+            <IconButton
+              variant="soft"
+              size="sm"
+              onClick={addSpecification}
+              color="primary"
+            >
+              <AddIcon />
+            </IconButton>
           </Stack>
         </Stack>
 
@@ -230,20 +245,27 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
                 onChange={(e) => setNewTag(e.target.value)}
               />
             </FormControl>
-            <Button variant="solid" size="sm" onClick={addTag}>
-              添加标签
-            </Button>
+            <IconButton
+              variant="soft"
+              size="sm"
+              onClick={addTag}
+              color="primary"
+            >
+              <AddIcon />
+            </IconButton>
           </Stack>
           <Stack direction="row" spacing={1}>
             {bookData.tags &&
               bookData.tags.map((tag, index) => (
                 <Button
                   key={index}
-                  variant="outlined"
+                  variant="soft"
                   size="sm"
+                  color="primary"
                   onClick={() => removeTag(index)}
+                  endDecorator={<HighlightOffIcon />}
                 >
-                  {tag} x
+                  {tag}
                 </Button>
               ))}
           </Stack>

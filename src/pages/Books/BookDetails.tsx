@@ -177,14 +177,14 @@ export default function BookDetails() {
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button
                   color="warning"
-                  variant="solid"
+                  variant="soft"
                   startDecorator={<AddShoppingCartIcon />}
                 >
                   加入购物车
                 </Button>
                 <Button
                   color="danger"
-                  variant="solid"
+                  variant="soft"
                   startDecorator={<ShoppingCartCheckoutIcon />}
                 >
                   立即购买
@@ -195,7 +195,7 @@ export default function BookDetails() {
                   <Link to={`/books/edit/${bookDetails.id}`}>
                     <Button
                       color="primary"
-                      variant="outlined"
+                      variant="soft"
                       startDecorator={<EditIcon />}
                     >
                       编辑商品
@@ -203,7 +203,7 @@ export default function BookDetails() {
                   </Link>
                   <Button
                     color="danger"
-                    variant="outlined"
+                    variant="soft"
                     startDecorator={<DeleteIcon />}
                     onClick={confirmDelete}
                   >

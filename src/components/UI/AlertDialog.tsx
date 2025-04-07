@@ -36,7 +36,7 @@ export default function AlertDialogModal({
         <DialogActions>
           {actions}
           <Button
-            variant="outlined"
+            variant="soft"
             color="neutral"
             onClick={onClose}
             startDecorator={<CancelIcon />}
