@@ -13,6 +13,7 @@ import showAlertDialog from '../../components/UI/AlertDialogUtils'
 import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
+import { Stockpile } from '../../types/stockpile'
 function confirmDelete() {
   showAlertDialog('删除商品', '您确定要删除此商品吗？', (close) => (
     <Button
@@ -46,6 +47,12 @@ export default function BookDetails() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [bookDetails, setBookDetails] = useState<Book>()
+  const stockpile: Stockpile = {
+    "id": "1001",
+    "amount": 85,
+    "frozen": 15,
+    "productId": "101"
+  }
 
   const fetchBook = useCallback(async () => {
     if (!id) {
@@ -137,6 +144,9 @@ export default function BookDetails() {
                 ¥{' '}
                 <span style={{ fontSize: '1.7rem' }}>
                   {bookDetails.price?.toFixed(2) ?? '0.00'}
+                </span>
+                <span style={{ fontSize: '0.8rem', color: 'grey', marginLeft: '8px', fontWeight: '400' }}>
+                  剩余 {stockpile.amount} 本
                 </span>
               </Typography>
             </Typography>
