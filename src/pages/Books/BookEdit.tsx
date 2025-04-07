@@ -2,11 +2,20 @@ import { useParams } from 'react-router-dom'
 
 import MainLayout from '../../components/layouts/MainLayout'
 import { Book } from '../../types/book'
+import { Stockpile } from '../../types/stockpile'
 
 import EditBookCard from './EditBookCard'
+import EditStockpileCard from './EditStockpileCard'
 
 export default function BookEdit() {
   const { id } = useParams()
+  const initialStockpile: Stockpile = {
+    "id": "1001",
+    "amount": 85,
+    "frozen": 15,
+    "productId": "101"
+  }
+
   const initialBookData: Book = {
     id: '101',
     title: '深入理解Java虚拟机',
@@ -70,6 +79,7 @@ export default function BookEdit() {
       ]}
     >
       <EditBookCard initialBookData={initialBookData} />
+      <EditStockpileCard initialStockpile={initialStockpile} />
     </MainLayout>
   )
 }
