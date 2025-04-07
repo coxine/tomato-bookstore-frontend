@@ -70,9 +70,9 @@ function App() {
             <Route
               path="/books/edit/:id"
               element={
-                <PrivateRoute>
+                <AdminRoute>
                   <BookEdit />
-                </PrivateRoute>
+                </AdminRoute>
               }
             />
             <Route
