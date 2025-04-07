@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout'
 import { Box, Typography, Button, Divider } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { productGetInfo } from '../../api/products'
 import MainLayout from '../../components/layouts/MainLayout'
@@ -192,13 +192,15 @@ export default function BookDetails() {
               </Box>
               {isAdmin && (
                 <Box sx={{ display: 'flex', gap: 2, pt: 1 }}>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    startDecorator={<EditIcon />}
-                  >
-                    编辑商品
-                  </Button>
+                  <Link to={`/books/edit/${bookDetails.id}`}>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      startDecorator={<EditIcon />}
+                    >
+                      编辑商品
+                    </Button>
+                  </Link>
                   <Button
                     color="danger"
                     variant="outlined"

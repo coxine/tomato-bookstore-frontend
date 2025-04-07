@@ -8,6 +8,7 @@ import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import Books from './pages/Books'
 import BookDetails from './pages/Books/BookDetails'
+import BookEdit from './pages/Books/BookEdit'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -63,6 +64,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <BookDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/books/edit/:id"
+              element={
+                <PrivateRoute>
+                  <BookEdit />
                 </PrivateRoute>
               }
             />
