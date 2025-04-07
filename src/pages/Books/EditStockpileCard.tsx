@@ -10,7 +10,9 @@ interface EditStockpileCardProps {
   initialStockpile: Stockpile
 }
 
-export default function EditStockpileCard({ initialStockpile }: EditStockpileCardProps) {
+export default function EditStockpileCard({
+  initialStockpile,
+}: EditStockpileCardProps) {
   const [stockpile, setStockpile] = useState<Stockpile>(initialStockpile)
 
   const handleChange = (field: keyof Stockpile, value: string) => {
@@ -35,7 +37,12 @@ export default function EditStockpileCard({ initialStockpile }: EditStockpileCar
     <InfoCard
       title="编辑库存信息"
       actions={
-        <Button size="sm" variant="soft" onClick={handleSubmit} startDecorator={<SaveIcon />}>
+        <Button
+          size="sm"
+          variant="soft"
+          onClick={handleSubmit}
+          startDecorator={<SaveIcon />}
+        >
           保存
         </Button>
       }

@@ -10,10 +10,10 @@ import EditStockpileCard from './EditStockpileCard'
 export default function BookEdit() {
   const { id } = useParams()
   const initialStockpile: Stockpile = {
-    "id": "1001",
-    "amount": 85,
-    "frozen": 15,
-    "productId": "101"
+    id: '1001',
+    amount: 85,
+    frozen: 15,
+    productId: '101',
   }
 
   const initialBookData: Book = {
