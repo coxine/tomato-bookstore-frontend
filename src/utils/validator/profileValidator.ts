@@ -1,4 +1,5 @@
 import { Profile } from '../../types/profile'
+import { ValidatorResult } from '../../types/validatorResult'
 
 // 定义字段长度规则（与 Profile 类型同步）
 const PROFILE_MAX_LENGTH: Record<keyof Profile, number> = {
@@ -15,11 +16,6 @@ const PROFILE_MAX_LENGTH: Record<keyof Profile, number> = {
 
 export function checkProfileLength(key: keyof Profile, value: string): boolean {
   return value.length > PROFILE_MAX_LENGTH[key]
-}
-
-export type ValidatorResult = {
-  valid: boolean
-  message?: string
 }
 
 export const profileValidators: Record<

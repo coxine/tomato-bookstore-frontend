@@ -1,3 +1,4 @@
+import { UploadRounded } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
@@ -9,21 +10,50 @@ import {
   IconButton,
   Input,
   Stack,
+  styled,
   Textarea,
 } from '@mui/joy'
 import React from 'react'
 
+import { imageProductCoverUpload } from '../../api/picture'
+import { productUpdate } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Specification } from '../../types/specification'
+import { productValidators } from '../../utils/validator/productValidator'
 
 interface EditBookCardProps {
+  productId: string
   initialBookData: Book
+  infoChange: () => void
 }
 
-export default function EditBookCard({ initialBookData }: EditBookCardProps) {
+const VisuallyHiddenInput = styled('input')`
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+  width: 1px;
+`
+
+export default function EditBookCard({
+  productId,
+  initialBookData,
+  infoChange,
+}: EditBookCardProps) {
   const [bookData, setBookData] = React.useState<Book>(initialBookData)
+  const [cover, setCover] = React.useState<File | null>(null)
+  const [errors, setErrors] = React.useState<Record<string, string>>({
+    title: '',
+    price: '',
+    description: '',
+    detail: '',
+  })
 
   // 针对表单字段的通用变更处理（字符串和数字均转换为字符串进行保存，再转换成number）
   const handleChange = (field: keyof Book, value: string) => {
@@ -31,6 +61,11 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
       ...prev,
       [field]: field === 'price' ? parseFloat(value) || 0 : value,
     }))
+
+    if (productValidators[field]) {
+      const { valid, message } = productValidators[field](value)
+      setErrors((prev) => ({ ...prev, [field]: valid ? '' : message || '' }))
+    }
   }
 
   // 处理规格变更
@@ -44,15 +79,14 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
     setBookData((prev) => ({ ...prev, specifications: newSpecs }))
   }
 
-  // 添加新规格，临时生成 id 可用 index 拼接时间戳
   const [newSpec, setNewSpec] = React.useState<{ item: string; value: string }>(
     { item: '', value: '' }
   )
   const addSpecification = () => {
     if (newSpec.item.trim() && newSpec.value.trim()) {
       const spec: Specification = {
-        id: Date.now().toString(),
-        productId: '', // 此处 productId 留空
+        id: '',
+        productId: productId,
         item: newSpec.item.trim(),
         value: newSpec.value.trim(),
       }
@@ -88,6 +122,36 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
     setBookData((prev) => ({ ...prev, tags: newTags }))
   }
 
+  const productInfoSubmit = (infoData: Book) => {
+    console.log('submit: ', infoData)
+    productUpdate(infoData).then((res) => {
+      console.log(res)
+      if (res.data.code === '200') {
+        infoChange()
+        showToast({
+          title: '提交成功',
+          message: '数据更新完成！',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！提交用户信息失败，请重新尝试提交！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }
+
   const handleSubmit = () => {
     showToast({
       title: '正在提交',
@@ -95,7 +159,76 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
-    console.log('提交的商品数据：', bookData)
+    const firstErrorMessage = Object.values(errors).find((msg) => msg)
+
+    if (firstErrorMessage !== undefined) {
+      showToast({
+        title: '提交失败',
+        message: firstErrorMessage,
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+
+    if (!cover) {
+      console.log('no cover')
+      productInfoSubmit(bookData)
+    } else {
+      console.log('has cover')
+      const coverFile = new FormData()
+      coverFile.append('file', cover)
+      imageProductCoverUpload(productId, coverFile).then((res) => {
+        console.log('cover: ', res)
+        if (res.data.code === '200') {
+          handleChange('cover', res.data.data)
+          productInfoSubmit({ ...bookData, cover: res.data.data })
+        } else if (res.data.code === '400') {
+          showToast({
+            title: '提交失败',
+            message: res.data.msg,
+            severity: ToastSeverity.Danger,
+            duration: 3000,
+          })
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！提交书籍封面失败，请重新尝试提交！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
+  }
+
+  const handleCoverUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+      showToast({
+        title: '图片上传失败',
+        message: '图片上传错误！请重新尝试',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    if (!file.type.startsWith('image/')) {
+      showToast({
+        title: '图片上传失败',
+        message: '请选择有效的图片文件',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    setCover(file)
+    showToast({
+      title: '图片选择成功',
+      message: '请点击保存按钮以提交!',
+      severity: ToastSeverity.Success,
+      duration: 3000,
+    })
   }
 
   // 渲染通用输入框
@@ -122,14 +255,30 @@ export default function EditBookCard({ initialBookData }: EditBookCardProps) {
     <InfoCard
       title="编辑书籍信息"
       actions={
-        <Button
-          size="sm"
-          variant="soft"
-          onClick={handleSubmit}
-          startDecorator={<SaveIcon />}
-        >
-          保存
-        </Button>
+        <>
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            startDecorator={<UploadRounded />}
+          >
+            添加新的书籍封面
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleCoverUpdate}
+            />
+          </Button>
+          <Button
+            size="sm"
+            variant="soft"
+            onClick={handleSubmit}
+            startDecorator={<SaveIcon />}
+          >
+            保存
+          </Button>
+        </>
       }
     >
       <Stack spacing={3}>

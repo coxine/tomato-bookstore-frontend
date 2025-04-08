@@ -6,7 +6,11 @@ import { Box, Typography, Button, Divider } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import { productGetInfo } from '../../api/products'
+import {
+  productDelete,
+  productGetInfo,
+  productGetStockpile,
+} from '../../api/products'
 import MainLayout from '../../components/layouts/MainLayout'
 import SpecificationTable from '../../components/SpecificationTable'
 import showAlertDialog from '../../components/UI/AlertDialogUtils'
@@ -14,13 +18,14 @@ import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Stockpile } from '../../types/stockpile'
-function confirmDelete() {
+
+function confirmDelete(productId: string) {
   showAlertDialog('删除商品', '您确定要删除此商品吗？', (close) => (
     <Button
       color="danger"
       variant="solid"
       onClick={() => {
-        handleDelete()
+        handleDelete(productId)
         close()
       }}
       startDecorator={<DeleteIcon />}
@@ -29,55 +34,80 @@ function confirmDelete() {
     </Button>
   ))
 }
-function handleDelete() {
-  showToast({
-    title: '删除商品',
-    message: '商品删除成功！',
-    severity: ToastSeverity.Success,
-    duration: 3000,
+function handleDelete(productId: string) {
+  productDelete(productId).then((res) => {
+    if (res.data.code === '200') {
+      showToast({
+        title: '删除商品',
+        message: '商品删除成功！',
+        severity: ToastSeverity.Success,
+        duration: 3000,
+      })
+      setTimeout(() => {
+        window.location.href = '/books'
+      }, 1000)
+    } else if (res.data.code === '400') {
+      showToast({
+        title: '删除失败',
+        message: res.data.msg,
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+    } else {
+      showToast({
+        title: '未知消息码',
+        message: '服务器出错！删除商品失败，请重新尝试！',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+    }
   })
-  setTimeout(() => {
-    window.location.href = '/books'
-  }, 1000)
 }
 
 export default function BookDetails() {
   const isAdmin = sessionStorage.getItem('role') === 'ADMIN'
   const breadcrumbsItems = [{ label: '购买书籍', link: '/books' }]
-  const { id } = useParams()
+  const { productId } = useParams()
   const navigate = useNavigate()
   const [bookDetails, setBookDetails] = useState<Book>()
-  const stockpile: Stockpile = {
-    id: '1001',
-    amount: 85,
-    frozen: 15,
-    productId: '101',
-  }
+  const [stockpile, setStockpile] = useState<Stockpile>()
 
   const fetchBook = useCallback(async () => {
-    if (!id) {
+    if (!productId) {
       showToast({
         title: '意外错误',
-        message: '未知商品ID!',
+        message: '不存在商品ID!',
         severity: ToastSeverity.Warning,
         duration: 3000,
       })
       navigate('/')
     } else {
-      productGetInfo(id).then((res) => {
+      productGetInfo(productId).then((res) => {
         if (res.data.code === '200') {
           setBookDetails(res.data.data)
         } else {
           showToast({
             title: '未知消息码',
-            message: '服务器出错，获取商品数据失败，请刷新尝试!',
+            message: '服务器出错！获取商品数据失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+      productGetStockpile(productId).then((res) => {
+        if (res.data.code === '200') {
+          setStockpile(res.data.data)
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！获取商品库存失败，请刷新尝试！',
             severity: ToastSeverity.Warning,
             duration: 3000,
           })
         }
       })
     }
-  }, [id, navigate])
+  }, [productId, navigate])
 
   useEffect(() => {
     fetchBook()
@@ -85,7 +115,7 @@ export default function BookDetails() {
 
   return (
     <MainLayout title="书籍详情" breadcrumbsItems={breadcrumbsItems}>
-      {bookDetails === undefined ? (
+      {!bookDetails || !productId ? (
         <Loading />
       ) : (
         <Box
@@ -153,7 +183,7 @@ export default function BookDetails() {
                     fontWeight: '400',
                   }}
                 >
-                  剩余 {stockpile.amount} 本
+                  {!stockpile ? '库存加载中...' : `剩余 ${stockpile.amount} 本`}
                 </span>
               </Typography>
             </Typography>
@@ -222,7 +252,9 @@ export default function BookDetails() {
                     color="danger"
                     variant="soft"
                     startDecorator={<DeleteIcon />}
-                    onClick={confirmDelete}
+                    onClick={() => {
+                      confirmDelete(productId)
+                    }}
                   >
                     删除商品
                   </Button>

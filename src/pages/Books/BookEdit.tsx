@@ -1,6 +1,10 @@
-import { useParams } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
+import { productGetInfo, productGetStockpile } from '../../api/products'
 import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Stockpile } from '../../types/stockpile'
 
@@ -8,78 +12,74 @@ import EditBookCard from './EditBookCard'
 import EditStockpileCard from './EditStockpileCard'
 
 export default function BookEdit() {
-  const { id } = useParams()
-  const initialStockpile: Stockpile = {
-    id: '1001',
-    amount: 85,
-    frozen: 15,
-    productId: '101',
-  }
+  const navigate = useNavigate()
+  const { productId } = useParams()
+  const [initialBookData, setInitialBookData] = useState<Book>()
+  const [initialStockpile, setInitialStockpile] = useState<Stockpile>()
+  const fetchBookDetails = useCallback(async () => {
+    if (!productId) {
+      showToast({
+        title: '意外错误',
+        message: '不存在商品ID!',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+      navigate('/')
+    } else {
+      productGetInfo(productId).then((res) => {
+        if (res.data.code === '200') {
+          setInitialBookData(res.data.data)
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！获取商品数据失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+      productGetStockpile(productId).then((res) => {
+        if (res.data.code === '200') {
+          setInitialStockpile(res.data.data)
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！获取商品库存失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
+  }, [productId, navigate])
 
-  const initialBookData: Book = {
-    id: '101',
-    title: '深入理解Java虚拟机',
-    price: 99.5,
-    rate: 9.5,
-    description: 'Java开发者必读经典，全面讲解JVM工作原理',
-    cover: 'https://example.com/covers/jvm.jpg',
-    detail:
-      '本书详细讲解了Java虚拟机的体系结构、内存管理、字节码执行等核心内容',
-    specifications: [
-      {
-        id: '1001',
-        item: '作者',
-        value: '周志明',
-        productId: '101',
-      },
-      {
-        id: '1002',
-        item: '副标题',
-        value: 'JVM高级特性与最佳实践',
-        productId: '101',
-      },
-      {
-        id: '1003',
-        item: 'ISBN',
-        value: '9787111421900',
-        productId: '101',
-      },
-      {
-        id: '1004',
-        item: '装帧',
-        value: '平装',
-        productId: '101',
-      },
-      {
-        id: '1005',
-        item: '页数',
-        value: '540',
-        productId: '101',
-      },
-      {
-        id: '1006',
-        item: '出版社',
-        value: '机械工业出版社',
-        productId: '101',
-      },
-      {
-        id: '1007',
-        item: '出版日期',
-        value: '2013-09-01',
-        productId: '101',
-      },
-    ],
-  }
+  useEffect(() => {
+    fetchBookDetails()
+  }, [fetchBookDetails])
   return (
     <MainLayout
       title="编辑书籍"
       breadcrumbsItems={[
         { label: '购买书籍', link: '/books' },
-        { label: '书籍详情', link: `/books/${id}` },
+        { label: '书籍详情', link: `/books/${productId}` },
       ]}
     >
-      <EditBookCard initialBookData={initialBookData} />
-      <EditStockpileCard initialStockpile={initialStockpile} />
+      {!productId || !initialBookData || !initialStockpile ? (
+        <Loading />
+      ) : (
+        <>
+          <EditBookCard
+            productId={productId}
+            initialBookData={initialBookData}
+            infoChange={fetchBookDetails}
+          />
+          <EditStockpileCard
+            productId={productId}
+            initialStockpile={initialStockpile}
+            infoChange={fetchBookDetails}
+          />
+        </>
+      )}
     </MainLayout>
   )
 }
