@@ -123,9 +123,7 @@ export default function EditBookCard({
   }
 
   const productInfoSubmit = (infoData: Book) => {
-    console.log('submit: ', infoData)
     productUpdate(infoData).then((res) => {
-      console.log(res)
       if (res.data.code === '200') {
         infoChange()
         showToast({
@@ -172,14 +170,11 @@ export default function EditBookCard({
     }
 
     if (!cover) {
-      console.log('no cover')
       productInfoSubmit(bookData)
     } else {
-      console.log('has cover')
       const coverFile = new FormData()
       coverFile.append('file', cover)
       imageProductCoverUpload(productId, coverFile).then((res) => {
-        console.log('cover: ', res)
         if (res.data.code === '200') {
           handleChange('cover', res.data.data)
           productInfoSubmit({ ...bookData, cover: res.data.data })
@@ -216,7 +211,7 @@ export default function EditBookCard({
     if (!file.type.startsWith('image/')) {
       showToast({
         title: '图片上传失败',
-        message: '请选择有效的图片文件',
+        message: '请选择有效的图片文件！',
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
@@ -225,7 +220,7 @@ export default function EditBookCard({
     setCover(file)
     showToast({
       title: '图片选择成功',
-      message: '请点击保存按钮以提交!',
+      message: '请点击保存按钮以提交！',
       severity: ToastSeverity.Success,
       duration: 3000,
     })
@@ -263,7 +258,7 @@ export default function EditBookCard({
             component="label"
             startDecorator={<UploadRounded />}
           >
-            添加新的书籍封面
+            添加新封面
             <VisuallyHiddenInput
               type="file"
               accept="image/*"

@@ -35,7 +35,6 @@ export default function EditStockpileCard({
       duration: 3000,
     })
     productUpdateStockpile(productId, stockpile.amount).then((res) => {
-      console.log(res)
       if (res.data.code === '200') {
         infoChange()
         showToast({

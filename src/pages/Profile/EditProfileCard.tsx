@@ -152,7 +152,7 @@ export default function EditProfileCard({
     if (!file.type.startsWith('image/')) {
       showToast({
         title: '图片上传失败',
-        message: '请选择有效的图片文件',
+        message: '请选择有效的图片文件！',
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
@@ -161,7 +161,7 @@ export default function EditProfileCard({
     setAvatar(file)
     showToast({
       title: '图片选择成功',
-      message: '请点击保存按钮以提交!',
+      message: '请点击保存按钮以提交！',
       severity: ToastSeverity.Success,
       duration: 3000,
     })

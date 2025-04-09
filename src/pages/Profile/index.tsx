@@ -30,7 +30,7 @@ export default function Profile() {
     } else {
       showToast({
         title: '未登录',
-        message: '请重新登录尝试!',
+        message: '请重新登录尝试！',
         severity: ToastSeverity.Warning,
         duration: 3000,
       })
