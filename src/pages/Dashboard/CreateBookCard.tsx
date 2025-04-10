@@ -14,6 +14,7 @@ import {
   Textarea,
 } from '@mui/joy'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { imageProductCoverUploadWithoutCreate } from '../../api/picture'
 import { productCreate } from '../../api/products'
@@ -36,6 +37,7 @@ const VisuallyHiddenInput = styled('input')`
 `
 
 export default function CreateBookCard() {
+  const navigate = useNavigate()
   const [cover, setCover] = useState<File | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({
     title: '',
@@ -129,6 +131,7 @@ export default function CreateBookCard() {
           severity: ToastSeverity.Success,
           duration: 3000,
         })
+        navigate(`/books/${res.data.data.id}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',

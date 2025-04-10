@@ -42,7 +42,7 @@ export default function EditStockpileCard({
           severity: ToastSeverity.Success,
           duration: 3000,
         })
-        navigate(`/books/edit/${productId}`)
+        navigate(`/books/${productId}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
