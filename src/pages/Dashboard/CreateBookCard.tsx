@@ -14,12 +14,15 @@ import {
   Textarea,
 } from '@mui/joy'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { imageProductCoverUploadWithoutCreate } from '../../api/picture'
 import { productCreate } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Specification } from '../../types/specification'
+import { productValidators } from '../../utils/validator/productValidator'
 
 const VisuallyHiddenInput = styled('input')`
   clip: rect(0 0 0 0);
@@ -33,10 +36,15 @@ const VisuallyHiddenInput = styled('input')`
   width: 1px;
 `
 
-const handleCoverAdd = () => {
-  console.log('handleCoverAdd')
-}
 export default function CreateBookCard() {
+  const navigate = useNavigate()
+  const [cover, setCover] = useState<File | null>(null)
+  const [errors, setErrors] = useState<Record<string, string>>({
+    title: '',
+    price: '',
+    description: '',
+    detail: '',
+  })
   const [bookData, setBookData] = useState<Book>({
     id: '',
     title: '',
@@ -54,6 +62,11 @@ export default function CreateBookCard() {
       ...prev,
       [field]: field === 'price' ? parseFloat(value) || 0 : value,
     }))
+
+    if (productValidators[field]) {
+      const { valid, message } = productValidators[field](value)
+      setErrors((prev) => ({ ...prev, [field]: valid ? '' : message || '' }))
+    }
   }
 
   const handleSpecChange = (
@@ -109,21 +122,16 @@ export default function CreateBookCard() {
     setBookData((prev) => ({ ...prev, tags: newTags }))
   }
 
-  const handleSubmit = () => {
-    showToast({
-      title: '正在提交',
-      message: '请稍等...',
-      severity: ToastSeverity.Primary,
-      duration: 3000,
-    })
-    productCreate(bookData).then((res) => {
+  const productInfoSubmit = (infoData: Book) => {
+    productCreate(infoData).then((res) => {
       if (res.data.code === '200') {
         showToast({
           title: '创建成功',
-          message: '',
+          message: `书籍 ${infoData.title} 已经成功创建！`,
           severity: ToastSeverity.Success,
           duration: 3000,
         })
+        navigate(`/books/${res.data.data.id}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
@@ -131,7 +139,90 @@ export default function CreateBookCard() {
           severity: ToastSeverity.Danger,
           duration: 3000,
         })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！提交用户信息失败，请重新尝试提交！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
       }
+    })
+  }
+
+  const handleSubmit = () => {
+    showToast({
+      title: '正在提交',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
+    })
+    const firstErrorMessage = Object.values(errors).find((msg) => msg)
+
+    if (firstErrorMessage !== undefined) {
+      showToast({
+        title: '提交失败',
+        message: firstErrorMessage,
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+
+    if (!cover) {
+      productInfoSubmit(bookData)
+    } else {
+      const coverFile = new FormData()
+      coverFile.append('file', cover)
+      imageProductCoverUploadWithoutCreate(coverFile).then((res) => {
+        if (res.data.code === '200') {
+          handleChange('cover', res.data.data)
+          productInfoSubmit({ ...bookData, cover: res.data.data })
+        } else if (res.data.code === '400') {
+          showToast({
+            title: '提交失败',
+            message: res.data.msg,
+            severity: ToastSeverity.Danger,
+            duration: 3000,
+          })
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！提交书籍封面失败，请重新尝试提交！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
+  }
+
+  const handleCoverAdd = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) {
+      showToast({
+        title: '图片上传失败',
+        message: '图片上传错误！请重新尝试',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    if (!file.type.startsWith('image/')) {
+      showToast({
+        title: '图片上传失败',
+        message: '请选择有效的图片文件！',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    setCover(file)
+    showToast({
+      title: '图片选择成功',
+      message: '请点击保存按钮以提交！',
+      severity: ToastSeverity.Success,
+      duration: 3000,
     })
   }
 

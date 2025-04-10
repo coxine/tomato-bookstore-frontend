@@ -14,6 +14,7 @@ import {
   Textarea,
 } from '@mui/joy'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { imageProductCoverUpload } from '../../api/picture'
 import { productUpdate } from '../../api/products'
@@ -26,7 +27,6 @@ import { productValidators } from '../../utils/validator/productValidator'
 interface EditBookCardProps {
   productId: string
   initialBookData: Book
-  infoChange: () => void
 }
 
 const VisuallyHiddenInput = styled('input')`
@@ -44,8 +44,8 @@ const VisuallyHiddenInput = styled('input')`
 export default function EditBookCard({
   productId,
   initialBookData,
-  infoChange,
 }: EditBookCardProps) {
+  const navigate = useNavigate()
   const [bookData, setBookData] = React.useState<Book>(initialBookData)
   const [cover, setCover] = React.useState<File | null>(null)
   const [errors, setErrors] = React.useState<Record<string, string>>({
@@ -123,15 +123,16 @@ export default function EditBookCard({
   }
 
   const productInfoSubmit = (infoData: Book) => {
+    console.log(infoData)
     productUpdate(infoData).then((res) => {
       if (res.data.code === '200') {
-        infoChange()
         showToast({
           title: '提交成功',
           message: '数据更新完成！',
           severity: ToastSeverity.Success,
           duration: 3000,
         })
+        navigate(`/books/${productId}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
