@@ -21,7 +21,7 @@ export default function Profile() {
         } else {
           showToast({
             title: '未知消息码',
-            message: '服务器出错，获取用户数据失败，请重新登录尝试!',
+            message: '服务器出错！获取用户数据失败，请重新登录尝试！',
             severity: ToastSeverity.Warning,
             duration: 3000,
           })
@@ -30,7 +30,7 @@ export default function Profile() {
     } else {
       showToast({
         title: '未登录',
-        message: '请重新登录尝试!',
+        message: '请重新登录尝试！',
         severity: ToastSeverity.Warning,
         duration: 3000,
       })
@@ -71,14 +71,10 @@ export default function Profile() {
           </Tab>
         </TabList>
         <TabPanel value={0}>
-          {profileData === undefined ? (
-            <Loading />
-          ) : (
-            <ProfileCard profile={profileData} />
-          )}
+          {!profileData ? <Loading /> : <ProfileCard profile={profileData} />}
         </TabPanel>
         <TabPanel value={1}>
-          {profileData === undefined ? (
+          {!profileData ? (
             <Loading />
           ) : (
             <EditProfileCard profile={profileData} infoChange={fetchUser} />

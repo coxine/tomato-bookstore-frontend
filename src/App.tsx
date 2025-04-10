@@ -60,7 +60,7 @@ function App() {
               }
             />
             <Route
-              path="/books/:id"
+              path="/books/:productId"
               element={
                 <PrivateRoute>
                   <BookDetails />
@@ -68,7 +68,7 @@ function App() {
               }
             />
             <Route
-              path="/books/edit/:id"
+              path="/books/edit/:productId"
               element={
                 <AdminRoute>
                   <BookEdit />

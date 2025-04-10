@@ -28,7 +28,7 @@ instance.interceptors.request.use(
     console.log('Axios request error: \n' + error)
     showToast({
       title: '错误！',
-      message: '页面出错，请刷新或者重新登录!',
+      message: '页面出错，请刷新或者重新登录！',
       severity: ToastSeverity.Warning,
       duration: 3000,
     })
@@ -49,7 +49,7 @@ instance.interceptors.response.use(
     console.log('Axios response error: \n' + error)
     showToast({
       title: '错误！',
-      message: '服务器出错，请重新尝试!',
+      message: '服务器出错！请重新尝试！',
       severity: ToastSeverity.Warning,
       duration: 3000,
     })

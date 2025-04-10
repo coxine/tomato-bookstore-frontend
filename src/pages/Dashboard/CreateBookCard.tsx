@@ -13,6 +13,7 @@ import {
 } from '@mui/joy'
 import { useState } from 'react'
 
+import { productCreate } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
@@ -55,7 +56,7 @@ export default function CreateBookCard() {
   const addSpecification = () => {
     if (newSpec.item.trim() && newSpec.value.trim()) {
       const spec: Specification = {
-        id: Date.now().toString(),
+        id: '',
         productId: '', // Leave blank for new book creation
         item: newSpec.item.trim(),
         value: newSpec.value.trim(),
@@ -98,8 +99,23 @@ export default function CreateBookCard() {
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
-    console.log('提交的商品数据：', bookData)
-    // Call your API to create the new book here if needed.
+    productCreate(bookData).then((res) => {
+      if (res.data.code === '200') {
+        showToast({
+          title: '创建成功',
+          message: '',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      }
+    })
   }
 
   const renderInput = (

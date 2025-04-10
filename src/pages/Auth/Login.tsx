@@ -47,7 +47,7 @@ export default function Login() {
             sessionStorage.setItem('role', res.data.data)
             showToast({
               title: '登录成功',
-              message: `${data.username}，欢迎使用西红柿读书!`,
+              message: `${data.username}，欢迎使用西红柿读书！`,
               severity: ToastSeverity.Success,
               duration: 3000,
             })
@@ -56,7 +56,7 @@ export default function Login() {
             sessionStorage.removeItem('token')
             showToast({
               title: '未知消息码',
-              message: `服务器出错! 请重新尝试登录`,
+              message: `服务器出错！请重新尝试登录！`,
               severity: ToastSeverity.Warning,
               duration: 3000,
             })
@@ -72,7 +72,7 @@ export default function Login() {
       } else {
         showToast({
           title: '未知消息码',
-          message: `服务器出错!`,
+          message: `服务器出错！`,
           severity: ToastSeverity.Warning,
           duration: 3000,
         })

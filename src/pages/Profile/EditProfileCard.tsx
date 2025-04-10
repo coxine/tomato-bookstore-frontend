@@ -17,7 +17,7 @@ import {
 } from '@mui/joy'
 import React from 'react'
 
-import { imageUpload } from '../../api/picture'
+import { imageAvatarUpload } from '../../api/picture'
 import { userUpdate } from '../../api/user'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -57,7 +57,7 @@ export default function EditProfileCard({
     ...profile,
   })
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: keyof Profile, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     if (profileValidators[field]) {
       const { valid, message } = profileValidators[field](value)
@@ -71,7 +71,7 @@ export default function EditProfileCard({
         infoChange()
         showToast({
           title: '提交成功',
-          message: '数据更新完成!',
+          message: '数据更新完成！',
           severity: ToastSeverity.Success,
           duration: 3000,
         })
@@ -79,13 +79,13 @@ export default function EditProfileCard({
         showToast({
           title: '提交失败',
           message: res.data.msg,
-          severity: ToastSeverity.Warning,
+          severity: ToastSeverity.Danger,
           duration: 3000,
         })
       } else {
         showToast({
           title: '未知消息码',
-          message: '错误！提交用户信息失败，请重新尝试提交!',
+          message: '服务器出错！提交用户信息失败，请重新尝试提交！',
           severity: ToastSeverity.Warning,
           duration: 3000,
         })
@@ -115,7 +115,7 @@ export default function EditProfileCard({
     } else {
       const avatarFile = new FormData()
       avatarFile.append('file', avatar)
-      imageUpload(avatarFile).then((res) => {
+      imageAvatarUpload(avatarFile).then((res) => {
         if (res.data.code === '200') {
           handleChange('avatar', res.data.data)
           userInfoSubmit({ ...formData, avatar: res.data.data })
@@ -123,13 +123,13 @@ export default function EditProfileCard({
           showToast({
             title: '提交失败',
             message: res.data.msg,
-            severity: ToastSeverity.Warning,
+            severity: ToastSeverity.Danger,
             duration: 3000,
           })
         } else {
           showToast({
             title: '未知消息码',
-            message: '错误！提交用户头像失败，请重新尝试提交!',
+            message: '服务器出错！提交用户头像失败，请重新尝试提交！',
             severity: ToastSeverity.Warning,
             duration: 3000,
           })
@@ -152,7 +152,7 @@ export default function EditProfileCard({
     if (!file.type.startsWith('image/')) {
       showToast({
         title: '图片上传失败',
-        message: '请选择有效的图片文件',
+        message: '请选择有效的图片文件！',
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
@@ -161,7 +161,7 @@ export default function EditProfileCard({
     setAvatar(file)
     showToast({
       title: '图片选择成功',
-      message: '请点击保存按钮以提交!',
+      message: '请点击保存按钮以提交！',
       severity: ToastSeverity.Success,
       duration: 3000,
     })

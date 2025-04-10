@@ -2,16 +2,21 @@ import SaveIcon from '@mui/icons-material/Save'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useState } from 'react'
 
+import { productUpdateStockpile } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Stockpile } from '../../types/stockpile'
 
 interface EditStockpileCardProps {
+  productId: string
   initialStockpile: Stockpile
+  infoChange: () => void
 }
 
 export default function EditStockpileCard({
+  productId,
   initialStockpile,
+  infoChange,
 }: EditStockpileCardProps) {
   const [stockpile, setStockpile] = useState<Stockpile>(initialStockpile)
 
@@ -29,8 +34,31 @@ export default function EditStockpileCard({
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
-    console.log('提交的库存数据：', stockpile)
-    // Here you can call an API to update the stockpile data if needed.
+    productUpdateStockpile(productId, stockpile.amount).then((res) => {
+      if (res.data.code === '200') {
+        infoChange()
+        showToast({
+          title: '提交成功',
+          message: '数据更新完成！',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！提交用户信息失败，请重新尝试提交！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
   }
 
   return (

@@ -19,7 +19,7 @@ export default function Books() {
       } else {
         showToast({
           title: '未知消息码',
-          message: '服务器出错，获取商品数据失败，请刷新尝试!',
+          message: '服务器出错！获取商品数据失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
         })
@@ -33,7 +33,7 @@ export default function Books() {
 
   return (
     <MainLayout title="购买书籍">
-      {bookList === undefined ? (
+      {!bookList ? (
         <Loading />
       ) : (
         <Grid
