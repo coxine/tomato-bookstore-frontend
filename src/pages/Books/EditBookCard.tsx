@@ -1,8 +1,8 @@
-import { UploadRounded } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import SaveIcon from '@mui/icons-material/Save'
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded'
 import {
   Button,
   FormControl,
@@ -256,7 +256,7 @@ export default function EditBookCard({
             color="primary"
             variant="plain"
             component="label"
-            startDecorator={<UploadRounded />}
+            startDecorator={<UploadRoundedIcon />}
           >
             添加新封面
             <VisuallyHiddenInput
@@ -280,25 +280,25 @@ export default function EditBookCard({
         {renderInput('标题', 'title')}
         {renderInput('价格', 'price', 'number')}
         <Stack spacing={1}>
-          <FormLabel>描述</FormLabel>
+          <FormLabel>简介</FormLabel>
           <FormControl>
             <Textarea
               minRows={2}
               value={bookData.description || ''}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="请输入商品描述"
+              placeholder="请输入商品简介"
               size="sm"
             />
           </FormControl>
         </Stack>
         <Stack spacing={1}>
-          <FormLabel>详细介绍</FormLabel>
+          <FormLabel>详细介绍（支持Markdown语法）</FormLabel>
           <FormControl>
             <Textarea
               minRows={3}
               value={bookData.detail || ''}
               onChange={(e) => handleChange('detail', e.target.value)}
-              placeholder="请输入详细信息"
+              placeholder="请输入详细介绍"
               size="sm"
             />
           </FormControl>

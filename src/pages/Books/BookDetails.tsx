@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout'
 import { Box, Typography, Button, Divider } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
+import Markdown from 'react-markdown'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import {
@@ -193,9 +194,9 @@ export default function BookDetails() {
             {bookDetails.detail && (
               <Box>
                 <Typography level="title-lg" sx={{ mb: 1 }}>
-                  商品描述
+                  商品详细信息
                 </Typography>
-                <Typography level="body-md">{bookDetails.detail}</Typography>
+                <Markdown>{bookDetails.detail}</Markdown>
               </Box>
             )}
 

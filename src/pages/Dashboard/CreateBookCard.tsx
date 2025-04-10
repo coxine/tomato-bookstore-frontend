@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import SaveIcon from '@mui/icons-material/Save'
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded'
 import {
   Button,
   FormControl,
@@ -9,6 +10,7 @@ import {
   IconButton,
   Input,
   Stack,
+  styled,
   Textarea,
 } from '@mui/joy'
 import { useState } from 'react'
@@ -19,6 +21,21 @@ import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Specification } from '../../types/specification'
 
+const VisuallyHiddenInput = styled('input')`
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+  width: 1px;
+`
+
+const handleCoverAdd = () => {
+  console.log('handleCoverAdd')
+}
 export default function CreateBookCard() {
   const [bookData, setBookData] = useState<Book>({
     id: '',
@@ -141,39 +158,55 @@ export default function CreateBookCard() {
     <InfoCard
       title="创建书籍"
       actions={
-        <Button
-          size="sm"
-          variant="soft"
-          onClick={handleSubmit}
-          startDecorator={<SaveIcon />}
-        >
-          保存
-        </Button>
+        <>
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            startDecorator={<UploadRoundedIcon />}
+          >
+            添加新封面
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleCoverAdd}
+            />
+          </Button>
+          <Button
+            size="sm"
+            variant="soft"
+            onClick={handleSubmit}
+            startDecorator={<SaveIcon />}
+          >
+            保存
+          </Button>
+        </>
       }
     >
       <Stack spacing={3}>
         {renderInput('标题', 'title')}
         {renderInput('价格', 'price', 'number')}
         <Stack spacing={1}>
-          <FormLabel>描述</FormLabel>
+          <FormLabel>简介</FormLabel>
           <FormControl>
             <Textarea
               minRows={2}
               value={bookData.description || ''}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="请输入商品描述"
+              placeholder="请输入商品简介"
               size="sm"
             />
           </FormControl>
         </Stack>
         <Stack spacing={1}>
-          <FormLabel>详细介绍</FormLabel>
+          <FormLabel>详细介绍（支持Markdown语法）</FormLabel>
           <FormControl>
             <Textarea
               minRows={3}
               value={bookData.detail || ''}
               onChange={(e) => handleChange('detail', e.target.value)}
-              placeholder="请输入详细信息"
+              placeholder="请输入详细介绍"
               size="sm"
             />
           </FormControl>
