@@ -312,11 +312,11 @@ export default function EditBookCard({
             bookData.specifications.map((spec, index) => (
               <Stack
                 key={spec.id}
-                direction="row"
-                alignItems="center"
+                direction={{ xs: 'column', sm: 'row' }}
+                alignItems={{ sm: 'center' }}
                 spacing={1}
               >
-                <FormControl>
+                <FormControl sx={{ flex: 1 }}>
                   <Input
                     size="sm"
                     value={spec.item}
@@ -326,7 +326,7 @@ export default function EditBookCard({
                     }
                   />
                 </FormControl>
-                <FormControl>
+                <FormControl sx={{ flex: 1 }}>
                   <Input
                     size="sm"
                     value={spec.value}
@@ -334,20 +334,26 @@ export default function EditBookCard({
                     onChange={(e) =>
                       handleSpecChange(index, 'value', e.target.value)
                     }
+                    endDecorator={
+                      <IconButton
+                        variant="soft"
+                        color="danger"
+                        onClick={() => removeSpecification(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
                   />
                 </FormControl>
-                <IconButton
-                  variant="soft"
-                  color="danger"
-                  size="sm"
-                  onClick={() => removeSpecification(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
               </Stack>
             ))}
-          <Stack direction="row" spacing={1} alignItems="center">
-            <FormControl>
+
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            sx={{ flex: 1 }}
+          >
+            <FormControl sx={{ flex: 1 }}>
               <Input
                 size="sm"
                 value={newSpec.item}
@@ -357,7 +363,7 @@ export default function EditBookCard({
                 }
               />
             </FormControl>
-            <FormControl>
+            <FormControl sx={{ flex: 1 }}>
               <Input
                 size="sm"
                 value={newSpec.value}
@@ -365,41 +371,43 @@ export default function EditBookCard({
                 onChange={(e) =>
                   setNewSpec((prev) => ({ ...prev, value: e.target.value }))
                 }
+                endDecorator={
+                  <IconButton
+                    variant="soft"
+                    onClick={addSpecification}
+                    color="primary"
+                  >
+                    <AddIcon />
+                  </IconButton>
+                }
               />
             </FormControl>
-            <IconButton
-              variant="soft"
-              size="sm"
-              onClick={addSpecification}
-              color="primary"
-            >
-              <AddIcon />
-            </IconButton>
           </Stack>
         </Stack>
 
         {/* 标签部分 */}
         <Stack spacing={1}>
           <FormLabel>标签</FormLabel>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <FormControl>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            alignItems={{ sm: 'center' }}
+          >
+            <FormControl sx={{ flex: 1 }}>
               <Input
                 size="sm"
                 value={newTag}
                 placeholder="新标签"
                 onChange={(e) => setNewTag(e.target.value)}
+                endDecorator={
+                  <IconButton onClick={addTag} color="primary" variant="soft">
+                    <AddIcon />
+                  </IconButton>
+                }
               />
             </FormControl>
-            <IconButton
-              variant="soft"
-              size="sm"
-              onClick={addTag}
-              color="primary"
-            >
-              <AddIcon />
-            </IconButton>
           </Stack>
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" flexWrap="wrap">
             {bookData.tags &&
               bookData.tags.map((tag, index) => (
                 <Button
@@ -409,6 +417,7 @@ export default function EditBookCard({
                   color="primary"
                   onClick={() => removeTag(index)}
                   endDecorator={<HighlightOffIcon />}
+                  sx={{ mx: 0.5, mb: 0.5 }}
                 >
                   {tag}
                 </Button>

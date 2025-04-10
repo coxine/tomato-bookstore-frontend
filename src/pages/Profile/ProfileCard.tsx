@@ -28,22 +28,38 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
       }
     >
       {' '}
-      <Stack direction="row" spacing={3} sx={{ display: 'flex', my: 1 }}>
-        <Stack direction="column" spacing={1}>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        spacing={3}
+        sx={{ display: 'flex', my: 1 }}
+      >
+        <Stack
+          direction="column"
+          spacing={1}
+          alignItems={{ xs: 'center', md: 'flex-start' }}
+        >
           <Avatar src={profile.avatar} alt={profile.name} size="lg" />
         </Stack>
         <Box display="grid" gridTemplateColumns="auto 1fr" gap={2}>
-          <Typography fontWeight="bold">姓名:</Typography>
-          <Typography>{profile.name}</Typography>
+          <Typography fontWeight="bold">姓名</Typography>
+          <Typography sx={{ wordBreak: 'break-all' }}>
+            {profile.name}
+          </Typography>
 
-          <Typography fontWeight="bold">邮箱:</Typography>
-          <Typography>{profile.email}</Typography>
+          <Typography fontWeight="bold">邮箱</Typography>
+          <Typography sx={{ wordBreak: 'break-all' }}>
+            {profile.email}
+          </Typography>
 
-          <Typography fontWeight="bold">手机号:</Typography>
-          <Typography>{showSensitive ? profile.telephone : '***'}</Typography>
+          <Typography fontWeight="bold">手机</Typography>
+          <Typography sx={{ wordBreak: 'break-all' }}>
+            {showSensitive ? profile.telephone : '***'}
+          </Typography>
 
-          <Typography fontWeight="bold">地址:</Typography>
-          <Typography>{showSensitive ? profile.location : '***'}</Typography>
+          <Typography fontWeight="bold">地址</Typography>
+          <Typography sx={{ wordBreak: 'break-all' }}>
+            {showSensitive ? profile.location : '***'}
+          </Typography>
         </Box>
       </Stack>
       <Stack
