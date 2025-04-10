@@ -125,7 +125,7 @@ export default function CreateBookCard() {
       if (res.data.code === '200') {
         showToast({
           title: '创建成功',
-          message: '',
+          message: `书籍 ${infoData.title} 已经成功创建！`,
           severity: ToastSeverity.Success,
           duration: 3000,
         })

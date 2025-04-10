@@ -71,12 +71,10 @@ export default function BookEdit() {
           <EditBookCard
             productId={productId}
             initialBookData={initialBookData}
-            infoChange={fetchBookDetails}
           />
           <EditStockpileCard
             productId={productId}
             initialStockpile={initialStockpile}
-            infoChange={fetchBookDetails}
           />
         </>
       )}

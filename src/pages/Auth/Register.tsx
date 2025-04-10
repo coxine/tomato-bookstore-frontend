@@ -118,7 +118,7 @@ export default function Register() {
       if (res.data.code === '200') {
         showToast({
           title: '注册成功',
-          message: `${data.username}，欢迎使用西红柿读书!`,
+          message: `${data.username}，欢迎使用西红柿读书！`,
           severity: ToastSeverity.Success,
           duration: 3000,
         })

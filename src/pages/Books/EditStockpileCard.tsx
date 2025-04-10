@@ -1,6 +1,7 @@
 import SaveIcon from '@mui/icons-material/Save'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { productUpdateStockpile } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
@@ -10,14 +11,13 @@ import { Stockpile } from '../../types/stockpile'
 interface EditStockpileCardProps {
   productId: string
   initialStockpile: Stockpile
-  infoChange: () => void
 }
 
 export default function EditStockpileCard({
   productId,
   initialStockpile,
-  infoChange,
 }: EditStockpileCardProps) {
+  const navigate = useNavigate()
   const [stockpile, setStockpile] = useState<Stockpile>(initialStockpile)
 
   const handleChange = (field: keyof Stockpile, value: string) => {
@@ -36,13 +36,13 @@ export default function EditStockpileCard({
     })
     productUpdateStockpile(productId, stockpile.amount).then((res) => {
       if (res.data.code === '200') {
-        infoChange()
         showToast({
           title: '提交成功',
           message: '数据更新完成！',
           severity: ToastSeverity.Success,
           duration: 3000,
         })
+        navigate(`/books/edit/${productId}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
