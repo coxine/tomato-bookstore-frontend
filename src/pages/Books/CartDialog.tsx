@@ -1,0 +1,115 @@
+import { AddShoppingCart, ShoppingCartCheckout } from '@mui/icons-material'
+import { Box, Typography, Button } from '@mui/joy'
+import { useState } from 'react'
+
+import AlertDialogModal from '../../components/UI/AlertDialog'
+import QuantitySelector from '../../components/UI/QuantitySelector'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
+import { Book } from '../../types/book'
+import { Stockpile } from '../../types/stockpile'
+
+export default function CartDialog({
+  mode,
+  bookDetails,
+  stockpile,
+  onClose,
+}: {
+  mode: 'add' | 'buy'
+  bookDetails: Book
+  stockpile?: Stockpile
+  onClose: () => void
+}) {
+  const [dialogQuantity, setDialogQuantity] = useState<number>(1)
+
+  return (
+    <AlertDialogModal
+      title="选择款式规格"
+      open={true}
+      onClose={onClose}
+      icon={<AddShoppingCart />}
+      actions={
+        <Button
+          color={mode === 'add' ? 'warning' : 'danger'}
+          variant="solid"
+          onClick={() => {
+            console.log(
+              `${mode === 'add' ? '加入购物车' : '立即购买'}: ${dialogQuantity}本`
+            )
+            // TODO: 调用API进行购物车添加或购买操作
+            showToast({
+              title: mode === 'add' ? '添加成功' : '购买成功',
+              message: `您${mode === 'add' ? '添加' : '购买'}了${dialogQuantity}本《${bookDetails.title}》。`,
+              severity: ToastSeverity.Success,
+              duration: 3000,
+            })
+            onClose()
+          }}
+          startDecorator={
+            mode === 'add' ? <AddShoppingCart /> : <ShoppingCartCheckout />
+          }
+        >
+          {mode === 'add' ? '加入购物车' : '立即购买'}
+        </Button>
+      }
+    >
+      <Box sx={{ display: 'flex', gap: 2, minWidth: '300px' }}>
+        <Box
+          component="img"
+          src={bookDetails.cover}
+          alt={bookDetails.title}
+          sx={{
+            width: '100px',
+            height: '100px',
+            objectFit: 'cover',
+            borderRadius: 2,
+          }}
+        />
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <Typography
+              level="body-md"
+              sx={{ color: 'danger.500', fontSize: '1.3rem' }}
+            >
+              ¥{' '}
+              <span style={{ fontSize: '1.7rem', fontWeight: '600' }}>
+                {bookDetails.price?.toFixed(2) ?? '0.00'}
+              </span>
+              <span
+                style={{
+                  fontSize: '0.8rem',
+                  color: 'grey',
+                  marginLeft: '8px',
+                  fontWeight: '400',
+                }}
+              >
+                {!stockpile ? '库存加载中...' : `剩余 ${stockpile.amount} 本`}
+              </span>
+            </Typography>
+            <Typography level="body-sm" sx={{ color: 'neutral.500' }}>
+              {bookDetails.title}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, my: 2 }}>
+            <Typography level="body-sm">数量：</Typography>
+            <QuantitySelector
+              initialValue={1}
+              maxValue={stockpile?.amount}
+              onChange={(value) => {
+                setDialogQuantity(value)
+              }}
+              size="sm"
+            />
+          </Box>
+        </Box>
+      </Box>
+    </AlertDialogModal>
+  )
+}

@@ -12,32 +12,34 @@ import * as React from 'react'
 
 export interface AlertDialogModalProps {
   title: string
-  description: string
   actions: React.ReactNode
   open: boolean
+  children?: React.ReactNode
+  icon?: React.ReactNode
   onClose: () => void
 }
 
 export default function AlertDialogModal({
   title,
-  description,
   actions,
   open,
+  children,
+  icon = <Warning />,
   onClose,
 }: AlertDialogModalProps) {
   return (
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
-          <Warning />
+          {icon}
           {title}
         </DialogTitle>
         <Divider />
-        <DialogContent>{description}</DialogContent>
+        <DialogContent>{children}</DialogContent>
         <DialogActions>
           {actions}
           <Button
-            variant="soft"
+            variant="outlined"
             color="neutral"
             onClick={onClose}
             startDecorator={<Cancel />}

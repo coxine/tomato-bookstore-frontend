@@ -4,7 +4,7 @@ import AlertDialogModal from './AlertDialog'
 
 export default function showAlertDialog(
   title: string,
-  description: string,
+  children: React.ReactNode,
   actions: (close: () => void) => React.ReactNode // 改为接收一个函数
 ) {
   const container = document.createElement('div')
@@ -19,10 +19,11 @@ export default function showAlertDialog(
   root.render(
     <AlertDialogModal
       title={title}
-      description={description}
       actions={actions(handleClose)} // 将 close 回调传入 actions
       open={true}
       onClose={handleClose}
-    />
+    >
+      {children}
+    </AlertDialogModal>
   )
 }

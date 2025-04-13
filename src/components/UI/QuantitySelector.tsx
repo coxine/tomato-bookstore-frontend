@@ -1,6 +1,6 @@
 import { Add, Remove } from '@mui/icons-material'
 import { Box, IconButton, Input, Typography } from '@mui/joy'
-import { useState, useEffect, FC } from 'react'
+import { useState, useEffect } from 'react'
 
 interface QuantitySelectorProps {
   initialValue?: number
@@ -11,14 +11,14 @@ interface QuantitySelectorProps {
   disabled?: boolean
 }
 
-const QuantitySelector: FC<QuantitySelectorProps> = ({
+export default function QuantitySelector({
   initialValue = 1,
   maxValue,
   minValue = 1,
   onChange,
-  size = 'md',
+  size = 'sm',
   disabled = false,
-}) => {
+}: QuantitySelectorProps) {
   const [quantity, setQuantity] = useState<number>(initialValue)
   const [error, setError] = useState<string>('')
 
@@ -88,9 +88,9 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
                 },
                 '&[type=number]': {
                   '-moz-appearance': 'textfield',
-                }
-              }
-            }
+                },
+              },
+            },
           }}
           sx={{ mx: 1 }}
         />
@@ -99,7 +99,9 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
           variant="outlined"
           color="neutral"
           size={size}
-          disabled={disabled || (maxValue !== undefined && quantity >= maxValue)}
+          disabled={
+            disabled || (maxValue !== undefined && quantity >= maxValue)
+          }
           onClick={() => handleQuantityChange(quantity + 1)}
         >
           <Add />
@@ -114,5 +116,3 @@ const QuantitySelector: FC<QuantitySelectorProps> = ({
     </Box>
   )
 }
-
-export default QuantitySelector
