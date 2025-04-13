@@ -1,6 +1,7 @@
 import { ShoppingCartCheckout } from '@mui/icons-material'
-import { Button, Card, List, Stack, Typography } from '@mui/joy'
+import { Button, Card, Link, List, Stack, Typography } from '@mui/joy'
 import { useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 
 import MainLayout from '../../components/layouts/MainLayout'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -140,9 +141,19 @@ export default function CartPage() {
           <Typography level="h4" sx={{ mb: 2 }}>
             购物车空空如也，快去选购吧！
           </Typography>
-          <Button component="a" href="/books" color="primary">
-            浏览书籍
-          </Button>
+          <Link
+            component={RouterLink}
+            to="/books"
+            sx={{ display: 'block', width: '100%' }}
+          >
+            <Button
+              variant="soft"
+              color="primary"
+              startDecorator={<ShoppingCartCheckout />}
+            >
+              选购商品
+            </Button>
+          </Link>
         </Card>
       ) : (
         <Stack

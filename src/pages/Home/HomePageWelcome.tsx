@@ -41,7 +41,7 @@ export default function HomePageWelcome() {
           <Link
             component={RouterLink}
             to="/register"
-            sx={{ display: 'block', width: '100%', color: 'danger.500' }}
+            sx={{ display: 'block', width: '100%' }}
           >
             <Button
               size="lg"

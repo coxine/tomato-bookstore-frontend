@@ -53,9 +53,9 @@ const CartItemCard: React.FC<CartItemProps> = ({
               sx: {
                 width: '60px',
                 textAlign: 'center',
-                '-moz-appearance': 'textfield',
+                MozAppearance: 'textfield',
                 '&::-webkit-inner-spin-button, &::-webkit-outer-spin-button': {
-                  '-webkit-appearance': 'none',
+                  WebkitAppearance: 'none',
                   margin: 0,
                 },
               },
