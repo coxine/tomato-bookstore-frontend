@@ -7,6 +7,7 @@ import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import type { Profile } from '../../types/profile'
 
+import EditPasswordCard from './EditPasswordCard'
 import EditProfileCard from './EditProfileCard'
 import ProfileCard from './ProfileCard'
 
@@ -77,7 +78,10 @@ export default function Profile() {
           {!profileData ? (
             <Loading />
           ) : (
-            <EditProfileCard profile={profileData} infoChange={fetchUser} />
+            <>
+              <EditProfileCard profile={profileData} infoChange={fetchUser} />
+              <EditPasswordCard />
+            </>
           )}
         </TabPanel>
       </Tabs>
