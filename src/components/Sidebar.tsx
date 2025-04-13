@@ -1,11 +1,13 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded'
-import StoreIcon from '@mui/icons-material/Store'
+import {
+  AccountCircle,
+  AdminPanelSettings,
+  ExitToApp,
+  HomeRounded,
+  KeyboardArrowDown,
+  SearchRounded,
+  ShoppingCartRounded,
+  Store,
+} from '@mui/icons-material'
 import Box from '@mui/joy/Box'
 import GlobalStyles from '@mui/joy/GlobalStyles'
 import Input from '@mui/joy/Input'
@@ -89,7 +91,7 @@ export default function Sidebar() {
       </Box>
       <Input
         size="sm"
-        startDecorator={<SearchRoundedIcon />}
+        startDecorator={<SearchRounded />}
         placeholder="Search"
       />
       <Box
@@ -114,7 +116,7 @@ export default function Sidebar() {
         >
           <ListItem>
             <ListItemButton>
-              <HomeRoundedIcon />
+              <HomeRounded />
               <ListItemContent>
                 <Link to="/">
                   <Typography level="title-sm">首页</Typography>
@@ -124,7 +126,7 @@ export default function Sidebar() {
           </ListItem>
           <ListItem>
             <ListItemButton>
-              <StoreIcon />
+              <Store />
               <ListItemContent>
                 <Link to="/books">
                   <Typography level="title-sm">购买书籍</Typography>
@@ -137,11 +139,11 @@ export default function Sidebar() {
               defaultExpanded
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <ShoppingCartRoundedIcon />
+                  <ShoppingCartRounded />
                   <ListItemContent>
                     <Typography level="title-sm">订单</Typography>
                   </ListItemContent>
-                  <KeyboardArrowDownIcon
+                  <KeyboardArrowDown
                     sx={[
                       open
                         ? { transform: 'rotate(180deg)' }
@@ -174,7 +176,7 @@ export default function Sidebar() {
         >
           <ListItem>
             <ListItemButton role="menuitem">
-              <AccountCircleIcon />
+              <AccountCircle />
               <ListItemContent>
                 <Link to="/profile">
                   <Typography level="title-sm">个人中心</Typography>
@@ -185,7 +187,7 @@ export default function Sidebar() {
           {isAdmin && (
             <ListItem>
               <ListItemButton role="menuitem">
-                <AdminPanelSettingsIcon />
+                <AdminPanelSettings />
                 <ListItemContent>
                   <Link to="/dashboard">
                     <Typography level="title-sm">管理中心</Typography>
@@ -196,7 +198,7 @@ export default function Sidebar() {
           )}
           <ListItem>
             <ListItemButton role="menuitem" onClick={exitLogin}>
-              <ExitToAppIcon />
+              <ExitToApp />
               <ListItemContent>
                 <Link to="/">
                   <Typography level="title-sm">退出登录</Typography>

@@ -1,8 +1,10 @@
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import SaveIcon from '@mui/icons-material/Save'
-import UploadRoundedIcon from '@mui/icons-material/UploadRounded'
+import {
+  Add,
+  Delete,
+  HighlightOff,
+  Save,
+  UploadRounded,
+} from '@mui/icons-material'
 import {
   Button,
   FormControl,
@@ -257,7 +259,7 @@ export default function EditBookCard({
             color="primary"
             variant="plain"
             component="label"
-            startDecorator={<UploadRoundedIcon />}
+            startDecorator={<UploadRounded />}
           >
             添加新封面
             <VisuallyHiddenInput
@@ -270,7 +272,7 @@ export default function EditBookCard({
             size="sm"
             variant="soft"
             onClick={handleSubmit}
-            startDecorator={<SaveIcon />}
+            startDecorator={<Save />}
           >
             保存
           </Button>
@@ -340,7 +342,7 @@ export default function EditBookCard({
                         color="danger"
                         onClick={() => removeSpecification(index)}
                       >
-                        <DeleteIcon />
+                        <Delete />
                       </IconButton>
                     }
                   />
@@ -377,7 +379,7 @@ export default function EditBookCard({
                     onClick={addSpecification}
                     color="primary"
                   >
-                    <AddIcon />
+                    <Add />
                   </IconButton>
                 }
               />
@@ -401,7 +403,7 @@ export default function EditBookCard({
                 onChange={(e) => setNewTag(e.target.value)}
                 endDecorator={
                   <IconButton onClick={addTag} color="primary" variant="soft">
-                    <AddIcon />
+                    <Add />
                   </IconButton>
                 }
               />
@@ -416,7 +418,7 @@ export default function EditBookCard({
                   size="sm"
                   color="primary"
                   onClick={() => removeTag(index)}
-                  endDecorator={<HighlightOffIcon />}
+                  endDecorator={<HighlightOff />}
                   sx={{ mx: 0.5, mb: 0.5 }}
                 >
                   {tag}

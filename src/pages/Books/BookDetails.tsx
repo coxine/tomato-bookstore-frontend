@@ -1,7 +1,9 @@
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout'
+import {
+  AddShoppingCart,
+  Delete,
+  Edit,
+  ShoppingCartCheckout,
+} from '@mui/icons-material'
 import { Box, Typography, Button, Divider } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
@@ -29,7 +31,7 @@ function confirmDelete(productId: string) {
         handleDelete(productId)
         close()
       }}
-      startDecorator={<DeleteIcon />}
+      startDecorator={<Delete />}
     >
       删除
     </Button>
@@ -226,14 +228,14 @@ export default function BookDetails() {
                 <Button
                   color="warning"
                   variant="soft"
-                  startDecorator={<AddShoppingCartIcon />}
+                  startDecorator={<AddShoppingCart />}
                 >
                   加入购物车
                 </Button>
                 <Button
                   color="danger"
                   variant="soft"
-                  startDecorator={<ShoppingCartCheckoutIcon />}
+                  startDecorator={<ShoppingCartCheckout />}
                 >
                   立即购买
                 </Button>
@@ -244,7 +246,7 @@ export default function BookDetails() {
                     <Button
                       color="primary"
                       variant="soft"
-                      startDecorator={<EditIcon />}
+                      startDecorator={<Edit />}
                     >
                       编辑商品
                     </Button>
@@ -252,7 +254,7 @@ export default function BookDetails() {
                   <Button
                     color="danger"
                     variant="soft"
-                    startDecorator={<DeleteIcon />}
+                    startDecorator={<Delete />}
                     onClick={() => {
                       confirmDelete(productId)
                     }}

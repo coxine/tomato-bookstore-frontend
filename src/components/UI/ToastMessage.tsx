@@ -1,7 +1,4 @@
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import ErrorIcon from '@mui/icons-material/Error'
-import InfoIcon from '@mui/icons-material/Info'
-import WarningAmberIcon from '@mui/icons-material/WarningAmber'
+import { CheckCircle, Error, Info, WarningAmber } from '@mui/icons-material'
 import Alert from '@mui/joy/Alert'
 import Typography from '@mui/joy/Typography'
 import { useEffect, useState } from 'react'
@@ -24,11 +21,11 @@ export default function ToastMessage({
 }: ToastMessageProps) {
   const [visible, setVisible] = useState(false)
   const StartIconList = [
-    <CheckCircleIcon key="success" />,
-    <InfoIcon key="neutral" />,
-    <WarningAmberIcon key="warning" />,
-    <InfoIcon key="primary" />,
-    <ErrorIcon key="danger" />,
+    <CheckCircle key="success" />,
+    <Info key="neutral" />,
+    <WarningAmber key="warning" />,
+    <Info key="primary" />,
+    <Error key="danger" />,
   ]
 
   useEffect(() => {

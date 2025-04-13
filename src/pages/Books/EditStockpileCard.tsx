@@ -1,4 +1,4 @@
-import SaveIcon from '@mui/icons-material/Save'
+import { Save } from '@mui/icons-material'
 import { Button, FormControl, FormLabel, Input, Stack } from '@mui/joy'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -69,7 +69,7 @@ export default function EditStockpileCard({
           size="sm"
           variant="soft"
           onClick={handleSubmit}
-          startDecorator={<SaveIcon />}
+          startDecorator={<Save />}
         >
           保存
         </Button>

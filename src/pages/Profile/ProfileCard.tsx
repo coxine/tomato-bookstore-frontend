@@ -1,5 +1,4 @@
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Avatar, Box, IconButton, Stack, Typography } from '@mui/joy'
 import { useState } from 'react'
 
@@ -23,7 +22,7 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
           color="primary"
           size="sm"
         >
-          {showSensitive ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          {showSensitive ? <VisibilityOff /> : <Visibility />}
         </IconButton>
       }
     >

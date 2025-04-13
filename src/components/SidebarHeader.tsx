@@ -1,4 +1,4 @@
-import MenuRoundedIcon from '@mui/icons-material/MenuRounded'
+import { MenuRounded } from '@mui/icons-material'
 import GlobalStyles from '@mui/joy/GlobalStyles'
 import IconButton from '@mui/joy/IconButton'
 import Sheet from '@mui/joy/Sheet'
@@ -41,7 +41,7 @@ export default function SidebarHeader() {
         color="neutral"
         size="sm"
       >
-        <MenuRoundedIcon />
+        <MenuRounded />
       </IconButton>
       <Typography
         level="title-lg"

@@ -1,5 +1,4 @@
-import CancelIcon from '@mui/icons-material/Cancel'
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded'
+import { Cancel, Warning } from '@mui/icons-material'
 import Button from '@mui/joy/Button'
 import DialogActions from '@mui/joy/DialogActions'
 import DialogContent from '@mui/joy/DialogContent'
@@ -28,7 +27,7 @@ export default function AlertDialogModal({
     <Modal open={open} onClose={onClose}>
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
-          <WarningRoundedIcon />
+          <Warning />
           {title}
         </DialogTitle>
         <Divider />
@@ -39,7 +38,7 @@ export default function AlertDialogModal({
             variant="soft"
             color="neutral"
             onClick={onClose}
-            startDecorator={<CancelIcon />}
+            startDecorator={<Cancel />}
           >
             取消
           </Button>

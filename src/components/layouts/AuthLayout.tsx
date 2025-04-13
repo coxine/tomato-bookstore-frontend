@@ -1,4 +1,4 @@
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
+import { MenuBookOutlined } from '@mui/icons-material'
 import Box from '@mui/joy/Box'
 import IconButton from '@mui/joy/IconButton'
 import Typography from '@mui/joy/Typography'
@@ -51,7 +51,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
                 size="sm"
                 onClick={backToHome}
               >
-                <MenuBookOutlinedIcon />
+                <MenuBookOutlined />
               </IconButton>
               <Typography level="title-lg">西红柿读书</Typography>
             </Box>

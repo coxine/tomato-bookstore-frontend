@@ -1,6 +1,4 @@
-import {
-  SaveRounded,
-} from '@mui/icons-material';
+import { SaveRounded } from '@mui/icons-material'
 import {
   Button,
   FormControl,
@@ -8,32 +6,35 @@ import {
   FormLabel,
   Input,
   Stack,
-} from '@mui/joy';
-import React from 'react';
+} from '@mui/joy'
+import React from 'react'
 
-import InfoCard from '../../components/UI/InfoCard';
-import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils';
+import InfoCard from '../../components/UI/InfoCard'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 
 export default function EditPasswordCard() {
   const [formData, setFormData] = React.useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  });
+  })
   const [errors, setErrors] = React.useState<Record<string, string>>({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  });
+  })
 
   const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }))
     if (field === 'confirmPassword' && value !== formData.newPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: 'Passwords do not match' }));
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: 'Passwords do not match',
+      }))
     } else {
-      setErrors((prev) => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: '' }))
     }
-  };
+  }
 
   const handleSubmit = () => {
     if (Object.values(errors).some((msg) => msg)) {
@@ -42,20 +43,20 @@ export default function EditPasswordCard() {
         message: '请修正表单中的错误',
         severity: ToastSeverity.Danger,
         duration: 3000,
-      });
-      return;
+      })
+      return
     }
     console.log({
       oldPassword: formData.currentPassword,
       newPassword: formData.newPassword,
-    });
+    })
     showToast({
       title: '提交成功',
       message: '密码已更新',
       severity: ToastSeverity.Success,
       duration: 3000,
-    });
-  };
+    })
+  }
 
   const renderInput = (
     label: string,
@@ -78,7 +79,7 @@ export default function EditPasswordCard() {
         )}
       </FormControl>
     </Stack>
-  );
+  )
 
   return (
     <InfoCard
@@ -100,5 +101,5 @@ export default function EditPasswordCard() {
         {renderInput('确认新密码', 'confirmPassword', '请再次输入新密码')}
       </Stack>
     </InfoCard>
-  );
+  )
 }
