@@ -81,11 +81,14 @@ function App() {
                 </AdminRoute>
               }
             />
-            <Route path="/cart" element={
-              <PrivateRoute>
-                <CartPage />
-              </PrivateRoute>
-            } />
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <CartPage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </Router>
       </CssVarsProvider>
