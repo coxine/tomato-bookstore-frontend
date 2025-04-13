@@ -4,6 +4,7 @@ import {
   ExitToApp,
   HomeRounded,
   KeyboardArrowDown,
+  Payment,
   SearchRounded,
   ShoppingCartRounded,
   Store,
@@ -137,12 +138,22 @@ export default function Sidebar() {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <ShoppingCartRounded />
+              <ListItemContent>
+                <Link to="/cart">
+                  <Typography level="title-sm">购物车</Typography>
+                </Link>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
           <ListItem nested>
             <Toggler
               defaultExpanded
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <ShoppingCartRounded />
+                  <Payment />
                   <ListItemContent>
                     <Typography level="title-sm">订单</Typography>
                   </ListItemContent>

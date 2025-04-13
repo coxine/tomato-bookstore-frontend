@@ -7,6 +7,7 @@ import Register from './pages/Auth/Register'
 import Books from './pages/Books'
 import BookDetails from './pages/Books/BookDetails'
 import BookEdit from './pages/Books/BookEdit'
+import CartPage from './pages/Cart/CartPage'
 import Dashboard from './pages/Dashboard'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
@@ -80,6 +81,11 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/cart" element={
+              <PrivateRoute>
+                <CartPage />
+              </PrivateRoute>
+            } />
           </Routes>
         </Router>
       </CssVarsProvider>
