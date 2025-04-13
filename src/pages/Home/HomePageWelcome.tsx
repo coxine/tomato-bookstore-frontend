@@ -1,7 +1,5 @@
 import { ArrowForward } from '@mui/icons-material'
-import Button from '@mui/joy/Button'
-import Link from '@mui/joy/Link'
-import Typography from '@mui/joy/Typography'
+import { Button, Link, Typography } from '@mui/joy'
 import { Link as RouterLink } from 'react-router-dom'
 
 export default function HomePageWelcome() {

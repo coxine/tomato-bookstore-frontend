@@ -43,6 +43,25 @@ export default tseslint.config(
           },
         },
       ],
+      'import/no-default-export': 'off', // 允许默认导出
+      'import/no-named-as-default': 'warn', // 警告命名导入与默认导入混用
+      // 强制使用命名导入（针对特定库）
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@mui/icons-material/*'],
+              message:
+                '请使用命名导入: import { Icon } from "@mui/icons-material"',
+            },
+            {
+              group: ['@mui/joy/*'],
+              message: '请使用命名导入: import { Component } from "@mui/joy"',
+            },
+          ],
+        },
+      ],
     },
   }
 )

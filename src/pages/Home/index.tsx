@@ -1,5 +1,4 @@
-import { Typography } from '@mui/joy'
-import Box from '@mui/joy/Box'
+import { Box, Typography } from '@mui/joy'
 
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'

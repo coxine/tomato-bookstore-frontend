@@ -1,6 +1,4 @@
-import Box from '@mui/joy/Box'
-import Sheet from '@mui/joy/Sheet'
-import Typography from '@mui/joy/Typography'
+import { Box, Sheet, Typography } from '@mui/joy'
 import { Link } from 'react-router-dom'
 
 import ColorSchemeToggle from './UI/ColorSchemeToggle'

@@ -1,12 +1,14 @@
-import Button from '@mui/joy/Button'
-import FormControl from '@mui/joy/FormControl'
-import FormHelperText from '@mui/joy/FormHelperText'
-import FormLabel from '@mui/joy/FormLabel'
-import Grid from '@mui/joy/Grid'
-import Input from '@mui/joy/Input'
-import Link from '@mui/joy/Link'
-import Stack from '@mui/joy/Stack'
-import Typography from '@mui/joy/Typography'
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Grid,
+  Input,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import React, { useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 

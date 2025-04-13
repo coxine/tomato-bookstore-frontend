@@ -1,4 +1,4 @@
-import AspectRatio from '@mui/joy/AspectRatio'
+import { AspectRatio } from '@mui/joy'
 
 export default function HomePageImage() {
   return (

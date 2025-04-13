@@ -8,15 +8,18 @@ import {
   ShoppingCartRounded,
   Store,
 } from '@mui/icons-material'
-import Box from '@mui/joy/Box'
-import GlobalStyles from '@mui/joy/GlobalStyles'
-import Input from '@mui/joy/Input'
-import List from '@mui/joy/List'
-import ListItem from '@mui/joy/ListItem'
-import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton'
-import ListItemContent from '@mui/joy/ListItemContent'
-import Sheet from '@mui/joy/Sheet'
-import Typography from '@mui/joy/Typography'
+import {
+  Box,
+  GlobalStyles,
+  Input,
+  List,
+  ListItem,
+  ListItemButton,
+  listItemButtonClasses,
+  ListItemContent,
+  Sheet,
+  Typography,
+} from '@mui/joy'
 import { Link } from 'react-router-dom'
 
 import { closeSidebar } from '../utils/sidebar'

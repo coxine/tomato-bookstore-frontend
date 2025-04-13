@@ -1,7 +1,5 @@
 import { MenuBookOutlined } from '@mui/icons-material'
-import Box from '@mui/joy/Box'
-import IconButton from '@mui/joy/IconButton'
-import Typography from '@mui/joy/Typography'
+import { Box, IconButton, Typography } from '@mui/joy'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 

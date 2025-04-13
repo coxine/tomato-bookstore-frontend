@@ -1,11 +1,13 @@
 import { Cancel, Warning } from '@mui/icons-material'
-import Button from '@mui/joy/Button'
-import DialogActions from '@mui/joy/DialogActions'
-import DialogContent from '@mui/joy/DialogContent'
-import DialogTitle from '@mui/joy/DialogTitle'
-import Divider from '@mui/joy/Divider'
-import Modal from '@mui/joy/Modal'
-import ModalDialog from '@mui/joy/ModalDialog'
+import {
+  Button,
+  Divider,
+  Modal,
+  ModalDialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/joy'
 import * as React from 'react'
 
 export interface AlertDialogModalProps {

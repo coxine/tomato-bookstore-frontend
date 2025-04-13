@@ -1,11 +1,13 @@
-import Box from '@mui/joy/Box'
-import List from '@mui/joy/List'
-import ListItem from '@mui/joy/ListItem'
-import ListItemButton from '@mui/joy/ListItemButton'
-import ListSubheader from '@mui/joy/ListSubheader'
-import Sheet from '@mui/joy/Sheet'
-import Typography from '@mui/joy/Typography'
-import { Divider } from '@mui/material'
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListSubheader,
+  Sheet,
+  Typography,
+  Divider,
+} from '@mui/joy'
 
 export default function Footer() {
   return (

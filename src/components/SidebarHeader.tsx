@@ -1,8 +1,5 @@
 import { MenuRounded } from '@mui/icons-material'
-import GlobalStyles from '@mui/joy/GlobalStyles'
-import IconButton from '@mui/joy/IconButton'
-import Sheet from '@mui/joy/Sheet'
-import Typography from '@mui/joy/Typography'
+import { GlobalStyles, IconButton, Sheet, Typography } from '@mui/joy'
 
 import { toggleSidebar } from '../utils/sidebar'
 

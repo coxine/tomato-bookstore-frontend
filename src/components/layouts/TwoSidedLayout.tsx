@@ -1,5 +1,4 @@
-import Box from '@mui/joy/Box'
-import { typographyClasses } from '@mui/joy/Typography'
+import { Box, typographyClasses } from '@mui/joy'
 import * as React from 'react'
 
 import BasicContainer from './BasicContainer'

@@ -1,6 +1,4 @@
-import CssBaseline from '@mui/joy/CssBaseline'
-import InitColorSchemeScript from '@mui/joy/InitColorSchemeScript'
-import { CssVarsProvider, extendTheme } from '@mui/joy/styles'
+import { CssBaseline, CssVarsProvider, extendTheme } from '@mui/joy'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
@@ -34,7 +32,6 @@ const customTheme = extendTheme({
 function App() {
   return (
     <>
-      <InitColorSchemeScript />
       <CssVarsProvider theme={customTheme} disableTransitionOnChange>
         <CssBaseline />
         <Router>

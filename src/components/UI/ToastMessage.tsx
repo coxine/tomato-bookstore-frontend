@@ -1,6 +1,5 @@
 import { CheckCircle, Error, Info, WarningAmber } from '@mui/icons-material'
-import Alert from '@mui/joy/Alert'
-import Typography from '@mui/joy/Typography'
+import { Alert, Typography } from '@mui/joy'
 import { useEffect, useState } from 'react'
 
 import { ToastSeverity } from './ToastMessageUtils'

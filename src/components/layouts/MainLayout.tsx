@@ -1,5 +1,4 @@
-import { Box, Typography } from '@mui/joy'
-import Breadcrumbs from '@mui/joy/Breadcrumbs'
+import { Box, Breadcrumbs, Typography } from '@mui/joy'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 

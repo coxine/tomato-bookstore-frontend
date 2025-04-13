@@ -1,10 +1,12 @@
-import Button from '@mui/joy/Button'
-import FormControl from '@mui/joy/FormControl'
-import FormLabel from '@mui/joy/FormLabel'
-import Input from '@mui/joy/Input'
-import Link from '@mui/joy/Link'
-import Stack from '@mui/joy/Stack'
-import Typography from '@mui/joy/Typography'
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
