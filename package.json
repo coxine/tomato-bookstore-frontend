@@ -27,7 +27,7 @@
     "react-router-dom": "^7.4.0"
   },
   "devDependencies": {
-    "@eslint/config-array": "^0.19.2",
+    "@eslint/config-array": "^0.20.0",
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.1.2",
