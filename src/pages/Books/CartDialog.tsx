@@ -52,15 +52,16 @@ export default function CartDialog({
                   })
                 }
               })
-            } else {
-              // TODO: 立即购买api
-              showToast({
-                title: '购买成功',
-                message: `您已成功购买了${dialogQuantity}本《${bookDetails.title}》！`,
-                severity: ToastSeverity.Success,
-                duration: 3000,
-              })
             }
+            // else {
+            //   // TODO: 立即购买api
+            //   showToast({
+            //     title: '购买成功',
+            //     message: `您已成功购买了${dialogQuantity}本《${bookDetails.title}》！`,
+            //     severity: ToastSeverity.Success,
+            //     duration: 3000,
+            //   })
+            // }
             onClose()
           }}
           startDecorator={
