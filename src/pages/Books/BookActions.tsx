@@ -2,7 +2,7 @@ import {
   AddShoppingCart,
   Delete,
   Edit,
-  ShoppingCartCheckout,
+  // ShoppingCartCheckout,
 } from '@mui/icons-material'
 import { Box, Button } from '@mui/joy'
 import { Link } from 'react-router-dom'
@@ -33,14 +33,14 @@ export function BookActions({
         >
           加入购物车
         </Button>
-        <Button
+        {/* <Button
           color="danger"
           variant="soft"
           startDecorator={<ShoppingCartCheckout />}
           onClick={() => onCartAction('buy')}
         >
           立即购买
-        </Button>
+        </Button> */}
       </Box>
 
       {isAdmin && (

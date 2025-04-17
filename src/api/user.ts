@@ -31,6 +31,23 @@ export const userGetRole = (username: string) => {
   })
 }
 
+export const userGetSimpleInfo = (username: string) => {
+  return userGetInfo(username).then((res) => {
+    return {
+      // 保持原有风格
+      ...res,
+      data: {
+        ...res.data,
+        data: {
+          username: res.data.data.username,
+          telephone: res.data.data.telephone,
+          location: res.data.data.location,
+        },
+      },
+    }
+  })
+}
+
 export const userRegister = (userInfo: Profile) => {
   return axios
     .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)

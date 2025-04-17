@@ -18,6 +18,8 @@ import {
   cartGetCartItems,
   cartUpdateQuantity,
 } from '../../api/cart'
+import { orderSubmit, orderToPay } from '../../api/order'
+import { userGetSimpleInfo } from '../../api/user'
 import MainLayout from '../../components/layouts/MainLayout'
 import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -32,6 +34,9 @@ const mockCartData: CartData = {
 }
 
 export default function CartPage() {
+  const paymentMethod = 'ALIPAY'
+  const username = sessionStorage.getItem('username')
+
   const [loading, setLoading] = useState(false) // 判断是否已经加载好数据
   const [cartData, setCartData] = useState<CartData>(mockCartData)
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
@@ -123,8 +128,6 @@ export default function CartPage() {
         return
       }
 
-      console.log('修改商品数量:', { cartItemId, quantity: newQuantity })
-
       // 模拟修改购物车
       const newCartData = {
         ...cartData,
@@ -167,7 +170,6 @@ export default function CartPage() {
     Promise.all(
       Object.entries(currentQueue).map(([cartItemId, quantity]) =>
         cartUpdateQuantity(cartItemId, quantity).then((res) => {
-          console.log(res)
           if (res.data.code === '400') {
             showToast({
               title: '修改未生效',
@@ -199,7 +201,7 @@ export default function CartPage() {
     // 启动新定时器
     modifyTimerRef.current = setTimeout(() => {
       processModify()
-    }, 1000)
+    }, 500)
 
     return () => {
       if (modifyTimerRef.current) clearTimeout(modifyTimerRef.current)
@@ -208,8 +210,6 @@ export default function CartPage() {
 
   // 删除购物车商品
   const handleRemoveItem = (cartItemId: string) => {
-    console.log('删除商品:', { cartItemId })
-
     // 模拟删除购物车商品
     const newItems = cartData.items.filter(
       (item) => item.cartItemId !== cartItemId
@@ -250,7 +250,6 @@ export default function CartPage() {
     Promise.all(
       Object.entries(currentQueue).map(([cartItemId]) =>
         cartDeleteProduct(cartItemId).then((res) => {
-          console.log(res)
           if (res.data.code === '400') {
             showToast({
               title: '修改未生效',
@@ -281,7 +280,7 @@ export default function CartPage() {
     // 启动新定时器
     deleteTimerRef.current = setTimeout(() => {
       processDelete()
-    }, 1000)
+    }, 500)
 
     return () => {
       if (deleteTimerRef.current) clearTimeout(deleteTimerRef.current)
@@ -294,21 +293,99 @@ export default function CartPage() {
       .filter((item) => selectedItems[item.cartItemId])
       .map((item) => item.cartItemId)
 
-    // 打印选中的商品ID数组到控制台
-    console.log('结算购物车:', {
-      selectedItemIds,
-      selectedItems: cartData.items.filter(
-        (item) => selectedItems[item.cartItemId]
-      ),
-      selectedItemsAmount,
-    })
+    if (username != null) {
+      userGetSimpleInfo(username).then((res) => {
+        if (res.data.code === '200') {
+          if (!res.data.data.location && !res.data.data.telephone) {
+            showToast({
+              title: '空地址和电话错误',
+              message: '请先完善个人信息！',
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+            return
+          } else if (!res.data.data.location) {
+            showToast({
+              title: '空地址错误',
+              message: '请先完善个人信息！',
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+            return
+          } else if (!res.data.data.telephone) {
+            showToast({
+              title: '空电话错误',
+              message: '请先完善个人信息！',
+              severity: ToastSeverity.Warning,
+              duration: 3000,
+            })
+            return
+          }
+          const shippingAddress = {
+            address: res.data.data.location,
+            phone: res.data.data.telephone,
+            name: res.data.data.username,
+          }
 
-    showToast({
-      title: '结算',
-      message: '功能尚未实现',
-      severity: ToastSeverity.Primary,
-      duration: 2000,
-    })
+          orderSubmit(selectedItemIds, shippingAddress, paymentMethod).then(
+            (res) => {
+              if (res.data.code === '200') {
+                showToast({
+                  title: '订单提交成功',
+                  message: '即将前往支付宝支付',
+                  severity: ToastSeverity.Success,
+                  duration: 3000,
+                })
+                selectedItemIds.forEach((itemId) => {
+                  handleRemoveItem(itemId)
+                }) // 删除已购买商品
+                orderToPay(res.data.data.orderId).then((res) => {
+                  if (res.data.code === '200') {
+                    document.writeln(res.data.data.paymentForm)
+                  } else {
+                    showToast({
+                      title: '未知消息码',
+                      message:
+                        '服务器出错！前往支付宝支付失败，请刷新重新尝试！',
+                      severity: ToastSeverity.Warning,
+                      duration: 3000,
+                    })
+                  }
+                })
+              } else if (res.data.code === '400') {
+                showToast({
+                  title: '订单提交失败',
+                  message: res.data.msg + '请重新尝试提交！',
+                  severity: ToastSeverity.Warning,
+                  duration: 3000,
+                })
+              } else {
+                showToast({
+                  title: '未知消息码',
+                  message: '服务器出错！订单提交失败，请刷新重新尝试！',
+                  severity: ToastSeverity.Warning,
+                  duration: 3000,
+                })
+              }
+            }
+          )
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！获取用户数据失败，请重新登录尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    } else {
+      showToast({
+        title: '未登录',
+        message: '请重新登录尝试！',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+    }
   }
 
   return (
