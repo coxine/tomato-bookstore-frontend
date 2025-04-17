@@ -14,3 +14,6 @@ export const PRODUCT_STOCKPILE_MODULE = `${PRODUCT_MODULE}/stockpile`
 
 // 购物车api路径
 export const CART_MODULE = `${API_MODULE}/cart`
+
+// 订单api路径
+export const ORDER_MODULE = `${API_MODULE}/orders`

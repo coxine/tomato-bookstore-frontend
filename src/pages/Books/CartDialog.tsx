@@ -33,9 +33,6 @@ export default function CartDialog({
           color={mode === 'add' ? 'warning' : 'danger'}
           variant="solid"
           onClick={() => {
-            console.log(
-              `${mode === 'add' ? '加入购物车' : '立即购买'}: ${dialogQuantity}本`
-            )
             if (mode === 'add') {
               // 加入购物车api
               cartAddProduct(bookDetails.id, dialogQuantity).then((res) => {

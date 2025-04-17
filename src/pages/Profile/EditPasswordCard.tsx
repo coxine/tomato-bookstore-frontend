@@ -29,7 +29,7 @@ export default function EditPasswordCard() {
     if (field === 'confirmPassword' && value !== formData.newPassword) {
       setErrors((prev) => ({
         ...prev,
-        confirmPassword: 'Passwords do not match',
+        confirmPassword: '密码不一致',
       }))
     } else {
       setErrors((prev) => ({ ...prev, [field]: '' }))
@@ -46,9 +46,11 @@ export default function EditPasswordCard() {
       })
       return
     }
-    console.log({
-      oldPassword: formData.currentPassword,
-      newPassword: formData.newPassword,
+    showToast({
+      title: '正在提交',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
     })
     showToast({
       title: '提交成功',

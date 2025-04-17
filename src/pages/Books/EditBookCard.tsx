@@ -125,7 +125,6 @@ export default function EditBookCard({
   }
 
   const productInfoSubmit = (infoData: Book) => {
-    console.log(infoData)
     productUpdate(infoData).then((res) => {
       if (res.data.code === '200') {
         showToast({
