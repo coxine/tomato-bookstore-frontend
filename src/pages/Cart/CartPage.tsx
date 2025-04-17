@@ -1,5 +1,15 @@
 import { ShoppingCartCheckout } from '@mui/icons-material'
-import { Button, Card, Link, List, Stack, Typography } from '@mui/joy'
+import {
+  Button,
+  Card,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Link,
+  List,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 
@@ -23,8 +33,10 @@ const mockCartData: CartData = {
 
 export default function CartPage() {
   const [loading, setLoading] = useState(false) // 判断是否已经加载好数据
-
   const [cartData, setCartData] = useState<CartData>(mockCartData)
+  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
+    {}
+  )
   const modifyQue = useRef<Record<string, number>>({}) // { [cartItemId]: quantity }
   const [modifyQueueVersion, setModifyQueueVersion] = useState(0) // 队列更新触发器（仅用于触发 useEffect）
   const modifyTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -32,12 +44,35 @@ export default function CartPage() {
   const [deleteQueueVersion, setDeleteQueueVersion] = useState(0) // 删除队列触发器
   const deleteTimerRef = useRef<NodeJS.Timeout | null>(null)
 
-  const fetchCart = () => {
+  // 计算已选择的商品总数和总价
+  const selectedItemsTotal = cartData.items
+    .filter((item) => selectedItems[item.cartItemId])
+    .reduce((sum, item) => sum + item.quantity, 0)
+
+  const selectedItemsCount = cartData.items.filter(
+    (item) => selectedItems[item.cartItemId]
+  ).length
+
+  const selectedItemsAmount = cartData.items
+    .filter((item) => selectedItems[item.cartItemId])
+    .reduce((sum, item) => sum + item.price * item.quantity, 0)
+    .toFixed(2)
+
+  const fetchCart = useCallback(() => {
     cartGetCartItems().then((res) => {
       if (res.data.code === '200') {
         setCartData(res.data.data)
-        console.log('获取购物车数据', loading)
         setLoading(true)
+
+        // 默认全选所有商品
+        const initialSelection = res.data.data.items.reduce(
+          (acc: Record<string, boolean>, item: CartItem) => {
+            acc[item.cartItemId] = true
+            return acc
+          },
+          {}
+        )
+        setSelectedItems(initialSelection)
       } else {
         showToast({
           title: '未知消息码',
@@ -47,12 +82,34 @@ export default function CartPage() {
         })
       }
     })
-  }
+  }, [])
 
   useEffect(() => {
-    // 初始化
     fetchCart()
-  }, [])
+  }, [fetchCart])
+
+  const handleSelectItem = (cartItemId: string, selected: boolean) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [cartItemId]: selected,
+    }))
+  }
+
+  const handleSelectAll = (selected: boolean) => {
+    const newSelection = cartData.items.reduce(
+      (acc: Record<string, boolean>, item: CartItem) => {
+        acc[item.cartItemId] = selected
+        return acc
+      },
+      {}
+    )
+    setSelectedItems(newSelection)
+  }
+
+  // 检查是否全选
+  const isAllSelected =
+    cartData.items.length > 0 &&
+    cartData.items.every((item) => selectedItems[item.cartItemId])
 
   const handleQuantityChange = useCallback(
     (cartItemId: string, newQuantity: number) => {
@@ -169,6 +226,11 @@ export default function CartPage() {
       totalAmount: parseFloat(totalAmount.toFixed(2)),
     })
 
+    // 从选中项中移除
+    const newSelectedItems = { ...selectedItems }
+    delete newSelectedItems[cartItemId]
+    setSelectedItems(newSelectedItems)
+
     deleteQue.current[cartItemId] = true
 
     showToast({
@@ -227,10 +289,18 @@ export default function CartPage() {
   }, [deleteQueueVersion, processDelete])
 
   const handleCheckout = () => {
-    // 模拟结算操作
+    // 获取所有选中的商品ID
+    const selectedItemIds = cartData.items
+      .filter((item) => selectedItems[item.cartItemId])
+      .map((item) => item.cartItemId)
+
+    // 打印选中的商品ID数组到控制台
     console.log('结算购物车:', {
-      items: cartData.items,
-      totalAmount: cartData.totalAmount,
+      selectedItemIds,
+      selectedItems: cartData.items.filter(
+        (item) => selectedItems[item.cartItemId]
+      ),
+      selectedItemsAmount,
     })
 
     showToast({
@@ -278,6 +348,16 @@ export default function CartPage() {
           spacing={2}
           sx={{ maxWidth: 1000, mx: 'auto', px: { xs: 2, md: 0 } }}
         >
+          <Stack direction="row" alignItems="center" spacing={1} sx={{ py: 1 }}>
+            <FormControl orientation="horizontal" sx={{ gap: 1 }}>
+              <Checkbox
+                checked={isAllSelected}
+                onChange={(e) => handleSelectAll(e.target.checked)}
+              />
+              <FormLabel>全选</FormLabel>
+            </FormControl>
+          </Stack>
+
           <List sx={{ py: 2 }}>
             {cartData.items.map((item: CartItem) => (
               <CartItemCard
@@ -285,6 +365,8 @@ export default function CartPage() {
                 item={item}
                 onQuantityChange={handleQuantityChange}
                 onRemove={handleRemoveItem}
+                selected={!!selectedItems[item.cartItemId]}
+                onSelectChange={handleSelectItem}
               />
             ))}
           </List>
@@ -301,15 +383,13 @@ export default function CartPage() {
             }}
           >
             <Typography sx={{ flexGrow: 1 }}>
-              您选购了{' '}
+              已选择{' '}
               <Typography fontWeight="lg" color="primary">
-                {cartData.total}
+                {selectedItemsCount}
               </Typography>{' '}
               种商品， 共{' '}
               <Typography fontWeight="lg" color="primary">
-                {cartData.items.reduce((sum, item) => {
-                  return sum + item.quantity
-                }, 0)}
+                {selectedItemsTotal}
               </Typography>{' '}
               件，合计：
               <Typography
@@ -319,7 +399,7 @@ export default function CartPage() {
                 color="danger"
                 sx={{ mx: 1 }}
               >
-                ¥{cartData.totalAmount.toFixed(2)}
+                ¥{selectedItemsAmount}
               </Typography>
             </Typography>
 
@@ -327,6 +407,7 @@ export default function CartPage() {
               color="danger"
               onClick={handleCheckout}
               startDecorator={<ShoppingCartCheckout />}
+              disabled={selectedItemsCount === 0}
             >
               结算
             </Button>

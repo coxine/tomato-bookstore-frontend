@@ -1,5 +1,13 @@
 import { Add, Delete, Remove } from '@mui/icons-material'
-import { Box, Card, IconButton, Input, Stack, Typography } from '@mui/joy'
+import {
+  Box,
+  Card,
+  Checkbox,
+  IconButton,
+  Input,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import React, { useState } from 'react'
 
 import { CartItem as CartItemType } from '../../types/cart'
@@ -8,12 +16,16 @@ interface CartItemProps {
   item: CartItemType
   onQuantityChange: (cartItemId: string, quantity: number) => void
   onRemove: (cartItemId: string) => void
+  selected: boolean
+  onSelectChange: (cartItemId: string, selected: boolean) => void
 }
 
 const CartItemCard: React.FC<CartItemProps> = ({
   item,
   onQuantityChange,
   onRemove,
+  selected,
+  onSelectChange,
 }) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
 
@@ -25,7 +37,15 @@ const CartItemCard: React.FC<CartItemProps> = ({
 
   // Quantity control component to avoid repetition
   const QuantityControl = () => (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      sx={{
+        width: { xs: '100%', sm: 'auto' },
+        justifyContent: { xs: 'space-between', sm: 'flex-start' },
+      }}
+    >
       <Stack direction="row" alignItems="center">
         <IconButton
           variant="outlined"
@@ -98,6 +118,11 @@ const CartItemCard: React.FC<CartItemProps> = ({
         alignItems="center"
         sx={{ p: 2 }}
       >
+        <Checkbox
+          checked={selected}
+          onChange={(e) => onSelectChange(item.cartItemId, e.target.checked)}
+        />
+
         <Box sx={{ width: { xs: '100%', sm: '120px' }, textAlign: 'center' }}>
           <Box
             component="img"
@@ -112,13 +137,13 @@ const CartItemCard: React.FC<CartItemProps> = ({
           />
         </Box>
 
-        <Stack spacing={1} sx={{ flexGrow: 1 }}>
+        <Stack spacing={1} sx={{ flexGrow: 1, width: '100%' }}>
           <Typography level="title-md">{item.title}</Typography>
           <Typography level="body-sm" noWrap>
             {item.description}
           </Typography>
 
-          <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+          <Box sx={{ display: { xs: 'block', sm: 'none' }, width: '100%' }}>
             <Typography
               level="title-md"
               color="danger"
