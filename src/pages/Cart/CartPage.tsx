@@ -9,6 +9,7 @@ import {
   cartUpdateQuantity,
 } from '../../api/cart'
 import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { CartData, CartItem } from '../../types/cart'
 
@@ -21,6 +22,8 @@ const mockCartData: CartData = {
 }
 
 export default function CartPage() {
+  const [loading, setLoading] = useState(false) // 判断是否已经加载好数据
+
   const [cartData, setCartData] = useState<CartData>(mockCartData)
   const modifyQue = useRef<Record<string, number>>({}) // { [cartItemId]: quantity }
   const [modifyQueueVersion, setModifyQueueVersion] = useState(0) // 队列更新触发器（仅用于触发 useEffect）
@@ -33,6 +36,8 @@ export default function CartPage() {
     cartGetCartItems().then((res) => {
       if (res.data.code === '200') {
         setCartData(res.data.data)
+        console.log('获取购物车数据', loading)
+        setLoading(true)
       } else {
         showToast({
           title: '未知消息码',
@@ -238,7 +243,9 @@ export default function CartPage() {
 
   return (
     <MainLayout breadcrumbsItems={[]} title="购物车">
-      {cartData.items.length === 0 ? (
+      {!loading ? (
+        <Loading />
+      ) : cartData.items.length === 0 ? (
         <Card
           variant="outlined"
           sx={{
