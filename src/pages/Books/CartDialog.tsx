@@ -2,6 +2,7 @@ import { AddShoppingCart, ShoppingCartCheckout } from '@mui/icons-material'
 import { Box, Typography, Button } from '@mui/joy'
 import { useState } from 'react'
 
+import { cartAddProduct } from '../../api/cart'
 import AlertDialogModal from '../../components/UI/AlertDialog'
 import QuantitySelector from '../../components/UI/QuantitySelector'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -35,13 +36,34 @@ export default function CartDialog({
             console.log(
               `${mode === 'add' ? '加入购物车' : '立即购买'}: ${dialogQuantity}本`
             )
-            // TODO: 调用API进行购物车添加或购买操作
-            showToast({
-              title: mode === 'add' ? '添加成功' : '购买成功',
-              message: `您${mode === 'add' ? '添加' : '购买'}了${dialogQuantity}本《${bookDetails.title}》。`,
-              severity: ToastSeverity.Success,
-              duration: 3000,
-            })
+            if (mode === 'add') {
+              // 加入购物车api
+              cartAddProduct(bookDetails.id, dialogQuantity).then((res) => {
+                if (res.data.code === '200') {
+                  showToast({
+                    title: '加入购物车成功',
+                    message: `您已成功将 ${dialogQuantity} 本《${bookDetails.title}》加入购物车！`,
+                    severity: ToastSeverity.Success,
+                    duration: 3000,
+                  })
+                } else {
+                  showToast({
+                    title: '未知消息码',
+                    message: `服务器出错！请稍后再试！`,
+                    severity: ToastSeverity.Warning,
+                    duration: 3000,
+                  })
+                }
+              })
+            } else {
+              // TODO: 立即购买api
+              showToast({
+                title: '购买成功',
+                message: `您已成功购买了${dialogQuantity}本《${bookDetails.title}》！`,
+                severity: ToastSeverity.Success,
+                duration: 3000,
+              })
+            }
             onClose()
           }}
           startDecorator={
