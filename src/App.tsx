@@ -1,4 +1,9 @@
-import { CssBaseline, CssVarsProvider, extendTheme } from '@mui/joy'
+import {
+  CssBaseline,
+  CssVarsProvider as JoyCssVarsProvider,
+  extendTheme,
+} from '@mui/joy'
+import { createTheme, ThemeProvider } from '@mui/material'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
@@ -30,10 +35,24 @@ const customTheme = extendTheme({
   },
 })
 
+const muiTheme = createTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        mode: 'light',
+      },
+    },
+    dark: {
+      palette: {
+        mode: 'dark',
+      },
+    },
+  },
+})
 function App() {
   return (
-    <>
-      <CssVarsProvider theme={customTheme} disableTransitionOnChange>
+    <ThemeProvider theme={muiTheme}>
+      <JoyCssVarsProvider theme={customTheme} disableTransitionOnChange>
         <CssBaseline />
         <Router>
           <Routes>
@@ -91,8 +110,8 @@ function App() {
             />
           </Routes>
         </Router>
-      </CssVarsProvider>
-    </>
+      </JoyCssVarsProvider>
+    </ThemeProvider>
   )
 }
 

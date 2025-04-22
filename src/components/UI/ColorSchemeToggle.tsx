@@ -1,13 +1,33 @@
 import { DarkModeRounded, LightModeRounded } from '@mui/icons-material'
 import { IconButton, IconButtonProps, useColorScheme } from '@mui/joy'
-import React from 'react'
+import { useColorScheme as useMUIColorScheme } from '@mui/material'
+import React, { useEffect } from 'react'
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props
   const { mode, setMode } = useColorScheme()
+  const { setMode: setMuiMode } = useMUIColorScheme()
   const [mounted, setMounted] = React.useState(false)
 
-  React.useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    if (mounted) {
+      setMuiMode(mode === 'light' ? 'light' : 'dark')
+    }
+  }, [mode, setMuiMode, mounted])
+
+  useEffect(() => {
+    setMounted(true)
+    setMuiMode(mode === 'light' ? 'light' : 'dark')
+  }, [mode, setMuiMode])
+
+  const handleToggleMode = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const newMode = mode === 'light' ? 'dark' : 'light'
+    setMode(newMode)
+    setMuiMode(newMode)
+
+    localStorage.setItem('theme-mode', newMode)
+    onClick?.(event)
+  }
 
   return (
     <IconButton
@@ -15,10 +35,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
       size="sm"
       variant="outlined"
       disabled={!mounted}
-      onClick={(event) => {
-        setMode(mode === 'light' ? 'dark' : 'light')
-        onClick?.(event)
-      }}
+      onClick={handleToggleMode}
       {...other}
     >
       {mode === 'light' ? <DarkModeRounded /> : <LightModeRounded />}
