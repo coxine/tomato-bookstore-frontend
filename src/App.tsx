@@ -14,6 +14,7 @@ import BookDetails from './pages/Books/BookDetails'
 import BookEdit from './pages/Books/BookEdit'
 import CartPage from './pages/Cart/CartPage'
 import Dashboard from './pages/Dashboard'
+import AdsEdit from './pages/Dashboard/AdsEdit'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
@@ -89,6 +90,14 @@ function App() {
               element={
                 <AdminRoute>
                   <BookEdit />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/ads/edit/:adId"
+              element={
+                <AdminRoute>
+                  <AdsEdit />
                 </AdminRoute>
               }
             />
