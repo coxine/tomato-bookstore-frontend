@@ -1,9 +1,11 @@
+import { Delete, Edit, Launch } from '@mui/icons-material'
+import { Box, IconButton, CssVarsProvider, Link } from '@mui/joy'
 import type {} from '@mui/x-data-grid/themeAugmentation'
-import Box from '@mui/material/Box'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { zhCN } from '@mui/x-data-grid/locales'
 import { useEffect, useState } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 
 import { productGetAllSimpleInfo } from '../../api/products'
 import Loading from '../../components/UI/Loading'
@@ -43,6 +45,53 @@ const columns: GridColDef<Book>[] = [
     editable: false,
     sortable: false,
     filterable: false,
+  },
+  {
+    field: 'actions',
+    headerName: '操作',
+    width: 160,
+    sortable: false,
+    filterable: false,
+    renderCell: (row) => {
+      return (
+        <CssVarsProvider>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+            }}
+          >
+            <Link component={RouterLink} to={`/books/${row.id}`}>
+              <IconButton variant="plain" color="neutral" size="sm">
+                <Launch />
+              </IconButton>
+            </Link>
+            <Link component={RouterLink} to={`/books/edit/${row.id}`}>
+              <IconButton variant="plain" color="primary" size="sm">
+                <Edit />
+              </IconButton>
+            </Link>
+            <IconButton
+              variant="plain"
+              color="danger"
+              size="sm"
+              onClick={() => {
+                showToast({
+                  title: '删除功能未实现',
+                  message: '删除功能未实现',
+                  severity: ToastSeverity.Warning,
+                  duration: 3000,
+                })
+              }}
+            >
+              <Delete />
+            </IconButton>
+          </Box>
+        </CssVarsProvider>
+      )
+    },
   },
 ]
 
@@ -104,7 +153,14 @@ export default function BookDataTable() {
   )
 
   return (
-    <Box sx={{ height: '100%', width: '100%' }}>
+    <Box
+      sx={{
+        height: '100%',
+        width: '100%',
+        flexDirection: 'column',
+        display: 'flex',
+      }}
+    >
       {!bookList ? (
         <Loading />
       ) : (
@@ -113,9 +169,15 @@ export default function BookDataTable() {
             rows={bookList || []}
             getRowId={(row) => row.id}
             columns={columns}
-            pageSizeOptions={[10, 20, 30]}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 5, page: 0 },
+              },
+            }}
+            disableRowSelectionOnClick
+            pageSizeOptions={[5, 10, 20, 100]}
             rowHeight={35}
-            checkboxSelection
+            showToolbar
             sx={(theme) => ({
               color: theme.palette.text.primary,
             })}

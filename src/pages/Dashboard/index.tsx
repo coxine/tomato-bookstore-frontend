@@ -29,17 +29,17 @@ export default function Dashboard() {
           }}
         >
           <Tab indicatorInset value={0}>
-            创建商品
+            管理书籍
           </Tab>
           <Tab indicatorInset value={1}>
-            商品列表
+            创建书籍
           </Tab>
         </TabList>
         <TabPanel value={0}>
-          <CreateBookCard />
+          <BookDataTable />
         </TabPanel>
         <TabPanel value={1}>
-          <BookDataTable />
+          <CreateBookCard />
         </TabPanel>
       </Tabs>
     </MainLayout>
