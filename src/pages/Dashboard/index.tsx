@@ -2,7 +2,9 @@ import { Tabs, TabList, Tab, tabClasses, TabPanel } from '@mui/joy'
 
 import MainLayout from '../../components/layouts/MainLayout'
 
+import AdsDataTable from './AdsDataTable'
 import BookDataTable from './BookDataTable'
+import CreateAdCard from './CreateAdCard'
 import CreateBookCard from './CreateBookCard'
 
 export default function Dashboard() {
@@ -34,12 +36,24 @@ export default function Dashboard() {
           <Tab indicatorInset value={1}>
             创建书籍
           </Tab>
+          <Tab indicatorInset value={2}>
+            管理广告
+          </Tab>
+          <Tab indicatorInset value={3}>
+            创建广告
+          </Tab>
         </TabList>
         <TabPanel value={0}>
           <BookDataTable />
         </TabPanel>
         <TabPanel value={1}>
           <CreateBookCard />
+        </TabPanel>
+        <TabPanel value={2}>
+          <AdsDataTable />
+        </TabPanel>
+        <TabPanel value={3}>
+          <CreateAdCard />
         </TabPanel>
       </Tabs>
     </MainLayout>
