@@ -12,17 +12,19 @@ const mockAdsData: Advertisement[] = [
   {
     id: '1',
     title: 'JVM高效进阶，掌握Java核心之钥',
-    content: '深入理解Java虚拟机：从字节码到内存管理，全面掌握JVM奥秘，助你攻克Java难关，打造更稳健程序',
+    content:
+      '深入理解Java虚拟机：从字节码到内存管理，全面掌握JVM奥秘，助你攻克Java难关，打造更稳健程序',
     imgUrl: 'https://example.com/ad1.jpg',
-    productId: '101'
+    productId: '101',
   },
   {
     id: '2',
     title: '写出整洁代码，铸就开发者的极致修养',
-    content: '以整洁优雅的代码，让开发者告别混乱与Bug，Robert Martin经典大著作，助你修炼编程内功！',
+    content:
+      '以整洁优雅的代码，让开发者告别混乱与Bug，Robert Martin经典大著作，助你修炼编程内功！',
     imgUrl: 'https://example.com/ad2.jpg',
-    productId: '202'
-  }
+    productId: '202',
+  },
 ]
 
 const columns: GridColDef<Advertisement>[] = [
@@ -103,6 +105,10 @@ export default function AdsDataTable() {
   const isLoading = false
 
   return (
-    <DataGridComponent rows={mockAdsData} columns={columns} loading={isLoading} />
+    <DataGridComponent
+      rows={mockAdsData}
+      columns={columns}
+      loading={isLoading}
+    />
   )
 }

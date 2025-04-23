@@ -1,7 +1,4 @@
-import {
-  Save,
-  UploadRounded,
-} from '@mui/icons-material'
+import { Save, UploadRounded } from '@mui/icons-material'
 import {
   Button,
   FormControl,
@@ -83,9 +80,9 @@ export default function CreateAdCard() {
 
     setErrors(newErrors)
 
-    const hasErrors = Object.values(newErrors).some(error => error)
+    const hasErrors = Object.values(newErrors).some((error) => error)
     if (hasErrors) {
-      const firstErrorMessage = Object.values(newErrors).find(msg => msg)
+      const firstErrorMessage = Object.values(newErrors).find((msg) => msg)
       showToast({
         title: '提交失败',
         message: firstErrorMessage || '表单验证失败',

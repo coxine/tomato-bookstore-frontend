@@ -40,9 +40,7 @@ export default function AdsEdit() {
   return (
     <MainLayout
       title="编辑广告"
-      breadcrumbsItems={[
-        { label: '管理中心', link: '/dashboard' },
-      ]}
+      breadcrumbsItems={[{ label: '管理中心', link: '/dashboard' }]}
     >
       {!adId || !initialAdsData ? (
         <Loading />

@@ -1,7 +1,4 @@
-import {
-  Save,
-  UploadRounded,
-} from '@mui/icons-material'
+import { Save, UploadRounded } from '@mui/icons-material'
 import {
   Button,
   FormControl,
@@ -88,7 +85,11 @@ export default function EditAdsCard({
     }
     console.log('广告数据:', adsData)
     if (image) {
-      console.log('选择的图片:', image.name, `(${image.type}, ${Math.round(image.size / 1024)}KB)`)
+      console.log(
+        '选择的图片:',
+        image.name,
+        `(${image.type}, ${Math.round(image.size / 1024)}KB)`
+      )
     }
 
     showToast({
