@@ -1,14 +1,11 @@
 import { Delete, Edit, Launch } from '@mui/icons-material'
 import { Box, IconButton, CssVarsProvider, Link } from '@mui/joy'
-import type {} from '@mui/x-data-grid/themeAugmentation'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { zhCN } from '@mui/x-data-grid/locales'
+import { GridColDef } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { productGetAllSimpleInfo } from '../../api/products'
-import Loading from '../../components/UI/Loading'
+import DataGridComponent from '../../components/UI/DataGridComponent'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 
@@ -97,9 +94,11 @@ const columns: GridColDef<Book>[] = [
 
 export default function BookDataTable() {
   const [bookList, setBookList] = useState<Book[]>()
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchAllSimpleBook = () => {
     productGetAllSimpleInfo().then((res) => {
+      setIsLoading(false)
       if (res.data.code === '200') {
         setBookList(res.data.data)
       } else {
@@ -117,73 +116,7 @@ export default function BookDataTable() {
     fetchAllSimpleBook()
   }, [])
 
-  const MuiTheme = createTheme(
-    {
-      colorSchemes: {
-        light: {
-          palette: {
-            DataGrid: {
-              bg: '#f8fafc',
-            },
-          },
-        },
-        dark: {
-          palette: {
-            DataGrid: {
-              bg: '#101417',
-            },
-          },
-        },
-      },
-      components: {
-        MuiDataGrid: {
-          styleOverrides: {
-            root: {
-              border: 0,
-              borderStyle: 'solid',
-              borderRadius: 10,
-              boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-              padding: 10,
-            },
-          },
-        },
-      },
-    },
-    zhCN
-  )
-
   return (
-    <Box
-      sx={{
-        height: '100%',
-        width: '100%',
-        flexDirection: 'column',
-        display: 'flex',
-      }}
-    >
-      {!bookList ? (
-        <Loading />
-      ) : (
-        <ThemeProvider theme={MuiTheme}>
-          <DataGrid
-            rows={bookList || []}
-            getRowId={(row) => row.id}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 5, page: 0 },
-              },
-            }}
-            disableRowSelectionOnClick
-            pageSizeOptions={[5, 10, 20, 100]}
-            rowHeight={35}
-            showToolbar
-            sx={(theme) => ({
-              color: theme.palette.text.primary,
-            })}
-          />
-        </ThemeProvider>
-      )}
-    </Box>
+    <DataGridComponent rows={bookList} columns={columns} loading={isLoading} />
   )
 }
