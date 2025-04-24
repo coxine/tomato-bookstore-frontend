@@ -133,8 +133,8 @@ export default function EditPasswordCard() {
         </Button>
       }
     >
-      <Stack spacing={2} sx={{ flexGrow: 1 }}>
-        <form id="edit-password-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="edit-password-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={2} sx={{ flexGrow: 1 }}>
           {renderInput({
             label: '当前密码',
             field: 'currentPassword',
@@ -151,8 +151,8 @@ export default function EditPasswordCard() {
             field: 'confirmPassword',
             placeholder: '请再次输入新密码',
           })}
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }

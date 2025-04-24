@@ -220,8 +220,8 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
         </>
       }
     >
-      <Stack spacing={3}>
-        <form id="edit-ad-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="edit-ad-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={3}>
           {renderInput({
             label: '标题',
             field: 'title',
@@ -246,8 +246,8 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
               />
             </FormControl>
           </Stack>
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }

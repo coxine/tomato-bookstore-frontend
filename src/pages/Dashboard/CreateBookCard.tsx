@@ -299,8 +299,8 @@ export default function CreateBookCard() {
         </>
       }
     >
-      <Stack spacing={3}>
-        <form id="create-book-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="create-book-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={3}>
           {renderInput({ label: '标题', field: 'title', required: true })}
           {renderInput({
             label: '价格',
@@ -452,8 +452,8 @@ export default function CreateBookCard() {
                 ))}
             </Stack>
           </Stack>
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }
