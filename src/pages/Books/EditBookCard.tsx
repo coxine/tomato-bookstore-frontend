@@ -288,8 +288,8 @@ export default function EditBookCard({
         </>
       }
     >
-      <Stack spacing={3}>
-        <form id="edit-book-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="edit-book-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={3}>
           {renderInput({ label: '标题', field: 'title', required: true })}
           {renderInput({
             label: '价格',
@@ -441,8 +441,8 @@ export default function EditBookCard({
                 ))}
             </Stack>
           </Stack>
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }

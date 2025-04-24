@@ -228,8 +228,8 @@ export default function CreateAdCard() {
         </>
       }
     >
-      <Stack spacing={3}>
-        <form id="create-ad-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="create-ad-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={3}>
           {renderInput({
             label: '标题',
             field: 'title',
@@ -255,8 +255,8 @@ export default function CreateAdCard() {
               />
             </FormControl>
           </Stack>
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }

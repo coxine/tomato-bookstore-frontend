@@ -221,8 +221,8 @@ export default function EditProfileCard({
         </>
       }
     >
-      <Stack spacing={2} sx={{ flexGrow: 1 }}>
-        <form id="edit-profile-form" onSubmit={(e) => handleSubmit(e)}>
+      <form id="edit-profile-form" onSubmit={(e) => handleSubmit(e)}>
+        <Stack spacing={2} sx={{ flexGrow: 1 }}>
           {renderInput({
             label: '姓名',
             field: 'name',
@@ -246,8 +246,8 @@ export default function EditProfileCard({
             field: 'location',
             startIcon: <LocationOnRounded />,
           })}
-        </form>
-      </Stack>
+        </Stack>
+      </form>
     </InfoCard>
   )
 }
