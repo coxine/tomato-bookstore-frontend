@@ -16,24 +16,6 @@ export default function Books() {
   const [bookList, setBookList] = useState<Book[]>()
   const [adList, setAdList] = useState<Advertisement[]>()
   const numberOfAdsDisplayed = 2 // 随机生成广告数
-  // const adList: Advertisement[] = [
-  //   {
-  //     id: '1',
-  //     title: 'JVM高效进阶，掌握Java核心之钥',
-  //     content:
-  //       '深入理解Java虚拟机：从字节码到内存管理，全面掌握JVM奥秘，助你攻克Java难关，打造更稳健程序',
-  //     imgUrl: 'https://bed.cos.tg/file/1745411308246_夏夜的静谧学者.png',
-  //     productId: '101',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: '写出整洁代码，铸就开发者的极致修养',
-  //     content:
-  //       '以整洁优雅的代码，让开发者告别混乱与Bug，Robert Martin经典大著作，助你修炼编程内功！',
-  //     imgUrl: 'https://bed.cos.tg/file/1745411308246_夏夜的静谧学者.png',
-  //     productId: '202',
-  //   },
-  // ]
 
   const fetchAllSimpleBook = () => {
     productGetAllSimpleInfo().then((res) => {

@@ -12,8 +12,7 @@ import { Advertisement } from '../../types/advertisement'
 import DeleteAdDialog from './DeleteAdDiaglog'
 
 const getColumns = (
-  setAdId: (id: string) => void,
-  handleDeleteConfirmation: () => void
+  handleDeleteConfirmation: (id: string) => void
 ): GridColDef<Advertisement>[] => {
   return [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -72,8 +71,7 @@ const getColumns = (
                 color="danger"
                 size="sm"
                 onClick={() => {
-                  setAdId(row.id.toString())
-                  handleDeleteConfirmation()
+                  handleDeleteConfirmation(row.id.toString())
                 }}
               >
                 <Delete />
@@ -92,7 +90,8 @@ export default function AdsDataTable() {
   const [adId, setAdId] = useState<string>('')
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id: string) => {
+    setAdId(id)
     setShowDeleteDialog(true)
   }
 
@@ -100,10 +99,7 @@ export default function AdsDataTable() {
     setShowDeleteDialog(false)
   }
 
-  const columns = useMemo(
-    () => getColumns(setAdId, handleDeleteConfirmation),
-    []
-  )
+  const columns = useMemo(() => getColumns(handleDeleteConfirmation), [])
 
   const fetchAllSimpleBook = () => {
     adGetAllInfo().then((res) => {

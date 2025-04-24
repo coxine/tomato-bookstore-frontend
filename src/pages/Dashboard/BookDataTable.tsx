@@ -11,8 +11,7 @@ import { Book } from '../../types/book'
 import DeleteBookDialog from '../Books/DeleteBookDialog'
 
 const getColumns = (
-  setProductId: (id: string) => void,
-  handleDeleteConfirmation: () => void
+  handleDeleteConfirmation: (id: string) => void
 ): GridColDef<Book>[] => {
   return [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -80,8 +79,7 @@ const getColumns = (
                 color="danger"
                 size="sm"
                 onClick={() => {
-                  setProductId(row.id.toString())
-                  handleDeleteConfirmation()
+                  handleDeleteConfirmation(row.id.toString())
                 }}
               >
                 <Delete />
@@ -100,7 +98,8 @@ export default function BookDataTable() {
   const [productId, setProductId] = useState<string>('')
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = (id: string) => {
+    setProductId(id)
     setShowDeleteDialog(true)
   }
 
@@ -108,10 +107,7 @@ export default function BookDataTable() {
     setShowDeleteDialog(false)
   }
 
-  const columns = useMemo(
-    () => getColumns(setProductId, handleDeleteConfirmation),
-    []
-  )
+  const columns = useMemo(() => getColumns(handleDeleteConfirmation), [])
 
   const fetchAllSimpleBook = () => {
     productGetAllSimpleInfo().then((res) => {

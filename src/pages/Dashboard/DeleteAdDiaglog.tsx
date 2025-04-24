@@ -20,8 +20,8 @@ export function DeleteAdDialog({
     adDelete(adId).then((res) => {
       if (res.data.code === '200') {
         showToast({
-          title: '删除商品',
-          message: '商品删除成功！',
+          title: '删除广告',
+          message: '广告删除成功！',
           severity: ToastSeverity.Success,
           duration: 3000,
         })

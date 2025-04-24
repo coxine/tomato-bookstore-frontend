@@ -162,18 +162,6 @@ export default function EditBookCard({
       duration: 3000,
     })
 
-    const requiredFields: (keyof Book)[] = ['title', 'price', 'rate']
-    for (const field of requiredFields) {
-      if (!bookData[field]) {
-        showToast({
-          title: '注册失败',
-          message: `${field} 为必填项`,
-          severity: ToastSeverity.Danger,
-          duration: 3000,
-        })
-        return
-      }
-    }
     const firstErrorMessage = Object.values(errors).find((msg) => msg)
 
     if (firstErrorMessage !== undefined) {
