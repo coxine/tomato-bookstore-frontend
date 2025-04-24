@@ -6,20 +6,13 @@ import {
   UploadRounded,
   SaveRounded,
 } from '@mui/icons-material'
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Stack,
-  styled,
-} from '@mui/joy'
-import React from 'react'
+import { Button, Stack, styled } from '@mui/joy'
+import React, { FormEvent } from 'react'
 
 import { imageAvatarUpload } from '../../api/picture'
 import { userUpdate } from '../../api/user'
 import InfoCard from '../../components/UI/InfoCard'
+import { RenderInput } from '../../components/UI/RenderInput'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Profile } from '../../types/profile'
 import { profileValidators } from '../../utils/validator/profileValidator'
@@ -93,7 +86,8 @@ export default function EditProfileCard({
     })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     showToast({
       title: '正在提交',
       message: '请稍等...',
@@ -167,30 +161,34 @@ export default function EditProfileCard({
     })
   }
 
-  const renderInput = (
-    label: string,
-    field: keyof Profile,
-    startIcon: React.ReactNode,
-    placeholder?: string,
-    type: string = 'text'
-  ) => (
-    <Stack spacing={1}>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          size="sm"
-          type={type}
-          startDecorator={startIcon}
-          value={formData[field] || ''}
-          placeholder={placeholder}
-          onChange={(e) => handleChange(field, e.target.value)}
-        />
-        {errors[field] && (
-          <FormHelperText sx={{ color: 'red' }}>{errors[field]}</FormHelperText>
-        )}
-      </FormControl>
-    </Stack>
-  )
+  function renderInput({
+    label,
+    field,
+    required,
+    placeholder,
+    type,
+    startIcon,
+  }: {
+    label: string
+    field: keyof Profile
+    required?: boolean
+    placeholder?: string
+    type?: string
+    startIcon: React.ReactNode
+  }) {
+    return (
+      <RenderInput<Profile>
+        label={label}
+        field={field}
+        data={formData}
+        required={required}
+        placeholder={placeholder}
+        type={type}
+        startIcon={startIcon}
+        onChange={handleChange}
+      />
+    )
+  }
 
   return (
     <InfoCard
@@ -215,7 +213,8 @@ export default function EditProfileCard({
             size="sm"
             variant="soft"
             startDecorator={<SaveRounded />}
-            onClick={handleSubmit}
+            type="submit"
+            form="edit-profile-form"
           >
             保存
           </Button>
@@ -223,15 +222,31 @@ export default function EditProfileCard({
       }
     >
       <Stack spacing={2} sx={{ flexGrow: 1 }}>
-        {renderInput('姓名', 'name', <BadgeRounded />)}
-        {renderInput(
-          '手机号',
-          'telephone',
-          <LocalPhoneRounded />,
-          '1xxxxxxxxxx'
-        )}
-        {renderInput('Email', 'email', <EmailRounded />, 'email', 'email')}
-        {renderInput('位置', 'location', <LocationOnRounded />)}
+        <form id="edit-profile-form" onSubmit={(e) => handleSubmit(e)}>
+          {renderInput({
+            label: '姓名',
+            field: 'name',
+            startIcon: <BadgeRounded />,
+          })}
+          {renderInput({
+            label: '手机号',
+            field: 'telephone',
+            startIcon: <LocalPhoneRounded />,
+            placeholder: '1xxxxxxxxxx',
+          })}
+          {renderInput({
+            label: 'Email',
+            field: 'email',
+            startIcon: <EmailRounded />,
+            type: 'email',
+            placeholder: 'email',
+          })}
+          {renderInput({
+            label: '位置',
+            field: 'location',
+            startIcon: <LocationOnRounded />,
+          })}
+        </form>
       </Stack>
     </InfoCard>
   )

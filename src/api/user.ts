@@ -71,3 +71,17 @@ export const userUpdate = (userUpdateInfo: Profile) => {
       return res
     })
 }
+
+export const userUpdatePassword = (
+  oldPassword: string,
+  newPassword: string
+) => {
+  return axios
+    .put<ApiResponse<string>>(`${USER_MODULE}/password`, {
+      password: oldPassword,
+      newPassword: newPassword,
+    })
+    .then((res) => {
+      return res
+    })
+}

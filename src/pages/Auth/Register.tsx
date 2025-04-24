@@ -69,24 +69,6 @@ export default function Register() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const requiredFields: (keyof FormData)[] = [
-      'username',
-      'password',
-      'confirmPassword',
-      'name',
-    ]
-    for (const field of requiredFields) {
-      if (!formData[field]) {
-        showToast({
-          title: '注册失败',
-          message: `${field} 为必填项`,
-          severity: ToastSeverity.Danger,
-          duration: 3000,
-        })
-        return
-      }
-    }
-
     // 如果存在错误，展示第一个错误信息
     const errorMessage = Object.values(errors).find((msg) => msg)
     if (errorMessage) {

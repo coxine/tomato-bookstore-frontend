@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
+import { adGetInfo } from '../../api/ad'
 import MainLayout from '../../components/layouts/MainLayout'
 import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
@@ -25,16 +26,18 @@ export default function AdsEdit() {
       return
     }
 
-    setTimeout(() => {
-      const mockData: Advertisement = {
-        id: adId,
-        title: '测试广告' + adId,
-        content: '这是一个测试广告的详细内容描述，支持较长文本。',
-        imgUrl: 'https://picsum.photos/400/300',
-        productId: '101',
+    adGetInfo(adId).then((res) => {
+      if (res.data.code === '200') {
+        setInitialAdsData(res.data.data)
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！获取商品数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
       }
-      setInitialAdsData(mockData)
-    }, 500)
+    })
   }, [adId, navigate])
 
   return (

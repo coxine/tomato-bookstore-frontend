@@ -7,7 +7,6 @@ interface AdCardProps {
 }
 
 export default function AdCard({ ad }: AdCardProps) {
-  console.log('AdCard', ad)
   return (
     <Card
       key={ad.id}
