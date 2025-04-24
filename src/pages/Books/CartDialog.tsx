@@ -24,10 +24,10 @@ export default function CartDialog({
 
   return (
     <AlertDialogModal
-      title="选择款式规格"
+      title={mode === 'add' ? '加入购物车' : '立即购买'}
       open={true}
       onClose={onClose}
-      icon={<AddShoppingCart />}
+      icon={mode === 'add' ? <AddShoppingCart /> : <ShoppingCartCheckout />}
       actions={
         <Button
           color={mode === 'add' ? 'warning' : 'danger'}
@@ -67,6 +67,7 @@ export default function CartDialog({
           startDecorator={
             mode === 'add' ? <AddShoppingCart /> : <ShoppingCartCheckout />
           }
+          disabled={dialogQuantity > (stockpile?.amount || 0)}
         >
           {mode === 'add' ? '加入购物车' : '立即购买'}
         </Button>

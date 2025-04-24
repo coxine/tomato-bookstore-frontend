@@ -22,42 +22,37 @@ export default function BookDetails() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [cartMode, setCartMode] = useState<'add' | 'buy'>('add')
 
-  const fetchBook = useCallback(async () => {
-    if (!productId) {
-      showToast({
-        title: '意外错误',
-        message: '不存在商品ID！',
-        severity: ToastSeverity.Warning,
-        duration: 3000,
-      })
-      navigate('/')
-    } else {
-      productGetInfo(productId).then((res) => {
-        if (res.data.code === '200') {
-          setBookDetails(res.data.data)
-        } else {
-          showToast({
-            title: '未知消息码',
-            message: '服务器出错！获取商品数据失败，请刷新尝试！',
-            severity: ToastSeverity.Warning,
-            duration: 3000,
-          })
-        }
-      })
-      productGetStockpile(productId).then((res) => {
-        if (res.data.code === '200') {
-          setStockpile(res.data.data)
-        } else {
-          showToast({
-            title: '未知消息码',
-            message: '服务器出错！获取商品库存失败，请刷新尝试！',
-            severity: ToastSeverity.Warning,
-            duration: 3000,
-          })
-        }
-      })
-    }
-  }, [productId, navigate])
+  const fecthStockpile = useCallback(() => {
+    if (!productId) return
+    productGetStockpile(productId).then((res) => {
+      if (res.data.code === '200') {
+        setStockpile(res.data.data)
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！获取商品库存失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }, [productId])
+
+  const fetchBook = useCallback(() => {
+    if (!productId) return
+    productGetInfo(productId).then((res) => {
+      if (res.data.code === '200') {
+        setBookDetails(res.data.data)
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！获取商品数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }, [productId])
 
   const handleCart = (mode: 'add' | 'buy') => {
     if (!bookDetails || !productId) return
@@ -79,8 +74,19 @@ export default function BookDetails() {
   }
 
   useEffect(() => {
+    if (!productId) {
+      showToast({
+        title: '意外错误',
+        message: '不存在商品ID！',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+      navigate('/')
+      return
+    }
     fetchBook()
-  }, [fetchBook])
+    fecthStockpile()
+  }, [fecthStockpile, fetchBook, navigate, productId])
 
   return (
     <MainLayout title="书籍详情" breadcrumbsItems={breadcrumbsItems}>
