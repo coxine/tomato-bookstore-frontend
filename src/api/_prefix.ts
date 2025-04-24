@@ -17,3 +17,6 @@ export const CART_MODULE = `${API_MODULE}/cart`
 
 // 订单api路径
 export const ORDER_MODULE = `${API_MODULE}/orders`
+
+// 广告api路径
+export const AD_MODULE = `${API_MODULE}/advertisements`

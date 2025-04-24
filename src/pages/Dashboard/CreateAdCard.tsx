@@ -3,16 +3,19 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Input,
   Stack,
   styled,
   Textarea,
 } from '@mui/joy'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 
+import { adCreate } from '../../api/ad'
+import { imageAdImageUploadWithoutCreate } from '../../api/picture'
 import InfoCard from '../../components/UI/InfoCard'
+import { RenderInput } from '../../components/UI/RenderInput'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Advertisement } from '../../types/advertisement'
+import { AdValidators } from '../../utils/validator/adValidator'
 
 const VisuallyHiddenInput = styled('input')`
   clip: rect(0 0 0 0);
@@ -27,6 +30,7 @@ const VisuallyHiddenInput = styled('input')`
 `
 
 export default function CreateAdCard() {
+  const [image, setImage] = useState<File | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({
     title: '',
     content: '',
@@ -48,58 +52,65 @@ export default function CreateAdCard() {
       [field]: value,
     }))
 
-    // Simple validation
-    if (field === 'title' && !value.trim()) {
-      setErrors((prev) => ({ ...prev, [field]: '标题不能为空' }))
-    } else if (field === 'productId' && !value.trim()) {
-      setErrors((prev) => ({ ...prev, [field]: '商品ID不能为空' }))
-    } else {
-      setErrors((prev) => ({ ...prev, [field]: '' }))
+    if (AdValidators[field]) {
+      const { valid, message } = AdValidators[field](value)
+      setErrors((prev) => ({ ...prev, [field]: valid ? '' : message || '' }))
     }
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Image upload triggered', event)
-  }
-
-  const handleSubmit = () => {
-    showToast({
-      title: '正在提交',
-      message: '请稍等...',
-      severity: ToastSeverity.Primary,
-      duration: 3000,
-    })
-
-    const newErrors: Record<string, string> = {}
-    if (!adData.title.trim()) {
-      newErrors.title = '标题不能为空'
-    }
-    if (!adData.productId.trim()) {
-      newErrors.productId = '商品ID不能为空'
-    }
-
-    setErrors(newErrors)
-
-    const hasErrors = Object.values(newErrors).some((error) => error)
-    if (hasErrors) {
-      const firstErrorMessage = Object.values(newErrors).find((msg) => msg)
+    const file = event.target.files?.[0]
+    if (!file) {
       showToast({
-        title: '提交失败',
-        message: firstErrorMessage || '表单验证失败',
+        title: '图片上传失败',
+        message: '图片上传错误！请重新尝试',
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
       return
     }
-
-    // For now, just console.log the data
-    console.log('Advertisement data submitted:', adData)
-
+    if (!file.type.startsWith('image/')) {
+      showToast({
+        title: '图片上传失败',
+        message: '请选择有效的图片文件！',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+    setImage(file)
     showToast({
-      title: '创建成功',
-      message: `广告 ${adData.title} 已经成功创建！`,
+      title: '图片选择成功',
+      message: '请点击保存按钮以提交！',
       severity: ToastSeverity.Success,
       duration: 3000,
+    })
+  }
+
+  const adInfoSubmit = (infoData: Advertisement) => {
+    adCreate(infoData).then((res) => {
+      if (res.data.code === '200') {
+        showToast({
+          title: '创建成功',
+          message: `广告 ${adData.title} 已经成功创建！`,
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '创建失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知消息码',
+          message: '服务器出错！创建广告失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
     })
 
     setAdData({
@@ -111,30 +122,80 @@ export default function CreateAdCard() {
     })
   }
 
-  const renderInput = (
-    label: string,
-    field: keyof Advertisement,
-    placeholder: string = '',
-    type: string = 'text'
-  ) => (
-    <Stack spacing={1}>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          size="sm"
-          type={type}
-          value={adData[field] || ''}
-          onChange={(e) => handleChange(field, e.target.value)}
-          placeholder={placeholder || label}
-        />
-        {errors[field] && (
-          <div style={{ color: 'red', fontSize: '0.75rem', marginTop: '4px' }}>
-            {errors[field]}
-          </div>
-        )}
-      </FormControl>
-    </Stack>
-  )
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault() // 防止form的submit事件自动刷新页面
+    showToast({
+      title: '正在提交',
+      message: '请稍等...',
+      severity: ToastSeverity.Primary,
+      duration: 3000,
+    })
+
+    const firstErrorMessage = Object.values(errors).find((msg) => msg)
+
+    if (firstErrorMessage !== undefined) {
+      showToast({
+        title: '提交失败',
+        message: firstErrorMessage,
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
+      return
+    }
+
+    if (!image) {
+      adInfoSubmit(adData)
+    } else {
+      const imageFile = new FormData()
+      imageFile.append('file', image)
+      imageAdImageUploadWithoutCreate(imageFile).then((res) => {
+        if (res.data.code === '200') {
+          handleChange('imgUrl', res.data.data)
+          adInfoSubmit({ ...adData, imgUrl: res.data.data })
+        } else if (res.data.code === '400') {
+          showToast({
+            title: '提交失败',
+            message: res.data.msg,
+            severity: ToastSeverity.Danger,
+            duration: 3000,
+          })
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: '服务器出错！提交书籍封面失败，请重新尝试提交！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
+  }
+
+  function renderInput({
+    label,
+    field,
+    required,
+    placeholder,
+    type,
+  }: {
+    label: string
+    field: keyof Advertisement
+    required?: boolean
+    placeholder?: string
+    type?: string
+  }) {
+    return (
+      <RenderInput<Advertisement>
+        label={label}
+        field={field}
+        data={adData}
+        required={required}
+        placeholder={placeholder}
+        type={type}
+        onChange={handleChange}
+      />
+    )
+  }
 
   return (
     <InfoCard
@@ -158,7 +219,8 @@ export default function CreateAdCard() {
           <Button
             size="sm"
             variant="soft"
-            onClick={handleSubmit}
+            type="submit"
+            form="create-ad-form"
             startDecorator={<Save />}
           >
             保存
@@ -167,21 +229,33 @@ export default function CreateAdCard() {
       }
     >
       <Stack spacing={3}>
-        {renderInput('标题', 'title', '广告标题')}
-        {renderInput('商品ID', 'productId', '关联的商品ID')}
+        <form id="create-ad-form" onSubmit={(e) => handleSubmit(e)}>
+          {renderInput({
+            label: '标题',
+            field: 'title',
+            required: true,
+            placeholder: '广告标题',
+          })}
+          {renderInput({
+            label: '商品ID',
+            field: 'productId',
+            required: true,
+            placeholder: '关联的商品ID',
+          })}
 
-        <Stack spacing={1}>
-          <FormLabel>内容</FormLabel>
-          <FormControl>
-            <Textarea
-              minRows={3}
-              value={adData.content || ''}
-              onChange={(e) => handleChange('content', e.target.value)}
-              placeholder="广告内容描述"
-              size="sm"
-            />
-          </FormControl>
-        </Stack>
+          <Stack spacing={1}>
+            <FormLabel>内容</FormLabel>
+            <FormControl required>
+              <Textarea
+                minRows={3}
+                value={adData.content || ''}
+                onChange={(e) => handleChange('content', e.target.value)}
+                placeholder="广告内容描述"
+                size="sm"
+              />
+            </FormControl>
+          </Stack>
+        </form>
       </Stack>
     </InfoCard>
   )

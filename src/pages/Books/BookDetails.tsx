@@ -101,6 +101,11 @@ export default function BookDetails() {
             <DeleteBookDialog
               productId={productId}
               onClose={handleCloseDeleteDialog}
+              afterDelete={() => {
+                setTimeout(() => {
+                  window.location.href = '/books'
+                }, 500)
+              }}
             />
           )}
 

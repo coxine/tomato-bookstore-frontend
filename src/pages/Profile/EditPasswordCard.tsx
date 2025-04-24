@@ -1,15 +1,10 @@
 import { SaveRounded } from '@mui/icons-material'
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Input,
-  Stack,
-} from '@mui/joy'
-import React from 'react'
+import { Button, Stack } from '@mui/joy'
+import React, { FormEvent } from 'react'
 
+import { userUpdatePassword } from '../../api/user'
 import InfoCard from '../../components/UI/InfoCard'
+import { RenderInput } from '../../components/UI/RenderInput'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 
 export default function EditPasswordCard() {
@@ -26,17 +21,28 @@ export default function EditPasswordCard() {
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
-    if (field === 'confirmPassword' && value !== formData.newPassword) {
+    if (
+      (field === 'confirmPassword' && value !== formData.newPassword) ||
+      (field === 'newPassword' && value !== formData.confirmPassword)
+    ) {
       setErrors((prev) => ({
         ...prev,
         confirmPassword: '密码不一致',
       }))
+    } else if (!formData.newPassword && !formData.confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: '',
+      }))
+    } else if (field === 'newPassword' && value == formData.confirmPassword) {
+      setErrors((prev) => ({ ...prev, confirmPassword: '' }))
     } else {
       setErrors((prev) => ({ ...prev, [field]: '' }))
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (Object.values(errors).some((msg) => msg)) {
       showToast({
         title: '提交失败',
@@ -52,36 +58,65 @@ export default function EditPasswordCard() {
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
-    showToast({
-      title: '提交成功',
-      message: '密码已更新',
-      severity: ToastSeverity.Success,
-      duration: 3000,
-    })
+    userUpdatePassword(formData.currentPassword, formData.newPassword).then(
+      (res) => {
+        if (res.data.code === '200') {
+          showToast({
+            title: '提交成功',
+            message: '密码已更新',
+            severity: ToastSeverity.Success,
+            duration: 3000,
+          })
+          setFormData({
+            currentPassword: '',
+            newPassword: '',
+            confirmPassword: '',
+          })
+        } else if (res.data.code === '400') {
+          showToast({
+            title: '提交失败',
+            message: res.data.msg,
+            severity: ToastSeverity.Danger,
+            duration: 3000,
+          })
+        } else {
+          showToast({
+            title: '未知消息码',
+            message: `服务器出错！请稍后再试！`,
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      }
+    )
   }
 
-  const renderInput = (
-    label: string,
-    field: keyof typeof formData,
-    placeholder?: string,
-    type: string = 'password'
-  ) => (
-    <Stack spacing={1}>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          size="sm"
-          type={type}
-          value={formData[field] || ''}
-          placeholder={placeholder}
-          onChange={(e) => handleChange(field, e.target.value)}
-        />
-        {errors[field] && (
-          <FormHelperText sx={{ color: 'red' }}>{errors[field]}</FormHelperText>
-        )}
-      </FormControl>
-    </Stack>
-  )
+  function renderInput({
+    label,
+    field,
+    required,
+    placeholder,
+    type,
+  }: {
+    label: string
+    field: keyof typeof formData
+    required?: boolean
+    placeholder?: string
+    type?: string
+  }) {
+    return (
+      <RenderInput<typeof formData>
+        label={label}
+        field={field}
+        data={formData}
+        required={required}
+        placeholder={placeholder}
+        type={type || 'password'}
+        errors={errors}
+        onChange={handleChange}
+      />
+    )
+  }
 
   return (
     <InfoCard
@@ -91,16 +126,32 @@ export default function EditPasswordCard() {
           size="sm"
           variant="soft"
           startDecorator={<SaveRounded />}
-          onClick={handleSubmit}
+          type="submit"
+          form="edit-password-form"
         >
           保存
         </Button>
       }
     >
       <Stack spacing={2} sx={{ flexGrow: 1 }}>
-        {renderInput('当前密码', 'currentPassword', '请输入当前密码')}
-        {renderInput('新密码', 'newPassword', '请输入新密码')}
-        {renderInput('确认新密码', 'confirmPassword', '请再次输入新密码')}
+        <form id="edit-password-form" onSubmit={(e) => handleSubmit(e)}>
+          {renderInput({
+            label: '当前密码',
+            field: 'currentPassword',
+            placeholder: '请输入当前密码',
+          })}
+          {renderInput({
+            label: '新密码',
+            field: 'newPassword',
+            required: formData.currentPassword.length != 0,
+            placeholder: '请输入新密码',
+          })}
+          {renderInput({
+            label: '确认新密码',
+            field: 'confirmPassword',
+            placeholder: '请再次输入新密码',
+          })}
+        </form>
       </Stack>
     </InfoCard>
   )

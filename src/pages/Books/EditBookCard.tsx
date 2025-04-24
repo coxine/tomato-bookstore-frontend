@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom'
 import { imageProductCoverUpload } from '../../api/picture'
 import { productUpdate } from '../../api/products'
 import InfoCard from '../../components/UI/InfoCard'
+import { RenderInput } from '../../components/UI/RenderInput'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Specification } from '../../types/specification'
@@ -152,13 +153,27 @@ export default function EditBookCard({
     })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault() // 防止form的submit事件自动刷新页面
     showToast({
       title: '正在提交',
       message: '请稍等...',
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
+
+    const requiredFields: (keyof Book)[] = ['title', 'price', 'rate']
+    for (const field of requiredFields) {
+      if (!bookData[field]) {
+        showToast({
+          title: '注册失败',
+          message: `${field} 为必填项`,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+        return
+      }
+    }
     const firstErrorMessage = Object.values(errors).find((msg) => msg)
 
     if (firstErrorMessage !== undefined) {
@@ -228,25 +243,31 @@ export default function EditBookCard({
     })
   }
 
-  // 渲染通用输入框
-  const renderInput = (
-    label: string,
-    field: keyof Book,
-    type: string = 'text'
-  ) => (
-    <Stack spacing={1}>
-      <FormLabel>{label}</FormLabel>
-      <FormControl>
-        <Input
-          size="sm"
-          type={type}
-          value={bookData[field] ? bookData[field].toString() : ''}
-          onChange={(e) => handleChange(field, e.target.value)}
-          placeholder={label}
-        />
-      </FormControl>
-    </Stack>
-  )
+  function renderInput({
+    label,
+    field,
+    required,
+    placeholder,
+    type,
+  }: {
+    label: string
+    field: keyof Book
+    required?: boolean
+    placeholder?: string
+    type?: string
+  }) {
+    return (
+      <RenderInput<Book>
+        label={label}
+        field={field}
+        data={bookData}
+        required={required}
+        placeholder={placeholder}
+        type={type}
+        onChange={handleChange}
+      />
+    )
+  }
 
   return (
     <InfoCard
@@ -270,7 +291,8 @@ export default function EditBookCard({
           <Button
             size="sm"
             variant="soft"
-            onClick={handleSubmit}
+            type="submit"
+            form="edit-book-form"
             startDecorator={<Save />}
           >
             保存
@@ -279,152 +301,159 @@ export default function EditBookCard({
       }
     >
       <Stack spacing={3}>
-        {renderInput('标题', 'title')}
-        {renderInput('价格', 'price', 'number')}
-        <Stack spacing={1}>
-          <FormLabel>简介</FormLabel>
-          <FormControl>
-            <Textarea
-              minRows={2}
-              value={bookData.description || ''}
-              onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="请输入商品简介"
-              size="sm"
-            />
-          </FormControl>
-        </Stack>
-        <Stack spacing={1}>
-          <FormLabel>详细介绍（支持Markdown语法）</FormLabel>
-          <FormControl>
-            <Textarea
-              minRows={3}
-              value={bookData.detail || ''}
-              onChange={(e) => handleChange('detail', e.target.value)}
-              placeholder="请输入详细介绍"
-              size="sm"
-            />
-          </FormControl>
-        </Stack>
-
-        {/* 规格部分 */}
-        <Stack spacing={1}>
-          <FormLabel>规格</FormLabel>
-          {bookData.specifications &&
-            bookData.specifications.map((spec, index) => (
-              <Stack
-                key={spec.id}
-                direction={{ xs: 'column', sm: 'row' }}
-                alignItems={{ sm: 'center' }}
-                spacing={1}
-              >
-                <FormControl sx={{ flex: 1 }}>
-                  <Input
-                    size="sm"
-                    value={spec.item}
-                    placeholder="规格名称"
-                    onChange={(e) =>
-                      handleSpecChange(index, 'item', e.target.value)
-                    }
-                  />
-                </FormControl>
-                <FormControl sx={{ flex: 1 }}>
-                  <Input
-                    size="sm"
-                    value={spec.value}
-                    placeholder="规格值"
-                    onChange={(e) =>
-                      handleSpecChange(index, 'value', e.target.value)
-                    }
-                    endDecorator={
-                      <IconButton
-                        variant="soft"
-                        color="danger"
-                        onClick={() => removeSpecification(index)}
-                      >
-                        <Delete />
-                      </IconButton>
-                    }
-                  />
-                </FormControl>
-              </Stack>
-            ))}
-
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
-            sx={{ flex: 1 }}
-          >
-            <FormControl sx={{ flex: 1 }}>
-              <Input
+        <form id="edit-book-form" onSubmit={(e) => handleSubmit(e)}>
+          {renderInput({ label: '标题', field: 'title', required: true })}
+          {renderInput({
+            label: '价格',
+            field: 'price',
+            required: true,
+            type: 'number',
+          })}
+          <Stack spacing={1}>
+            <FormLabel>简介</FormLabel>
+            <FormControl>
+              <Textarea
+                minRows={2}
+                value={bookData.description || ''}
+                onChange={(e) => handleChange('description', e.target.value)}
+                placeholder="请输入商品简介"
                 size="sm"
-                value={newSpec.item}
-                placeholder="规格名称"
-                onChange={(e) =>
-                  setNewSpec((prev) => ({ ...prev, item: e.target.value }))
-                }
-              />
-            </FormControl>
-            <FormControl sx={{ flex: 1 }}>
-              <Input
-                size="sm"
-                value={newSpec.value}
-                placeholder="规格值"
-                onChange={(e) =>
-                  setNewSpec((prev) => ({ ...prev, value: e.target.value }))
-                }
-                endDecorator={
-                  <IconButton
-                    variant="soft"
-                    onClick={addSpecification}
-                    color="primary"
-                  >
-                    <Add />
-                  </IconButton>
-                }
               />
             </FormControl>
           </Stack>
-        </Stack>
-
-        {/* 标签部分 */}
-        <Stack spacing={1}>
-          <FormLabel>标签</FormLabel>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
-            alignItems={{ sm: 'center' }}
-          >
-            <FormControl sx={{ flex: 1 }}>
-              <Input
+          <Stack spacing={1}>
+            <FormLabel>详细介绍（支持Markdown语法）</FormLabel>
+            <FormControl>
+              <Textarea
+                minRows={3}
+                value={bookData.detail || ''}
+                onChange={(e) => handleChange('detail', e.target.value)}
+                placeholder="请输入详细介绍"
                 size="sm"
-                value={newTag}
-                placeholder="新标签"
-                onChange={(e) => setNewTag(e.target.value)}
-                endDecorator={
-                  <IconButton onClick={addTag} color="primary" variant="soft">
-                    <Add />
-                  </IconButton>
-                }
               />
             </FormControl>
           </Stack>
-          <Stack direction="row" flexWrap="wrap">
-            {bookData.tags &&
-              bookData.tags.map((tag, index) => (
-                <Button
-                  key={index}
-                  variant="soft"
-                  size="sm"
-                  color="primary"
-                  onClick={() => removeTag(index)}
-                  endDecorator={<HighlightOff />}
-                  sx={{ mx: 0.5, mb: 0.5 }}
+
+          {/* 规格部分 */}
+          <Stack spacing={1}>
+            <FormLabel>规格</FormLabel>
+            {bookData.specifications &&
+              bookData.specifications.map((spec, index) => (
+                <Stack
+                  key={spec.id}
+                  direction={{ xs: 'column', sm: 'row' }}
+                  alignItems={{ sm: 'center' }}
+                  spacing={1}
                 >
-                  {tag}
-                </Button>
+                  <FormControl sx={{ flex: 1 }}>
+                    <Input
+                      size="sm"
+                      value={spec.item}
+                      placeholder="规格名称"
+                      onChange={(e) =>
+                        handleSpecChange(index, 'item', e.target.value)
+                      }
+                    />
+                  </FormControl>
+                  <FormControl sx={{ flex: 1 }}>
+                    <Input
+                      size="sm"
+                      value={spec.value}
+                      placeholder="规格值"
+                      onChange={(e) =>
+                        handleSpecChange(index, 'value', e.target.value)
+                      }
+                      endDecorator={
+                        <IconButton
+                          variant="soft"
+                          color="danger"
+                          onClick={() => removeSpecification(index)}
+                        >
+                          <Delete />
+                        </IconButton>
+                      }
+                    />
+                  </FormControl>
+                </Stack>
               ))}
+
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              sx={{ flex: 1 }}
+            >
+              <FormControl sx={{ flex: 1 }}>
+                <Input
+                  size="sm"
+                  value={newSpec.item}
+                  placeholder="规格名称"
+                  onChange={(e) =>
+                    setNewSpec((prev) => ({ ...prev, item: e.target.value }))
+                  }
+                />
+              </FormControl>
+              <FormControl sx={{ flex: 1 }}>
+                <Input
+                  size="sm"
+                  value={newSpec.value}
+                  placeholder="规格值"
+                  onChange={(e) =>
+                    setNewSpec((prev) => ({ ...prev, value: e.target.value }))
+                  }
+                  endDecorator={
+                    <IconButton
+                      variant="soft"
+                      onClick={addSpecification}
+                      color="primary"
+                    >
+                      <Add />
+                    </IconButton>
+                  }
+                />
+              </FormControl>
+            </Stack>
           </Stack>
-        </Stack>
+
+          {/* 标签部分 */}
+          <Stack spacing={1}>
+            <FormLabel>标签</FormLabel>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              alignItems={{ sm: 'center' }}
+            >
+              <FormControl sx={{ flex: 1 }}>
+                <Input
+                  size="sm"
+                  value={newTag}
+                  placeholder="新标签"
+                  onChange={(e) => setNewTag(e.target.value)}
+                  endDecorator={
+                    <IconButton onClick={addTag} color="primary" variant="soft">
+                      <Add />
+                    </IconButton>
+                  }
+                />
+              </FormControl>
+            </Stack>
+            <Stack direction="row" flexWrap="wrap">
+              {bookData.tags &&
+                bookData.tags.map((tag, index) => (
+                  <Button
+                    key={index}
+                    variant="soft"
+                    size="sm"
+                    color="primary"
+                    onClick={() => removeTag(index)}
+                    endDecorator={<HighlightOff />}
+                    sx={{ mx: 0.5, mb: 0.5 }}
+                  >
+                    {tag}
+                  </Button>
+                ))}
+            </Stack>
+          </Stack>
+        </form>
       </Stack>
     </InfoCard>
   )

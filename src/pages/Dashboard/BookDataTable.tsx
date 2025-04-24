@@ -1,100 +1,117 @@
 import { Delete, Edit, Launch } from '@mui/icons-material'
 import { Box, IconButton, CssVarsProvider, Link } from '@mui/joy'
 import { GridColDef } from '@mui/x-data-grid'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 
 import { productGetAllSimpleInfo } from '../../api/products'
 import DataGridComponent from '../../components/UI/DataGridComponent'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
+import DeleteBookDialog from '../Books/DeleteBookDialog'
 
-const columns: GridColDef<Book>[] = [
-  { field: 'id', headerName: 'ID', width: 90 },
-  {
-    field: 'title',
-    headerName: '书名',
-    width: 200,
-    editable: false,
-    sortable: false,
-    filterable: false,
-  },
-  {
-    field: 'price',
-    headerName: '价格',
-    type: 'number',
-    width: 110,
-    editable: false,
-    valueFormatter: (params) => `¥${params || 0}`,
-  },
-  {
-    field: 'rate',
-    headerName: '评分',
-    type: 'number',
-    width: 110,
-    editable: false,
-  },
-  {
-    field: 'description',
-    headerName: '描述',
-    type: 'string',
-    width: 400,
-    editable: false,
-    sortable: false,
-    filterable: false,
-  },
-  {
-    field: 'actions',
-    headerName: '操作',
-    width: 160,
-    sortable: false,
-    filterable: false,
-    renderCell: (row) => {
-      return (
-        <CssVarsProvider>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: '100%',
-              width: '100%',
-            }}
-          >
-            <Link component={RouterLink} to={`/books/${row.id}`}>
-              <IconButton variant="plain" color="neutral" size="sm">
-                <Launch />
-              </IconButton>
-            </Link>
-            <Link component={RouterLink} to={`/books/edit/${row.id}`}>
-              <IconButton variant="plain" color="primary" size="sm">
-                <Edit />
-              </IconButton>
-            </Link>
-            <IconButton
-              variant="plain"
-              color="danger"
-              size="sm"
-              onClick={() => {
-                showToast({
-                  title: '删除功能未实现',
-                  message: '删除功能未实现',
-                  severity: ToastSeverity.Warning,
-                  duration: 3000,
-                })
+const getColumns = (
+  setProductId: (id: string) => void,
+  handleDeleteConfirmation: () => void
+): GridColDef<Book>[] => {
+  return [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'title',
+      headerName: '书名',
+      width: 200,
+      editable: false,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: 'price',
+      headerName: '价格',
+      type: 'number',
+      width: 110,
+      editable: false,
+      valueFormatter: (params) => `¥${params || 0}`,
+    },
+    {
+      field: 'rate',
+      headerName: '评分',
+      type: 'number',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'description',
+      headerName: '描述',
+      type: 'string',
+      width: 400,
+      editable: false,
+      sortable: false,
+      filterable: false,
+    },
+    {
+      field: 'actions',
+      headerName: '操作',
+      width: 160,
+      sortable: false,
+      filterable: false,
+      renderCell: (row) => {
+        return (
+          <CssVarsProvider>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
               }}
             >
-              <Delete />
-            </IconButton>
-          </Box>
-        </CssVarsProvider>
-      )
+              <Link component={RouterLink} to={`/books/${row.id}`}>
+                <IconButton variant="plain" color="neutral" size="sm">
+                  <Launch />
+                </IconButton>
+              </Link>
+              <Link component={RouterLink} to={`/books/edit/${row.id}`}>
+                <IconButton variant="plain" color="primary" size="sm">
+                  <Edit />
+                </IconButton>
+              </Link>
+              <IconButton
+                variant="plain"
+                color="danger"
+                size="sm"
+                onClick={() => {
+                  setProductId(row.id.toString())
+                  handleDeleteConfirmation()
+                }}
+              >
+                <Delete />
+              </IconButton>
+            </Box>
+          </CssVarsProvider>
+        )
+      },
     },
-  },
-]
+  ]
+}
 
 export default function BookDataTable() {
   const [bookList, setBookList] = useState<Book[]>()
   const [isLoading, setIsLoading] = useState(true)
+  const [productId, setProductId] = useState<string>('')
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+
+  const handleDeleteConfirmation = () => {
+    setShowDeleteDialog(true)
+  }
+
+  const handleCloseDeleteDialog = () => {
+    setShowDeleteDialog(false)
+  }
+
+  const columns = useMemo(
+    () => getColumns(setProductId, handleDeleteConfirmation),
+    []
+  )
 
   const fetchAllSimpleBook = () => {
     productGetAllSimpleInfo().then((res) => {
@@ -117,6 +134,19 @@ export default function BookDataTable() {
   }, [])
 
   return (
-    <DataGridComponent rows={bookList} columns={columns} loading={isLoading} />
+    <>
+      <DataGridComponent
+        rows={bookList}
+        columns={columns}
+        loading={isLoading}
+      />
+      {showDeleteDialog && productId && (
+        <DeleteBookDialog
+          productId={productId}
+          onClose={handleCloseDeleteDialog}
+          afterDelete={fetchAllSimpleBook}
+        />
+      )}
+    </>
   )
 }

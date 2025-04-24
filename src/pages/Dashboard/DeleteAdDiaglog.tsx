@@ -1,23 +1,23 @@
 import { Delete } from '@mui/icons-material'
 import { Button, Typography } from '@mui/joy'
 
-import { productDelete } from '../../api/products'
+import { adDelete } from '../../api/ad'
 import AlertDialogModal from '../../components/UI/AlertDialog'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 
-interface DeleteBookDialogProps {
-  productId: string
+interface DeleteAdDialogProps {
+  adId: string
   onClose: () => void
   afterDelete: () => void
 }
 
-export function DeleteBookDialog({
-  productId,
+export function DeleteAdDialog({
+  adId,
   onClose,
   afterDelete,
-}: DeleteBookDialogProps) {
+}: DeleteAdDialogProps) {
   const handleDelete = () => {
-    productDelete(productId).then((res) => {
+    adDelete(adId).then((res) => {
       if (res.data.code === '200') {
         showToast({
           title: '删除商品',
@@ -47,7 +47,7 @@ export function DeleteBookDialog({
 
   return (
     <AlertDialogModal
-      title="删除商品"
+      title="删除广告"
       open={true}
       onClose={onClose}
       icon={<Delete />}
@@ -62,9 +62,9 @@ export function DeleteBookDialog({
         </Button>
       }
     >
-      <Typography>您确定要删除此商品吗？</Typography>
+      <Typography>您确定要删除此广告吗？</Typography>
     </AlertDialogModal>
   )
 }
 
-export default DeleteBookDialog
+export default DeleteAdDialog
