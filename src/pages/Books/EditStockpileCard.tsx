@@ -95,6 +95,7 @@ export default function EditStockpileCard({
               size="sm"
               type="number"
               value={stockpile.frozen}
+              disabled
               onChange={(e) => handleChange('frozen', e.target.value)}
               placeholder="冻结库存"
             />
