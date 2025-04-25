@@ -41,7 +41,7 @@ export default function SpecificationTable({
                 <tr key={rowIndex}>
                   {row.map((spec) => (
                     <React.Fragment key={spec.id}>
-                      <td style={{ fontWeight: 500, width: 120 }}>
+                      <td style={{ fontWeight: 700, width: 120 }}>
                         {spec.item}
                       </td>
                       <td>{spec.value}</td>

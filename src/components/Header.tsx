@@ -6,8 +6,8 @@ import ColorSchemeToggle from './UI/ColorSchemeToggle'
 export default function Header() {
   return (
     <Sheet
-      variant="solid"
-      color="primary"
+      variant="soft"
+      color="neutral"
       invertedColors
       sx={{
         position: 'fixed',
@@ -20,6 +20,7 @@ export default function Header() {
         flexGrow: 1,
         p: 2,
         minWidth: 'min-content',
+        boxShadow: 'sm',
       }}
     >
       <Box
