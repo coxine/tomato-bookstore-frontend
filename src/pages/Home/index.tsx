@@ -57,7 +57,7 @@ export default function Home() {
               mb: 2,
             }}
           >
-            精选言情小说
+            精选书籍
           </Typography>
           <BookCarousel />
         </BasicContainer>
