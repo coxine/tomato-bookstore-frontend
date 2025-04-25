@@ -58,6 +58,8 @@ export default function AdCard({ ad }: AdCardProps) {
               overflow: 'hidden',
             }}
           >
+            「编辑精选」
+            <br />
             {ad.content}
           </Typography>
         )}

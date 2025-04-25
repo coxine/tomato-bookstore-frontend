@@ -26,7 +26,7 @@ export default function AuthorCarousel() {
       }}
     >
       {authorList.map((author, index) => (
-        <AuthorCard author={author} index={index} />
+        <AuthorCard author={author} index={index} key={index} />
       ))}
     </Box>
   )

@@ -31,8 +31,8 @@ export default function AuthorCard({ author, index }: AuthorCardProps) {
             overflow: 'auto',
           }}
         >
-          {author.tags.map((tag) => (
-            <Tag text={tag} color="primary" fontSize="sm" />
+          {author.tags.map((tag, index) => (
+            <Tag text={tag} color="primary" fontSize="sm" key={index} />
           ))}
         </Typography>
         <Typography level="body-sm" sx={{ mt: 1 }}>

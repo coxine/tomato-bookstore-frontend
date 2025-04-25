@@ -11,6 +11,8 @@ import HomePageImage from './HomePageImage'
 import HomePageWelcome from './HomePageWelcome'
 
 export default function Home() {
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'
+
   return (
     <>
       <Header />
@@ -33,34 +35,38 @@ export default function Home() {
           leftChildren={<HomePageWelcome />}
           rightChildren={<HomePageImage />}
         />
-        <BasicContainer>
-          <Typography
-            level="h1"
-            component="h2"
-            textAlign="center"
-            sx={{
-              writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
-              mb: 2,
-            }}
-          >
-            优秀作者
-          </Typography>
-          <AuthorCarousel />
-        </BasicContainer>
-        <BasicContainer>
-          <Typography
-            level="h1"
-            component="h2"
-            textAlign="center"
-            sx={{
-              writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
-              mb: 2,
-            }}
-          >
-            精选书籍
-          </Typography>
-          <BookCarousel />
-        </BasicContainer>
+        {isLoggedIn && (
+          <>
+            <BasicContainer>
+              <Typography
+                level="h1"
+                component="h2"
+                textAlign="center"
+                sx={{
+                  writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
+                  mb: 2,
+                }}
+              >
+                优秀作者
+              </Typography>
+              <AuthorCarousel />
+            </BasicContainer>
+            <BasicContainer>
+              <Typography
+                level="h1"
+                component="h2"
+                textAlign="center"
+                sx={{
+                  writingMode: { xs: 'horizontal-tb', md: 'vertical-rl' },
+                  mb: 2,
+                }}
+              >
+                精选书籍
+              </Typography>
+              <BookCarousel />
+            </BasicContainer>
+          </>
+        )}
         <Footer />
       </Box>
     </>

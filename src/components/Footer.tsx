@@ -6,9 +6,8 @@ import {
   ListSubheader,
   Sheet,
   Typography,
-  Divider,
 } from '@mui/joy'
-
+import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <Sheet
@@ -41,12 +40,13 @@ export default function Footer() {
           }}
         >
           <Typography textAlign={'left'}>
-            这里可以放一些文字
+            一屏纳尽千秋卷，
             <br />
-            但是没美化之前就很丑
+            指畔星河万古流。
+            <br />
+            Made with ❤️ by 软件攻嗔小队
           </Typography>
         </Box>
-        <Divider orientation="vertical" />
         <Box
           sx={{
             display: 'flex',
@@ -64,24 +64,27 @@ export default function Footer() {
             }}
           >
             <ListItem nested sx={{ width: { xs: '50%', md: 140 } }}>
-              <ListSubheader sx={{ fontWeight: 'xl' }}>链接</ListSubheader>
+              <ListSubheader sx={{ fontWeight: 'xl' }}>欢迎加入</ListSubheader>
               <List>
-                <ListItem>
-                  <ListItemButton>一些链接</ListItemButton>
+                <ListItem component={Link} to="https://software.nju.edu.cn/">
+                  <ListItemButton>南京大学软件学院</ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton>一些链接</ListItemButton>
+                <ListItem
+                  component={Link}
+                  to="https://p.seec.seecoder.cn/portal"
+                >
+                  <ListItemButton>SEECoder</ListItemButton>
                 </ListItem>
               </List>
             </ListItem>
             <ListItem nested sx={{ width: { xs: '50%', md: 180 } }}>
-              <ListSubheader sx={{ fontWeight: 'xl' }}>链接</ListSubheader>
+              <ListSubheader sx={{ fontWeight: 'xl' }}>友情链接</ListSubheader>
               <List>
-                <ListItem>
-                  <ListItemButton>一些链接</ListItemButton>
+                <ListItem component={Link} to="https://www.jjwxc.net/">
+                  <ListItemButton>晋江文学城</ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton>一些链接</ListItemButton>
+                <ListItem component={Link} to="https://www.qimao.com/">
+                  <ListItemButton>七猫免费小说</ListItemButton>
                 </ListItem>
               </List>
             </ListItem>
