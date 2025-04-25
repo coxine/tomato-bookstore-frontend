@@ -6,7 +6,7 @@ import {
   UploadRounded,
   SaveRounded,
 } from '@mui/icons-material'
-import { Button, Stack, styled } from '@mui/joy'
+import { Button, Stack, styled, Typography } from '@mui/joy'
 import React, { FormEvent } from 'react'
 
 import { imageAvatarUpload } from '../../api/picture'
@@ -195,20 +195,27 @@ export default function EditProfileCard({
       title="编辑资料"
       actions={
         <>
-          <Button
-            size="sm"
-            color="primary"
-            variant="plain"
-            component="label"
-            startDecorator={<UploadRounded />}
-          >
-            添加新头像
-            <VisuallyHiddenInput
-              type="file"
-              accept="image/*"
-              onChange={handleAvatarUpdate}
-            />
-          </Button>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {avatar && (
+              <Typography level="body-sm" color="success">
+                ✅ 选择图片成功，请保存
+              </Typography>
+            )}
+            <Button
+              size="sm"
+              color="primary"
+              variant="plain"
+              component="label"
+              startDecorator={<UploadRounded />}
+            >
+              添加新头像
+              <VisuallyHiddenInput
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpdate}
+              />
+            </Button>
+          </Stack>
           <Button
             size="sm"
             variant="soft"

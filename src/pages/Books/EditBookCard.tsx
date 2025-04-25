@@ -14,6 +14,7 @@ import {
   Stack,
   styled,
   Textarea,
+  Typography,
 } from '@mui/joy'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -262,20 +263,27 @@ export default function EditBookCard({
       title="编辑书籍信息"
       actions={
         <>
-          <Button
-            size="sm"
-            color="primary"
-            variant="plain"
-            component="label"
-            startDecorator={<UploadRounded />}
-          >
-            添加新封面
-            <VisuallyHiddenInput
-              type="file"
-              accept="image/*"
-              onChange={handleCoverUpdate}
-            />
-          </Button>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {cover && (
+              <Typography level="body-sm" color="success">
+                ✅ 选择图片成功，请保存
+              </Typography>
+            )}
+            <Button
+              size="sm"
+              color="primary"
+              variant="plain"
+              component="label"
+              startDecorator={<UploadRounded />}
+            >
+              添加新封面
+              <VisuallyHiddenInput
+                type="file"
+                accept="image/*"
+                onChange={handleCoverUpdate}
+              />
+            </Button>
+          </Stack>
           <Button
             size="sm"
             variant="soft"

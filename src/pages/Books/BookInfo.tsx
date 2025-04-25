@@ -93,7 +93,6 @@ export function BookInfo({
         </Typography>
         <Divider sx={{ mb: 1 }} />
         <BookDetailSection bookDetails={bookDetails} />
-        <Divider sx={{ mb: 1 }} />
         <BookActions
           book={bookDetails}
           onCartAction={onCartAction}

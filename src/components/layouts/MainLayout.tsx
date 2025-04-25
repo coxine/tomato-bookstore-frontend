@@ -49,29 +49,36 @@ export default function MainLayout({
             <Box sx={{ px: { xs: 2, md: 6 } }}>
               <Breadcrumbs separator="›" aria-label="breadcrumbs">
                 <Link to="/">
-                  <Typography level="body-md" color="primary" fontWeight="600">
+                  <Typography level="body-md" color="primary">
                     首页
                   </Typography>
                 </Link>
                 {(breadcrumbsItems ?? []).map((item) => (
                   <Link key={`${item.label}-${item.link}`} to={item.link}>
-                    <Typography
-                      level="body-md"
-                      color="primary"
-                      fontWeight="600"
-                    >
+                    <Typography level="body-md" color="primary">
                       {item.label}
                     </Typography>
                   </Link>
                 ))}
-                <Typography>{title}</Typography>
+                <Typography fontWeight="600">{title}</Typography>
               </Breadcrumbs>
-              <Typography level="h2" component="h1" sx={{ pl: 2 }}>
+              <Typography
+                level="h2"
+                component="h1"
+                sx={{
+                  pl: 2,
+                  pb: 2,
+                  display: {
+                    xs: 'none',
+                    sm: 'block',
+                  },
+                }}
+              >
                 {title}
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ p: 2 }}>{children}</Box>
+          <Box sx={{ px: 2 }}>{children}</Box>
         </Box>
       </Box>
     </Box>

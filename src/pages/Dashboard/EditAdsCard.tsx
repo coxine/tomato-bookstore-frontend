@@ -6,6 +6,7 @@ import {
   Stack,
   styled,
   Textarea,
+  Typography,
 } from '@mui/joy'
 import React, { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -195,20 +196,27 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
       title="编辑广告信息"
       actions={
         <>
-          <Button
-            size="sm"
-            color="primary"
-            variant="plain"
-            component="label"
-            startDecorator={<UploadRounded />}
-          >
-            上传广告图片
-            <VisuallyHiddenInput
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpdate}
-            />
-          </Button>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {image && (
+              <Typography level="body-sm" color="success">
+                ✅ 选择图片成功，请保存
+              </Typography>
+            )}
+            <Button
+              size="sm"
+              color="primary"
+              variant="plain"
+              component="label"
+              startDecorator={<UploadRounded />}
+            >
+              上传广告图片
+              <VisuallyHiddenInput
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpdate}
+              />
+            </Button>
+          </Stack>
           <Button
             size="sm"
             variant="soft"

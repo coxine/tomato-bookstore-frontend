@@ -14,9 +14,9 @@ import {
   Stack,
   styled,
   Textarea,
+  Typography,
 } from '@mui/joy'
 import { FormEvent, useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
 
 import { imageProductCoverUploadWithoutCreate } from '../../api/picture'
 import { productCreate } from '../../api/products'
@@ -40,7 +40,6 @@ const VisuallyHiddenInput = styled('input')`
 `
 
 export default function CreateBookCard() {
-  // const navigate = useNavigate()
   const [cover, setCover] = useState<File | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({
     title: '',
@@ -273,20 +272,27 @@ export default function CreateBookCard() {
       title="创建书籍"
       actions={
         <>
-          <Button
-            size="sm"
-            color="primary"
-            variant="plain"
-            component="label"
-            startDecorator={<UploadRounded />}
-          >
-            添加新封面
-            <VisuallyHiddenInput
-              type="file"
-              accept="image/*"
-              onChange={handleCoverAdd}
-            />
-          </Button>
+          <Stack direction="row" spacing={1} alignItems="center">
+            {cover && (
+              <Typography level="body-sm" color="success">
+                ✅ 选择图片成功，请保存
+              </Typography>
+            )}
+            <Button
+              size="sm"
+              color="primary"
+              variant="plain"
+              component="label"
+              startDecorator={<UploadRounded />}
+            >
+              添加新封面
+              <VisuallyHiddenInput
+                type="file"
+                accept="image/*"
+                onChange={handleCoverAdd}
+              />
+            </Button>
+          </Stack>
           <Button
             size="sm"
             variant="soft"
