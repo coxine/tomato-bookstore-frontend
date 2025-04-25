@@ -4,7 +4,7 @@ import { axios } from '../utils/require'
 
 import { CART_MODULE, ORDER_MODULE } from './_prefix'
 
-export const orderSubmit = (
+export const orderSubmit = async (
   cartItemIds: string[],
   shippingAddress: {
     address: string
@@ -13,21 +13,17 @@ export const orderSubmit = (
   },
   paymentMethod: string
 ) => {
-  return axios
-    .post<ApiResponse<order>>(`${CART_MODULE}/checkout`, {
-      cartItemIds: cartItemIds,
-      shipping_address: shippingAddress,
-      payment_method: paymentMethod,
-    })
-    .then((res) => {
-      return res
-    })
+  const res = await axios.post<ApiResponse<order>>(`${CART_MODULE}/checkout`, {
+    cartItemIds: cartItemIds,
+    shipping_address: shippingAddress,
+    payment_method: paymentMethod,
+  })
+  return res
 }
 
-export const orderToPay = (orderId: string) => {
-  return axios
-    .post<ApiResponse<orderForPay>>(`${ORDER_MODULE}/${orderId}/pay`)
-    .then((res) => {
-      return res
-    })
+export const orderToPay = async (orderId: string) => {
+  const res = await axios.post<ApiResponse<orderForPay>>(
+    `${ORDER_MODULE}/${orderId}/pay`
+  )
+  return res
 }
