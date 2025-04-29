@@ -23,7 +23,7 @@ export default function Books() {
         setBookList(res.data.data)
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！获取商品数据失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
@@ -38,7 +38,7 @@ export default function Books() {
         setAdList(res.data.data)
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！获取广告数据失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,

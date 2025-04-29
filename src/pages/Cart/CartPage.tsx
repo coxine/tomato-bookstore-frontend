@@ -80,7 +80,7 @@ export default function CartPage() {
         setSelectedItems(initialSelection)
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！获取商品数据失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
@@ -344,7 +344,7 @@ export default function CartPage() {
                     document.writeln(res.data.data.paymentForm)
                   } else {
                     showToast({
-                      title: '未知消息码',
+                      title: '未知错误',
                       message:
                         '服务器出错！前往支付宝支付失败，请刷新重新尝试！',
                       severity: ToastSeverity.Warning,
@@ -361,7 +361,7 @@ export default function CartPage() {
                 })
               } else {
                 showToast({
-                  title: '未知消息码',
+                  title: '未知错误',
                   message: '服务器出错！订单提交失败，请刷新重新尝试！',
                   severity: ToastSeverity.Warning,
                   duration: 3000,
@@ -371,7 +371,7 @@ export default function CartPage() {
           )
         } else {
           showToast({
-            title: '未知消息码',
+            title: '未知错误',
             message: '服务器出错！获取用户数据失败，请重新登录尝试！',
             severity: ToastSeverity.Warning,
             duration: 3000,
