@@ -106,7 +106,7 @@ export default function CreateAdCard() {
         })
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！创建广告失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
@@ -162,7 +162,7 @@ export default function CreateAdCard() {
           })
         } else {
           showToast({
-            title: '未知消息码',
+            title: '未知错误',
             message: '服务器出错！提交书籍封面失败，请重新尝试提交！',
             severity: ToastSeverity.Warning,
             duration: 3000,

@@ -29,7 +29,7 @@ export default function BookDetails() {
         setStockpile(res.data.data)
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！获取商品库存失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
@@ -45,7 +45,7 @@ export default function BookDetails() {
         setBookDetails(res.data.data)
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！获取商品数据失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,

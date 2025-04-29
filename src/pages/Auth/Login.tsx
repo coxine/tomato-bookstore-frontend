@@ -57,7 +57,7 @@ export default function Login() {
           } else {
             sessionStorage.removeItem('token')
             showToast({
-              title: '未知消息码',
+              title: '未知错误',
               message: `服务器出错！请重新尝试登录！`,
               severity: ToastSeverity.Warning,
               duration: 3000,
@@ -73,7 +73,7 @@ export default function Login() {
         })
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: `服务器出错！`,
           severity: ToastSeverity.Warning,
           duration: 3000,

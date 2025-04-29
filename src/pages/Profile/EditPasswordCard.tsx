@@ -81,7 +81,7 @@ export default function EditPasswordCard() {
           })
         } else {
           showToast({
-            title: '未知消息码',
+            title: '未知错误',
             message: `服务器出错！请稍后再试！`,
             severity: ToastSeverity.Warning,
             duration: 3000,

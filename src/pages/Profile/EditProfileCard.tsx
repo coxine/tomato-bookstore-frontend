@@ -77,7 +77,7 @@ export default function EditProfileCard({
         })
       } else {
         showToast({
-          title: '未知消息码',
+          title: '未知错误',
           message: '服务器出错！提交用户信息失败，请重新尝试提交！',
           severity: ToastSeverity.Warning,
           duration: 3000,
@@ -122,7 +122,7 @@ export default function EditProfileCard({
           })
         } else {
           showToast({
-            title: '未知消息码',
+            title: '未知错误',
             message: '服务器出错！提交用户头像失败，请重新尝试提交！',
             severity: ToastSeverity.Warning,
             duration: 3000,

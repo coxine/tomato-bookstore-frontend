@@ -21,7 +21,7 @@ export default function Profile() {
           setProfileData(res.data.data)
         } else {
           showToast({
-            title: '未知消息码',
+            title: '未知错误',
             message: '服务器出错！获取用户数据失败，请重新登录尝试！',
             severity: ToastSeverity.Warning,
             duration: 3000,
