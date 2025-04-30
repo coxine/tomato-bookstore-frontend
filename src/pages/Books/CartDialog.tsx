@@ -43,6 +43,13 @@ export default function CartDialog({
                     severity: ToastSeverity.Success,
                     duration: 3000,
                   })
+                } else if (res.data.code === '400') {
+                  showToast({
+                    title: '加入购物车失败',
+                    message: res.data.msg,
+                    severity: ToastSeverity.Danger,
+                    duration: 3000,
+                  })
                 } else {
                   showToast({
                     title: '未知错误',
