@@ -6,6 +6,7 @@ import AdsDataTable from './AdsDataTable'
 import BookDataTable from './BookDataTable'
 import CreateAdCard from './CreateAdCard'
 import CreateBookCard from './CreateBookCard'
+import OrdersDataTable from './OrdersDataTable'
 
 export default function Dashboard() {
   return (
@@ -42,6 +43,9 @@ export default function Dashboard() {
           <Tab indicatorInset value={3}>
             创建广告
           </Tab>
+          <Tab indicatorInset value={4}>
+            管理订单
+          </Tab>
         </TabList>
         <TabPanel value={0}>
           <BookDataTable />
@@ -54,6 +58,9 @@ export default function Dashboard() {
         </TabPanel>
         <TabPanel value={3}>
           <CreateAdCard />
+        </TabPanel>
+        <TabPanel value={4}>
+          <OrdersDataTable />
         </TabPanel>
       </Tabs>
     </MainLayout>

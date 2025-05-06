@@ -48,6 +48,7 @@ interface DataGridComponentProps<T extends object> {
   rowHeight?: number
   showToolbar?: boolean
   loading?: boolean
+  getRowId?: (row: T) => string | number
 }
 
 export default function DataGridComponent<T extends object>({
@@ -57,6 +58,7 @@ export default function DataGridComponent<T extends object>({
   rowHeight = 35,
   showToolbar = true,
   loading = false,
+  getRowId,
 }: DataGridComponentProps<T>) {
   return (
     <Box
@@ -86,6 +88,7 @@ export default function DataGridComponent<T extends object>({
             sx={(theme) => ({
               color: theme.palette.text.primary,
             })}
+            getRowId={getRowId}
           />
         </ThemeProvider>
       )}

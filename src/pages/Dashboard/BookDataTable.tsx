@@ -8,6 +8,7 @@ import { productGetAllSimpleInfo } from '../../api/products'
 import DataGridComponent from '../../components/UI/DataGridComponent'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
+import { priceFormatter } from '../../utils/formatter'
 import DeleteBookDialog from '../Books/DeleteBookDialog'
 
 const getColumns = (
@@ -29,7 +30,7 @@ const getColumns = (
       type: 'number',
       width: 110,
       editable: false,
-      valueFormatter: (params) => `¥${params || 0}`,
+      valueFormatter: priceFormatter,
     },
     {
       field: 'rate',
