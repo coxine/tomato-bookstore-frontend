@@ -1,6 +1,5 @@
-import { Avatar, Card, CardContent, Typography } from '@mui/joy'
+import { Avatar, Card, CardContent, Chip, Typography } from '@mui/joy'
 
-import Tag from '../../components/UI/Tag'
 import { Author } from '../../types/author'
 
 interface AuthorCardProps {
@@ -32,7 +31,9 @@ export default function AuthorCard({ author, index }: AuthorCardProps) {
           }}
         >
           {author.tags.map((tag, index) => (
-            <Tag text={tag} color="primary" fontSize="sm" key={index} />
+            <Chip key={index} variant="soft" size="sm" color="primary">
+              {tag}
+            </Chip>
           ))}
         </Typography>
         <Typography level="body-sm" sx={{ mt: 1 }}>
