@@ -3,8 +3,6 @@ import {
   AdminPanelSettings,
   ExitToApp,
   HomeRounded,
-  KeyboardArrowDown,
-  Payment,
   SearchRounded,
   ShoppingCartRounded,
   Store,
@@ -26,7 +24,6 @@ import { Link } from 'react-router-dom'
 import { closeSidebar } from '../utils/sidebar'
 
 import ColorSchemeToggle from './UI/ColorSchemeToggle'
-import Toggler from './UI/Toggler'
 
 const exitLogin = () => {
   sessionStorage.removeItem('isLoggedIn')
@@ -147,35 +144,6 @@ export default function Sidebar() {
                 </Link>
               </ListItemContent>
             </ListItemButton>
-          </ListItem>
-          <ListItem nested>
-            <Toggler
-              defaultExpanded
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <Payment />
-                  <ListItemContent>
-                    <Typography level="title-sm">订单</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDown
-                    sx={[
-                      open
-                        ? { transform: 'rotate(180deg)' }
-                        : { transform: 'none' },
-                    ]}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>待支付</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>待收货</ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
           </ListItem>
         </List>
         <List

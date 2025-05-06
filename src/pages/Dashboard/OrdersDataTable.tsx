@@ -7,6 +7,7 @@ import {
   Typography,
   Sheet,
   Table,
+  Chip,
 } from '@mui/joy'
 import { GridColDef } from '@mui/x-data-grid'
 import { useEffect, useMemo, useState } from 'react'
@@ -15,7 +16,7 @@ import DataGridComponent from '../../components/UI/DataGridComponent'
 import { OrderDetail } from '../../types/order'
 import {
   orderAddressFormatter,
-  orderCreateTimeFormatter as timeFormatter,
+  datetimeFormatter as timeFormatter,
   orderStatusFormatter,
   paymentMethodFormatter,
   priceFormatter,
@@ -137,7 +138,9 @@ const getColumns = (
       headerName: '订单状态',
       width: 120,
       editable: false,
-      valueFormatter: orderStatusFormatter,
+      valueFormatter: (params) => {
+        return orderStatusFormatter(params).label
+      },
     },
     {
       field: 'createTime',
@@ -265,7 +268,16 @@ export default function OrdersDataTable() {
                     </tr>
                     <tr>
                       <td>订单状态</td>
-                      <td>{orderStatusFormatter(selectedOrder.status)}</td>
+                      <td>
+                        <Chip
+                          color={
+                            orderStatusFormatter(selectedOrder.status).color
+                          }
+                          variant="soft"
+                        >
+                          {orderStatusFormatter(selectedOrder.status).label}
+                        </Chip>
+                      </td>
                     </tr>
                     <tr>
                       <td>创建时间</td>

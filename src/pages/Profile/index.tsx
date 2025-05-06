@@ -9,6 +9,7 @@ import type { Profile } from '../../types/profile'
 
 import EditPasswordCard from './EditPasswordCard'
 import EditProfileCard from './EditProfileCard'
+import OrderHistory from './OrderHistory'
 import ProfileCard from './ProfileCard'
 
 export default function Profile() {
@@ -70,6 +71,9 @@ export default function Profile() {
           <Tab indicatorInset value={1}>
             编辑信息
           </Tab>
+          <Tab indicatorInset value={2}>
+            历史订单
+          </Tab>
         </TabList>
         <TabPanel value={0}>
           {!profileData ? <Loading /> : <ProfileCard profile={profileData} />}
@@ -83,6 +87,9 @@ export default function Profile() {
               <EditPasswordCard />
             </>
           )}
+        </TabPanel>
+        <TabPanel value={2}>
+          <OrderHistory />
         </TabPanel>
       </Tabs>
     </MainLayout>
