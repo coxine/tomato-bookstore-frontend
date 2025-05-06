@@ -2,6 +2,7 @@ import {
   AddShoppingCart,
   Delete,
   Edit,
+  // Star,
   // ShoppingCartCheckout,
 } from '@mui/icons-material'
 import { Box, Button } from '@mui/joy'
@@ -33,6 +34,12 @@ export function BookActions({
         >
           加入购物车
         </Button>
+        {/* <Button
+          color='warning'
+          variant="outlined"
+          startDecorator={<Star />}>
+          书籍评分
+        </Button> */}
         {/* <Button
           color="danger"
           variant="soft"

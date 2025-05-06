@@ -1,3 +1,6 @@
+import { ChapterState } from '../types/chapter'
+import { OrderStatus } from '../types/order'
+
 export const priceFormatter = (params: number) => {
   return `¥${params.toFixed(2)}`
 }
@@ -20,19 +23,23 @@ export const paymentMethodFormatter = (params: string) => {
       return params
   }
 }
-export const orderStatusFormatter = (status: string) => {
+
+export const chapterStatusFormatter = (params: ChapterState) => {
+  switch (params) {
+    case 'FREE':
+      return { label: '免费试读', color: 'success' as const }
+    case 'LOCKED':
+      return { label: '锁定', color: 'danger' as const }
+    case 'CHARGED':
+      return { label: '付费', color: 'warning' as const }
+  }
+}
+
+export const orderStatusFormatter = (status: OrderStatus) => {
   switch (status) {
     case 'CANCELLED':
       return { label: '已取消', color: 'neutral' as const }
     case 'SUCCESS':
       return { label: '已支付', color: 'success' as const }
-    case 'PENDING':
-      return { label: '待支付', color: 'warning' as const }
-    case 'SHIPPED':
-      return { label: '已发货', color: 'primary' as const }
-    case 'DELIVERED':
-      return { label: '已送达', color: 'success' as const }
-    default:
-      return { label: status, color: 'neutral' as const }
   }
 }

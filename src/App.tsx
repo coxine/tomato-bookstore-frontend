@@ -12,6 +12,7 @@ import Register from './pages/Auth/Register'
 import Books from './pages/Books'
 import BookDetails from './pages/Books/BookDetails'
 import BookEdit from './pages/Books/BookEdit'
+import ChapterEdit from './pages/Books/ChapterEdit'
 import CartPage from './pages/Cart/CartPage'
 import Dashboard from './pages/Dashboard'
 import AdsEdit from './pages/Dashboard/AdsEdit'
@@ -90,6 +91,14 @@ function App() {
               element={
                 <AdminRoute>
                   <BookEdit />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/books/edit/:productId/chapter/:chapterId"
+              element={
+                <AdminRoute>
+                  <ChapterEdit />
                 </AdminRoute>
               }
             />

@@ -25,11 +25,14 @@ export interface OrderItem {
 export interface OrderDetail {
   orderId: number
   totalAmount: number
-  paymentMethod: string
-  status: 'SUCCESS' | 'CANCELLED'
+  paymentMethod: PaymentMethod
+  status: OrderStatus
   createTime: string
   name: string
   address: string
   phone: string
   orderItems: OrderItem[]
 }
+
+export type OrderStatus = 'SUCCESS' | 'CANCELLED'
+export type PaymentMethod = 'ALIPAY' | 'WECHAT'
