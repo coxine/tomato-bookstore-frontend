@@ -1,3 +1,4 @@
+import { Tabs, TabList, Tab, tabClasses, TabPanel } from '@mui/joy'
 import { useCallback, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -8,6 +9,7 @@ import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
 import { Stockpile } from '../../types/stockpile'
 
+import CreateChapterCard from './CreateChapterCard'
 import EditBookCard from './EditBookCard'
 import EditStockpileCard from './EditStockpileCard'
 
@@ -17,6 +19,7 @@ export default function BookEdit() {
   const productIdNum = parseInt(productId || '0')
   const [initialBookData, setInitialBookData] = useState<Book>()
   const [initialStockpile, setInitialStockpile] = useState<Stockpile>()
+
   const fetchBookDetails = useCallback(async () => {
     if (!productIdNum) {
       showToast({
@@ -57,6 +60,7 @@ export default function BookEdit() {
   useEffect(() => {
     fetchBookDetails()
   }, [fetchBookDetails])
+
   return (
     <MainLayout
       title="编辑书籍"
@@ -68,16 +72,52 @@ export default function BookEdit() {
       {!productIdNum || !initialBookData || !initialStockpile ? (
         <Loading />
       ) : (
-        <>
-          <EditBookCard
-            productId={productIdNum}
-            initialBookData={initialBookData}
-          />
-          <EditStockpileCard
-            productId={productIdNum}
-            initialStockpile={initialStockpile}
-          />
-        </>
+        <Tabs defaultValue={0} sx={{ bgcolor: 'transparent' }}>
+          <TabList
+            tabFlex={1}
+            size="sm"
+            sx={{
+              pl: { xs: 0, md: 4 },
+              justifyContent: 'left',
+              [`&& .${tabClasses.root}`]: {
+                fontWeight: '600',
+                flex: 'initial',
+                [`&.${tabClasses.selected}`]: {
+                  bgcolor: 'transparent',
+                  '&::after': {
+                    height: '2px',
+                    bgcolor: 'primary.500',
+                  },
+                },
+              },
+            }}
+          >
+            <Tab indicatorInset value={0}>
+              编辑书籍
+            </Tab>
+            <Tab indicatorInset value={1}>
+              编辑库存
+            </Tab>
+            <Tab indicatorInset value={2}>
+              新增章节
+            </Tab>
+          </TabList>
+          <TabPanel value={0}>
+            <EditBookCard
+              productId={productIdNum}
+              initialBookData={initialBookData}
+            />
+          </TabPanel>
+          <TabPanel value={1}>
+            <EditStockpileCard
+              productId={productIdNum}
+              initialStockpile={initialStockpile}
+            />
+          </TabPanel>
+          <TabPanel value={2}>
+            <CreateChapterCard productId={Number(productId)} />
+          </TabPanel>
+        </Tabs>
       )}
     </MainLayout>
   )

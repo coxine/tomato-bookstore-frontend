@@ -16,18 +16,23 @@ import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 
-interface EditChapterCardProps {
-  productId: string
-  initialChapterData: Chapter
+interface CreateChapterCardProps {
+  productId: number
 }
 
-export default function EditChapterCard({
+export default function CreateChapterCard({
   productId,
-  initialChapterData,
-}: EditChapterCardProps) {
+}: CreateChapterCardProps) {
   const navigate = useNavigate()
-  const [chapterData, setChapterData] =
-    React.useState<Chapter>(initialChapterData)
+
+  const [chapterData, setChapterData] = React.useState<Chapter>({
+    id: 0,
+    name: '',
+    productId: productId,
+    state: 'FREE',
+    content: '',
+  })
+
   const [errors, setErrors] = React.useState({
     name: '',
     content: '',
@@ -51,7 +56,7 @@ export default function EditChapterCard({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log('Edited chapter data:', chapterData)
+    console.log('Created chapter data:', chapterData)
 
     // Validate form
     if (!chapterData.name.trim()) {
@@ -72,11 +77,11 @@ export default function EditChapterCard({
       duration: 3000,
     })
 
-    // Simulate successful update for now
+    // Simulate successful creation for now
     setTimeout(() => {
       showToast({
         title: '提交成功',
-        message: '章节已更新！',
+        message: '章节已创建！',
         severity: ToastSeverity.Success,
         duration: 3000,
       })
@@ -86,20 +91,20 @@ export default function EditChapterCard({
 
   return (
     <InfoCard
-      title="编辑章节信息"
+      title="新增章节"
       actions={
         <Button
           size="sm"
           variant="soft"
           type="submit"
-          form="edit-chapter-form"
+          form="create-chapter-form"
           startDecorator={<Save />}
         >
           保存
         </Button>
       }
     >
-      <form id="edit-chapter-form" onSubmit={handleSubmit}>
+      <form id="create-chapter-form" onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <FormControl error={!!errors.name}>
             <FormLabel required>章节名称</FormLabel>
