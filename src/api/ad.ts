@@ -24,7 +24,7 @@ export const adCreate = (ad: Advertisement) => {
     })
 }
 
-export const adDelete = (adId: string) => {
+export const adDelete = (adId: number) => {
   return axios
     .delete<ApiResponse<string>>(`${AD_MODULE}/${adId}`)
     .then((res) => {
@@ -32,7 +32,7 @@ export const adDelete = (adId: string) => {
     })
 }
 
-export const adGetInfo = (adId: string) => {
+export const adGetInfo = (adId: number) => {
   return axios
     .get<ApiResponse<Advertisement>>(`${AD_MODULE}/${adId}`)
     .then((res) => {

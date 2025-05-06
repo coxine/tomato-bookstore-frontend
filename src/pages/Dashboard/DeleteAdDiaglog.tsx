@@ -6,7 +6,7 @@ import AlertDialogModal from '../../components/UI/AlertDialog'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 
 interface DeleteAdDialogProps {
-  adId: string
+  adId: number
   onClose: () => void
   afterDelete: () => void
 }

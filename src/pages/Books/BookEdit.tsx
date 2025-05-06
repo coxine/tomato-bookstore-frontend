@@ -14,10 +14,11 @@ import EditStockpileCard from './EditStockpileCard'
 export default function BookEdit() {
   const navigate = useNavigate()
   const { productId } = useParams()
+  const productIdNum = parseInt(productId || '0')
   const [initialBookData, setInitialBookData] = useState<Book>()
   const [initialStockpile, setInitialStockpile] = useState<Stockpile>()
   const fetchBookDetails = useCallback(async () => {
-    if (!productId) {
+    if (!productIdNum) {
       showToast({
         title: '意外错误',
         message: '不存在商品ID！',
@@ -26,7 +27,7 @@ export default function BookEdit() {
       })
       navigate('/')
     } else {
-      productGetInfo(productId).then((res) => {
+      productGetInfo(productIdNum).then((res) => {
         if (res.data.code === '200') {
           setInitialBookData(res.data.data)
         } else {
@@ -38,7 +39,7 @@ export default function BookEdit() {
           })
         }
       })
-      productGetStockpile(productId).then((res) => {
+      productGetStockpile(productIdNum).then((res) => {
         if (res.data.code === '200') {
           setInitialStockpile(res.data.data)
         } else {
@@ -51,7 +52,7 @@ export default function BookEdit() {
         }
       })
     }
-  }, [productId, navigate])
+  }, [productIdNum, navigate])
 
   useEffect(() => {
     fetchBookDetails()
@@ -61,19 +62,19 @@ export default function BookEdit() {
       title="编辑书籍"
       breadcrumbsItems={[
         { label: '购买书籍', link: '/books' },
-        { label: '书籍详情', link: `/books/${productId}` },
+        { label: '书籍详情', link: `/books/${productIdNum}` },
       ]}
     >
-      {!productId || !initialBookData || !initialStockpile ? (
+      {!productIdNum || !initialBookData || !initialStockpile ? (
         <Loading />
       ) : (
         <>
           <EditBookCard
-            productId={productId}
+            productId={productIdNum}
             initialBookData={initialBookData}
           />
           <EditStockpileCard
-            productId={productId}
+            productId={productIdNum}
             initialStockpile={initialStockpile}
           />
         </>

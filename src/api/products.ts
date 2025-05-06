@@ -21,7 +21,7 @@ export const productGetAllSimpleInfo = () => {
   })
 }
 
-export const productGetInfo = (productId: string) => {
+export const productGetInfo = (productId: number) => {
   return axios
     .get<ApiResponse<Book>>(`${PRODUCT_MODULE}/${productId}`)
     .then((res) => {
@@ -45,7 +45,7 @@ export const productCreate = (productInfo: Book) => {
     })
 }
 
-export const productDelete = (productId: string) => {
+export const productDelete = (productId: number) => {
   return axios
     .delete<ApiResponse<string>>(`${PRODUCT_MODULE}/${productId}`)
     .then((res) => {
@@ -53,7 +53,7 @@ export const productDelete = (productId: string) => {
     })
 }
 
-export const productUpdateStockpile = (productId: string, amount: number) => {
+export const productUpdateStockpile = (productId: number, amount: number) => {
   return axios
     .patch<ApiResponse<string>>(`${PRODUCT_STOCKPILE_MODULE}/${productId}`, {
       amount: amount,
@@ -63,7 +63,7 @@ export const productUpdateStockpile = (productId: string, amount: number) => {
     })
 }
 
-export const productGetStockpile = (productId: string) => {
+export const productGetStockpile = (productId: number) => {
   return axios
     .get<ApiResponse<Stockpile>>(`${PRODUCT_STOCKPILE_MODULE}/${productId}`)
     .then((res) => {

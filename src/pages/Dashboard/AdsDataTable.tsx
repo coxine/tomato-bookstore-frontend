@@ -12,7 +12,7 @@ import { Advertisement } from '../../types/advertisement'
 import DeleteAdDialog from './DeleteAdDiaglog'
 
 const getColumns = (
-  handleDeleteConfirmation: (id: string) => void
+  handleDeleteConfirmation: (id: number) => void
 ): GridColDef<Advertisement>[] => {
   return [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -71,7 +71,7 @@ const getColumns = (
                 color="danger"
                 size="sm"
                 onClick={() => {
-                  handleDeleteConfirmation(row.id.toString())
+                  handleDeleteConfirmation(parseInt(row.id.toString()))
                 }}
               >
                 <Delete />
@@ -87,10 +87,10 @@ const getColumns = (
 export default function AdsDataTable() {
   const [adList, setAdList] = useState<Advertisement[]>()
   const [isLoading, setIsLoading] = useState(true)
-  const [adId, setAdId] = useState<string>('')
+  const [adId, setAdId] = useState<number>()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
-  const handleDeleteConfirmation = (id: string) => {
+  const handleDeleteConfirmation = (id: number) => {
     setAdId(id)
     setShowDeleteDialog(true)
   }

@@ -1,6 +1,6 @@
 export type Specification = {
-  id: string
+  id?: number
   item: string
   value: string
-  productId: string
+  productId?: number
 }

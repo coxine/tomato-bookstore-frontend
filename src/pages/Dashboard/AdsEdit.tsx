@@ -12,10 +12,11 @@ import EditAdsCard from './EditAdsCard'
 export default function AdsEdit() {
   const navigate = useNavigate()
   const { adId } = useParams()
+  const adIdNum = parseInt(adId || '0')
   const [initialAdsData, setInitialAdsData] = useState<Advertisement>()
 
   useEffect(() => {
-    if (!adId) {
+    if (!adIdNum) {
       showToast({
         title: '错误',
         message: '广告ID不存在',
@@ -26,7 +27,7 @@ export default function AdsEdit() {
       return
     }
 
-    adGetInfo(adId).then((res) => {
+    adGetInfo(adIdNum).then((res) => {
       if (res.data.code === '200') {
         setInitialAdsData(res.data.data)
       } else {
@@ -38,17 +39,17 @@ export default function AdsEdit() {
         })
       }
     })
-  }, [adId, navigate])
+  }, [adIdNum, navigate])
 
   return (
     <MainLayout
       title="编辑广告"
       breadcrumbsItems={[{ label: '管理中心', link: '/dashboard' }]}
     >
-      {!adId || !initialAdsData ? (
+      {!adIdNum || !initialAdsData ? (
         <Loading />
       ) : (
-        <EditAdsCard adId={adId} initialAdsData={initialAdsData} />
+        <EditAdsCard adId={adIdNum} initialAdsData={initialAdsData} />
       )}
     </MainLayout>
   )

@@ -48,7 +48,7 @@ export default function CreateBookCard() {
     detail: '',
   })
   const [bookData, setBookData] = useState<Book>({
-    id: '',
+    // id: '',
     title: '',
     price: 0,
     description: '',
@@ -88,8 +88,8 @@ export default function CreateBookCard() {
   const addSpecification = () => {
     if (newSpec.item.trim() && newSpec.value.trim()) {
       const spec: Specification = {
-        id: '',
-        productId: '', // Leave blank for new book creation
+        // id: '',
+        // productId: '', // Leave blank for new book creation
         item: newSpec.item.trim(),
         value: newSpec.value.trim(),
       }
@@ -134,7 +134,7 @@ export default function CreateBookCard() {
           duration: 3000,
         })
         setBookData({
-          id: '',
+          // id: '',
           title: '',
           price: 0,
           description: '',

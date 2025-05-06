@@ -29,7 +29,7 @@ import { Specification } from '../../types/specification'
 import { productValidators } from '../../utils/validator/productValidator'
 
 interface EditBookCardProps {
-  productId: string
+  productId: number
   initialBookData: Book
 }
 
@@ -89,7 +89,7 @@ export default function EditBookCard({
   const addSpecification = () => {
     if (newSpec.item.trim() && newSpec.value.trim()) {
       const spec: Specification = {
-        id: '',
+        // id: '',
         productId: productId,
         item: newSpec.item.trim(),
         value: newSpec.value.trim(),

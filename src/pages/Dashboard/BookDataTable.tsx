@@ -12,7 +12,7 @@ import { priceFormatter } from '../../utils/formatter'
 import DeleteBookDialog from '../Books/DeleteBookDialog'
 
 const getColumns = (
-  handleDeleteConfirmation: (id: string) => void
+  handleDeleteConfirmation: (id: number) => void
 ): GridColDef<Book>[] => {
   return [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -80,7 +80,7 @@ const getColumns = (
                 color="danger"
                 size="sm"
                 onClick={() => {
-                  handleDeleteConfirmation(row.id.toString())
+                  handleDeleteConfirmation(parseInt(row.id.toString()))
                 }}
               >
                 <Delete />
@@ -96,10 +96,10 @@ const getColumns = (
 export default function BookDataTable() {
   const [bookList, setBookList] = useState<Book[]>()
   const [isLoading, setIsLoading] = useState(true)
-  const [productId, setProductId] = useState<string>('')
+  const [productId, setProductId] = useState<number>()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
-  const handleDeleteConfirmation = (id: string) => {
+  const handleDeleteConfirmation = (id: number) => {
     setProductId(id)
     setShowDeleteDialog(true)
   }

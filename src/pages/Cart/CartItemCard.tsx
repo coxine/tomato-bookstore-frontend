@@ -14,10 +14,10 @@ import { CartItem as CartItemType } from '../../types/cart'
 
 interface CartItemProps {
   item: CartItemType
-  onQuantityChange: (cartItemId: string, quantity: number) => void
-  onRemove: (cartItemId: string) => void
+  onQuantityChange: (cartItemId: number, quantity: number) => void
+  onRemove: (cartItemId: number) => void
   selected: boolean
-  onSelectChange: (cartItemId: string, selected: boolean) => void
+  onSelectChange: (cartItemId: number, selected: boolean) => void
 }
 
 const CartItemCard: React.FC<CartItemProps> = ({

@@ -21,7 +21,7 @@ export const imageAvatarUpload = (imageFile: FormData) => {
 }
 
 export const imageProductCoverUpload = (
-  productId: string,
+  productId: number,
   imageFile: FormData
 ) => {
   return axios
@@ -53,7 +53,7 @@ export const imageProductCoverUploadWithoutCreate = (imageFile: FormData) => {
     })
 }
 
-export const imageAdImageUpload = (adId: string, imageFile: FormData) => {
+export const imageAdImageUpload = (adId: number, imageFile: FormData) => {
   return axios
     .post<ApiResponse<string>>(`${PICTURE_AD_MODULE}/${adId}`, imageFile, {
       headers: {

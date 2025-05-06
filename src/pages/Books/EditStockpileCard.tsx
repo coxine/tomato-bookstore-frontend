@@ -9,7 +9,7 @@ import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Stockpile } from '../../types/stockpile'
 
 interface EditStockpileCardProps {
-  productId: string
+  productId: number
   initialStockpile: Stockpile
 }
 

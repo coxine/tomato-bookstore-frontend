@@ -20,7 +20,7 @@ import { Advertisement } from '../../types/advertisement'
 import { AdValidators } from '../../utils/validator/adValidator'
 
 interface EditAdsCardProps {
-  adId: string
+  adId: number
   initialAdsData: Advertisement
 }
 
@@ -142,7 +142,7 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
     } else {
       const imageFile = new FormData()
       imageFile.append('file', image)
-      imageAdImageUpload(adsData.id, imageFile).then((res) => {
+      imageAdImageUpload(adsData.id || 0, imageFile).then((res) => {
         if (res.data.code === '200') {
           handleChange('imgUrl', res.data.data)
           adInfoSubmit({ ...adsData, imgUrl: res.data.data })
@@ -255,6 +255,7 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
             label: '商品ID',
             field: 'productId',
             required: true,
+            type: 'number',
             placeholder: '关联的商品ID',
           })}
           <Stack spacing={1}>

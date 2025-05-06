@@ -6,7 +6,7 @@ import AlertDialogModal from '../../components/UI/AlertDialog'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 
 interface DeleteBookDialogProps {
-  productId: string
+  productId: number
   onClose: () => void
   afterDelete: () => void
 }

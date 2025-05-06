@@ -1,7 +1,7 @@
 export interface Advertisement {
-  id: string
+  id?: number
   title: string
   content?: string
   imgUrl?: string
-  productId: string
+  productId: number
 }
