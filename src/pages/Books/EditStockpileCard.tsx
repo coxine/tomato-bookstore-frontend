@@ -70,6 +70,9 @@ export default function EditStockpileCard({
           variant="soft"
           onClick={handleSubmit}
           startDecorator={<Save />}
+          sx={{
+            width: { xs: '100%', sm: 'auto' },
+          }}
         >
           保存
         </Button>

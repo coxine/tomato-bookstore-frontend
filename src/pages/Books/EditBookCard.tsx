@@ -263,32 +263,36 @@ export default function EditBookCard({
       title="编辑书籍信息"
       actions={
         <>
-          <Stack direction="row" spacing={1} alignItems="center">
-            {cover && (
-              <Typography level="body-sm" color="success">
-                ✅ 选择图片成功，请保存
-              </Typography>
-            )}
-            <Button
-              size="sm"
-              color="primary"
-              variant="plain"
-              component="label"
-              startDecorator={<UploadRounded />}
-            >
-              添加新封面
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={handleCoverUpdate}
-              />
-            </Button>
-          </Stack>
+          {cover && (
+            <Typography level="body-sm" color="success">
+              ✅ 选择图片成功，请保存
+            </Typography>
+          )}
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+            }}
+            startDecorator={<UploadRounded />}
+          >
+            添加新封面
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleCoverUpdate}
+            />
+          </Button>
           <Button
             size="sm"
             variant="soft"
             type="submit"
             form="edit-book-form"
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+            }}
             startDecorator={<Save />}
           >
             保存

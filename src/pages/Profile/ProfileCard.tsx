@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Avatar, Box, IconButton, Stack, Typography } from '@mui/joy'
+import { Avatar, Box, Button, Stack, Typography } from '@mui/joy'
 import { useState } from 'react'
 
 import InfoCard from '../../components/UI/InfoCard'
@@ -16,14 +16,16 @@ export default function ProfileCard({ profile }: ProfileCardProps) {
     <InfoCard
       title={`${profile.username} 的资料`}
       actions={
-        <IconButton
+        <Button
           onClick={() => setShowSensitive((prev) => !prev)}
           variant="soft"
           color="primary"
           size="sm"
+          startDecorator={showSensitive ? <VisibilityOff /> : <Visibility />}
+          sx={{ width: { xs: '100%', sm: 'auto' } }}
         >
-          {showSensitive ? <VisibilityOff /> : <Visibility />}
-        </IconButton>
+          {showSensitive ? '隐藏个人信息' : '显示个人信息'}
+        </Button>
       }
     >
       {' '}

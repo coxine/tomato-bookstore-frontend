@@ -271,38 +271,57 @@ export default function CreateBookCard() {
     <InfoCard
       title="创建书籍"
       actions={
-        <>
-          <Stack direction="row" spacing={1} alignItems="center">
-            {cover && (
-              <Typography level="body-sm" color="success">
-                ✅ 选择图片成功，请保存
-              </Typography>
-            )}
-            <Button
-              size="sm"
-              color="primary"
-              variant="plain"
-              component="label"
-              startDecorator={<UploadRounded />}
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1}
+          alignItems="center"
+          width="100%"
+          sx={{ display: 'flex' }}
+        >
+          {cover && (
+            <Typography
+              level="body-sm"
+              color="success"
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                textAlign: { xs: 'center', sm: 'left' },
+              }}
             >
-              添加新封面
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={handleCoverAdd}
-              />
-            </Button>
-          </Stack>
+              ✅ 选择图片成功，请保存
+            </Typography>
+          )}
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            startDecorator={<UploadRounded />}
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              flexGrow: { xs: 1, sm: 0 },
+            }}
+          >
+            添加新封面
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleCoverAdd}
+            />
+          </Button>
           <Button
             size="sm"
             variant="soft"
             type="submit"
-            startDecorator={<Save />}
             form="create-book-form"
+            startDecorator={<Save />}
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              flexGrow: { xs: 1, sm: 0 },
+            }}
           >
             保存
           </Button>
-        </>
+        </Stack>
       }
     >
       <form id="create-book-form" onSubmit={(e) => handleSubmit(e)}>

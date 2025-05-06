@@ -128,6 +128,7 @@ export default function EditPasswordCard() {
           startDecorator={<SaveRounded />}
           type="submit"
           form="edit-password-form"
+          sx={{ width: { xs: '100%', sm: 'auto' } }}
         >
           保存
         </Button>

@@ -42,8 +42,16 @@ export default function InfoCard({
         <Divider />
         {children}
         <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-          <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-            {actions}
+          <CardActions sx={{ alignSelf: { sm: 'flex-end' }, pt: 2 }}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              alignItems="center"
+              width="100%"
+              sx={{ display: 'flex' }}
+            >
+              {actions}
+            </Stack>
           </CardActions>
         </CardOverflow>
       </Card>

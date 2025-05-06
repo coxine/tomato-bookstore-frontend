@@ -196,32 +196,47 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
       title="编辑广告信息"
       actions={
         <>
-          <Stack direction="row" spacing={1} alignItems="center">
-            {image && (
-              <Typography level="body-sm" color="success">
-                ✅ 选择图片成功，请保存
-              </Typography>
-            )}
-            <Button
-              size="sm"
-              color="primary"
-              variant="plain"
-              component="label"
-              startDecorator={<UploadRounded />}
+          {' '}
+          {image && (
+            <Typography
+              level="body-sm"
+              color="success"
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+                textAlign: { xs: 'center', sm: 'left' },
+              }}
             >
-              上传广告图片
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpdate}
-              />
-            </Button>
-          </Stack>
+              ✅ 选择图片成功，请保存
+            </Typography>
+          )}
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            startDecorator={<UploadRounded />}
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              flexGrow: { xs: 1, sm: 0 },
+            }}
+          >
+            上传广告图片
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpdate}
+            />
+          </Button>
           <Button
             size="sm"
             variant="soft"
             type="submit"
+            form="edit-ad-form"
             startDecorator={<Save />}
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              flexGrow: { xs: 1, sm: 0 },
+            }}
           >
             保存
           </Button>

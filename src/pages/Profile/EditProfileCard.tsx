@@ -195,33 +195,33 @@ export default function EditProfileCard({
       title="编辑资料"
       actions={
         <>
-          <Stack direction="row" spacing={1} alignItems="center">
-            {avatar && (
-              <Typography level="body-sm" color="success">
-                ✅ 选择图片成功，请保存
-              </Typography>
-            )}
-            <Button
-              size="sm"
-              color="primary"
-              variant="plain"
-              component="label"
-              startDecorator={<UploadRounded />}
-            >
-              添加新头像
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={handleAvatarUpdate}
-              />
-            </Button>
-          </Stack>
+          {avatar && (
+            <Typography level="body-sm" color="success">
+              ✅ 选择图片成功，请保存
+            </Typography>
+          )}
+          <Button
+            size="sm"
+            color="primary"
+            variant="plain"
+            component="label"
+            startDecorator={<UploadRounded />}
+            sx={{ width: { xs: '100%', sm: 'auto' } }}
+          >
+            添加新头像
+            <VisuallyHiddenInput
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarUpdate}
+            />
+          </Button>
           <Button
             size="sm"
             variant="soft"
             startDecorator={<SaveRounded />}
             type="submit"
             form="edit-profile-form"
+            sx={{ width: { xs: '100%', sm: 'auto' } }}
           >
             保存
           </Button>
