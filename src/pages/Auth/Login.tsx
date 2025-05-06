@@ -105,7 +105,7 @@ export default function Login() {
       <Stack sx={{ gap: 4 }}>
         <form onSubmit={handleSubmit}>
           <FormControl required>
-            <FormLabel>用户名</FormLabel>
+            <FormLabel required>用户名</FormLabel>
             <Input
               color="neutral"
               variant="soft"
@@ -115,7 +115,7 @@ export default function Login() {
             />
           </FormControl>
           <FormControl required>
-            <FormLabel>密码</FormLabel>
+            <FormLabel required>密码</FormLabel>
             <Input
               color="neutral"
               variant="soft"

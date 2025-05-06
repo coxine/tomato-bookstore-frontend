@@ -80,7 +80,7 @@ export default function EditStockpileCard({
     >
       <Stack spacing={3}>
         <Stack spacing={1}>
-          <FormLabel>剩余库存</FormLabel>
+          <FormLabel required>剩余库存</FormLabel>
           <FormControl>
             <Input
               size="sm"

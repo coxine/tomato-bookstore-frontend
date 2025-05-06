@@ -150,7 +150,7 @@ export default function Register() {
           <Grid container spacing={2}>
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>用户名 *</FormLabel>
+                <FormLabel required>用户名</FormLabel>
                 <Input
                   name="username"
                   value={formData.username}
@@ -169,7 +169,7 @@ export default function Register() {
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>姓名 *</FormLabel>
+                <FormLabel required>姓名</FormLabel>
                 <Input
                   name="name"
                   value={formData.name}
@@ -187,7 +187,7 @@ export default function Register() {
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>密码 *</FormLabel>
+                <FormLabel required>密码</FormLabel>
                 <Input
                   value={formData.password}
                   onChange={(e) => handleChange('password', e.target.value)}
@@ -201,7 +201,7 @@ export default function Register() {
 
             <Grid xs={12} sm={6}>
               <FormControl required>
-                <FormLabel>确定密码 *</FormLabel>
+                <FormLabel required>确定密码</FormLabel>
                 <Input
                   name="confirmPassword"
                   type="password"
