@@ -59,6 +59,8 @@ export default function ChapterTable() {
                     color="success"
                     variant="soft"
                     size="sm"
+                    component={Link}
+                    to={`/chapters/${chapter.id}`}
                     disabled={!(chapter.state === 'FREE')}
                   >
                     <ChromeReaderMode />
@@ -69,7 +71,7 @@ export default function ChapterTable() {
                       variant="soft"
                       size="sm"
                       component={Link}
-                      to={`/books/edit/${chapter.productId}/chapter/${chapter.id}`}
+                      to={`/chapters/edit/${chapter.id}`}
                     >
                       <Edit />
                     </IconButton>

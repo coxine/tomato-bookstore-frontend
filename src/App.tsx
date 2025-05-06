@@ -12,8 +12,9 @@ import Register from './pages/Auth/Register'
 import Books from './pages/Books'
 import BookDetails from './pages/Books/BookDetails'
 import BookEdit from './pages/Books/BookEdit'
-import ChapterEdit from './pages/Books/ChapterEdit'
 import CartPage from './pages/Cart'
+import ChapterEdit from './pages/Chapters/ChapterEdit'
+import ChapterReader from './pages/Chapters/ChapterReader'
 import Dashboard from './pages/Dashboard'
 import AdsEdit from './pages/Dashboard/AdsEdit'
 import Home from './pages/Home'
@@ -95,11 +96,19 @@ function App() {
               }
             />
             <Route
-              path="/books/edit/:productId/chapter/:chapterId"
+              path="chapters/edit/:chapterId"
               element={
                 <AdminRoute>
                   <ChapterEdit />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/chapters/:chapterId"
+              element={
+                <PrivateRoute>
+                  <ChapterReader />
+                </PrivateRoute>
               }
             />
             <Route

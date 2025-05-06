@@ -7,7 +7,7 @@ import { Chapter } from '../../types/chapter'
 import EditChapterCard from './EditChapterCard'
 
 export default function ChapterEdit() {
-  const { productId, chapterId } = useParams()
+  const { chapterId } = useParams()
   const initialChapterData: Chapter = {
     id: 1001,
     name: '第1章',
@@ -18,26 +18,21 @@ export default function ChapterEdit() {
 
   // Fetch chapter data when component mounts
   React.useEffect(() => {
-    if (productId && chapterId) {
-      // This would be replaced with actual API call to fetch chapter data
-      // For now, using placeholder data
-      console.log('Fetching chapter data for', productId, chapterId)
-
-      // Simulating data fetch - in real implementation, replace with API call
-      // Example: fetchChapter(chapterId).then(data => setInitialChapterData(data))
+    if (chapterId) {
+      console.log('Fetching chapter data for', chapterId)
+      // TODO
     }
-  }, [productId, chapterId])
+  }, [chapterId])
 
   return (
     <MainLayout
       title="编辑章节"
       breadcrumbsItems={[
         { label: '购买书籍', link: '/books' },
-        { label: '书籍详情', link: `/books/${productId}` },
+        { label: '书籍详情', link: `/books/${initialChapterData.productId}` },
       ]}
     >
       <EditChapterCard
-        productId={productId || ''}
         initialChapterData={initialChapterData}
       />
     </MainLayout>

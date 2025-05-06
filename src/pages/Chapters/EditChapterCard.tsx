@@ -17,12 +17,10 @@ import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 
 interface EditChapterCardProps {
-  productId: string
   initialChapterData: Chapter
 }
 
 export default function EditChapterCard({
-  productId,
   initialChapterData,
 }: EditChapterCardProps) {
   const navigate = useNavigate()
@@ -80,7 +78,7 @@ export default function EditChapterCard({
         severity: ToastSeverity.Success,
         duration: 3000,
       })
-      navigate(`/books/${productId}`)
+      navigate(`/books/${initialChapterData.productId}`)
     }, 1000)
   }
 
