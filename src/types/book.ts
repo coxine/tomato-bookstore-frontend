@@ -1,7 +1,7 @@
 import { Specification } from './specification'
 
 export type Book = {
-  id: string
+  id?: number
   title: string
   price?: number
   rate?: number

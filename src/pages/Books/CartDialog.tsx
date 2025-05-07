@@ -35,30 +35,32 @@ export default function CartDialog({
           onClick={() => {
             if (mode === 'add') {
               // 加入购物车api
-              cartAddProduct(bookDetails.id, dialogQuantity).then((res) => {
-                if (res.data.code === '200') {
-                  showToast({
-                    title: '加入购物车成功',
-                    message: `您已成功将 ${dialogQuantity} 本《${bookDetails.title}》加入购物车！`,
-                    severity: ToastSeverity.Success,
-                    duration: 3000,
-                  })
-                } else if (res.data.code === '400') {
-                  showToast({
-                    title: '加入购物车失败',
-                    message: res.data.msg,
-                    severity: ToastSeverity.Danger,
-                    duration: 3000,
-                  })
-                } else {
-                  showToast({
-                    title: '未知错误',
-                    message: `服务器出错！请稍后再试！`,
-                    severity: ToastSeverity.Warning,
-                    duration: 3000,
-                  })
+              cartAddProduct(bookDetails.id || 0, dialogQuantity).then(
+                (res) => {
+                  if (res.data.code === '200') {
+                    showToast({
+                      title: '加入购物车成功',
+                      message: `您已成功将 ${dialogQuantity} 本《${bookDetails.title}》加入购物车！`,
+                      severity: ToastSeverity.Success,
+                      duration: 3000,
+                    })
+                  } else if (res.data.code === '400') {
+                    showToast({
+                      title: '加入购物车失败',
+                      message: res.data.msg,
+                      severity: ToastSeverity.Danger,
+                      duration: 3000,
+                    })
+                  } else {
+                    showToast({
+                      title: '未知错误',
+                      message: `服务器出错！请稍后再试！`,
+                      severity: ToastSeverity.Warning,
+                      duration: 3000,
+                    })
+                  }
                 }
-              })
+              )
             }
             // else {
             //   // TODO: 立即购买api

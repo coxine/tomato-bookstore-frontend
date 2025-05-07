@@ -1,5 +1,5 @@
 export interface Order {
-  orderId: string
+  orderId: number
   username: string
   totalAmount: number
   paymentMethod: string
@@ -9,7 +9,7 @@ export interface Order {
 
 export interface OrderForPay {
   paymentForm: string
-  orderId: string
+  orderId: number
   totalAmount: number
   paymentMethod: string
 }

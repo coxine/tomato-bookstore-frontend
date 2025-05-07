@@ -1,6 +1,6 @@
 export type Stockpile = {
-  id: string
+  id: number
   amount: number
   frozen: number
-  productId: string
+  productId: number
 }

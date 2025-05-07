@@ -42,10 +42,10 @@ export default function CartPage() {
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
     {}
   )
-  const modifyQue = useRef<Record<string, number>>({}) // { [cartItemId]: quantity }
+  const modifyQue = useRef<Record<number, number>>({}) // { [cartItemId]: quantity }
   const [modifyQueueVersion, setModifyQueueVersion] = useState(0) // 队列更新触发器（仅用于触发 useEffect）
   const modifyTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const deleteQue = useRef<Record<string, boolean>>({}) // { [cartItemId]: true }
+  const deleteQue = useRef<Record<number, boolean>>({}) // { [cartItemId]: true }
   const [deleteQueueVersion, setDeleteQueueVersion] = useState(0) // 删除队列触发器
   const deleteTimerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -93,7 +93,7 @@ export default function CartPage() {
     fetchCart()
   }, [fetchCart])
 
-  const handleSelectItem = (cartItemId: string, selected: boolean) => {
+  const handleSelectItem = (cartItemId: number, selected: boolean) => {
     setSelectedItems((prev) => ({
       ...prev,
       [cartItemId]: selected,
@@ -117,7 +117,7 @@ export default function CartPage() {
     cartData.items.every((item) => selectedItems[item.cartItemId])
 
   const handleQuantityChange = useCallback(
-    (cartItemId: string, newQuantity: number) => {
+    (cartItemId: number, newQuantity: number) => {
       if (newQuantity < 1) {
         showToast({
           title: '数量错误',
@@ -168,7 +168,8 @@ export default function CartPage() {
     modifyQue.current = {}
 
     Promise.all(
-      Object.entries(currentQueue).map(([cartItemId, quantity]) =>
+      Object.entries(currentQueue).map(([cartItemIdStr, quantity]) => {
+        const cartItemId = parseInt(cartItemIdStr)
         cartUpdateQuantity(cartItemId, quantity).then((res) => {
           if (res.data.code === '400') {
             showToast({
@@ -189,7 +190,7 @@ export default function CartPage() {
             setModifyQueueVersion((prev) => prev + 1)
           }
         })
-      )
+      })
     )
   }, [cartData.items])
 
@@ -209,7 +210,7 @@ export default function CartPage() {
   }, [modifyQueueVersion, processModify])
 
   // 删除购物车商品
-  const handleRemoveItem = (cartItemId: string) => {
+  const handleRemoveItem = (cartItemId: number) => {
     // 模拟删除购物车商品
     const newItems = cartData.items.filter(
       (item) => item.cartItemId !== cartItemId
@@ -248,7 +249,8 @@ export default function CartPage() {
     deleteQue.current = {}
 
     Promise.all(
-      Object.entries(currentQueue).map(([cartItemId]) =>
+      Object.entries(currentQueue).map(([cartItemIdStr]) => {
+        const cartItemId = parseInt(cartItemIdStr)
         cartDeleteProduct(cartItemId).then((res) => {
           if (res.data.code === '400') {
             showToast({
@@ -269,7 +271,7 @@ export default function CartPage() {
             setDeleteQueueVersion((prev) => prev + 1)
           }
         })
-      )
+      })
     )
   }, [cartData.items])
 
@@ -329,6 +331,7 @@ export default function CartPage() {
 
           orderSubmit(selectedItemIds, shippingAddress, paymentMethod).then(
             (res) => {
+              console.log(1, res)
               if (res.data.code === '200') {
                 showToast({
                   title: '订单提交成功',
@@ -340,6 +343,7 @@ export default function CartPage() {
                   handleRemoveItem(itemId)
                 }) // 删除已购买商品
                 orderToPay(res.data.data.orderId).then((res) => {
+                  console.log(2, res)
                   if (res.data.code === '200') {
                     document.writeln(res.data.data.paymentForm)
                   } else {

@@ -15,6 +15,7 @@ import DeleteBookDialog from './DeleteBookDialog'
 export default function BookDetails() {
   const breadcrumbsItems = [{ label: '购买书籍', link: '/books' }]
   const { productId } = useParams()
+  const productIdNum = parseInt(productId || '0')
   const navigate = useNavigate()
   const [bookDetails, setBookDetails] = useState<Book>()
   const [stockpile, setStockpile] = useState<Stockpile>()
@@ -23,8 +24,8 @@ export default function BookDetails() {
   const [cartMode, setCartMode] = useState<'add' | 'buy'>('add')
 
   const fecthStockpile = useCallback(() => {
-    if (!productId) return
-    productGetStockpile(productId).then((res) => {
+    if (!productIdNum) return
+    productGetStockpile(productIdNum).then((res) => {
       if (res.data.code === '200') {
         setStockpile(res.data.data)
       } else {
@@ -36,11 +37,11 @@ export default function BookDetails() {
         })
       }
     })
-  }, [productId])
+  }, [productIdNum])
 
   const fetchBook = useCallback(() => {
-    if (!productId) return
-    productGetInfo(productId).then((res) => {
+    if (!productIdNum) return
+    productGetInfo(productIdNum).then((res) => {
       if (res.data.code === '200') {
         setBookDetails(res.data.data)
       } else {
@@ -52,10 +53,10 @@ export default function BookDetails() {
         })
       }
     })
-  }, [productId])
+  }, [productIdNum])
 
   const handleCart = (mode: 'add' | 'buy') => {
-    if (!bookDetails || !productId) return
+    if (!bookDetails || !productIdNum) return
     setCartMode(mode)
     setShowCartDialog(true)
   }
@@ -65,7 +66,7 @@ export default function BookDetails() {
   }
 
   const handleDeleteConfirmation = () => {
-    if (!productId) return
+    if (!productIdNum) return
     setShowDeleteDialog(true)
   }
 
@@ -74,7 +75,7 @@ export default function BookDetails() {
   }
 
   useEffect(() => {
-    if (!productId) {
+    if (!productIdNum) {
       showToast({
         title: '意外错误',
         message: '不存在商品ID！',
@@ -86,11 +87,11 @@ export default function BookDetails() {
     }
     fetchBook()
     fecthStockpile()
-  }, [fecthStockpile, fetchBook, navigate, productId])
+  }, [fecthStockpile, fetchBook, navigate, productIdNum])
 
   return (
     <MainLayout title="书籍详情" breadcrumbsItems={breadcrumbsItems}>
-      {!bookDetails || !productId ? (
+      {!bookDetails || !productIdNum ? (
         <Loading />
       ) : (
         <>
@@ -103,9 +104,9 @@ export default function BookDetails() {
             />
           )}
 
-          {showDeleteDialog && productId && (
+          {showDeleteDialog && productIdNum && (
             <DeleteBookDialog
-              productId={productId}
+              productId={productIdNum}
               onClose={handleCloseDeleteDialog}
               afterDelete={() => {
                 setTimeout(() => {

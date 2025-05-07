@@ -40,11 +40,10 @@ export default function CreateAdCard() {
   })
 
   const [adData, setAdData] = useState<Advertisement>({
-    id: '',
     title: '',
     content: '',
     imgUrl: '',
-    productId: '',
+    productId: 0,
   })
 
   const handleChange = (field: keyof Advertisement, value: string) => {
@@ -115,11 +114,10 @@ export default function CreateAdCard() {
     })
 
     setAdData({
-      id: '',
       title: '',
       content: '',
       imgUrl: '',
-      productId: '',
+      productId: 0,
     })
   }
 
@@ -261,6 +259,7 @@ export default function CreateAdCard() {
             label: '商品ID',
             field: 'productId',
             required: true,
+            type: 'number',
             placeholder: '关联的商品ID',
           })}
 
