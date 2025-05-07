@@ -28,7 +28,6 @@ const bookChapters: Chapter[] = [
 
 export default function ChapterTable() {
   const isAdmin = sessionStorage.getItem('role') === 'ADMIN'
-
   return (
     <Box className="chapter-table" sx={{ px: { xs: 2, sm: 5, md: 10 } }}>
       <Typography level="h4" sx={{ pb: 1 }}>
@@ -55,16 +54,26 @@ export default function ChapterTable() {
               </td>
               <td>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  <IconButton
-                    color="success"
-                    variant="soft"
-                    size="sm"
-                    component={Link}
-                    to={`/chapters/${chapter.id}`}
-                    disabled={!(chapter.state === 'FREE')}
-                  >
-                    <ChromeReaderMode />
-                  </IconButton>
+                  {chapter.state === 'FREE' ? (
+                    <IconButton
+                      color="success"
+                      variant="soft"
+                      size="sm"
+                      component={Link}
+                      to={`/chapters/${chapter.id}`}
+                    >
+                      <ChromeReaderMode />
+                    </IconButton>
+                  ) : (
+                    <IconButton
+                      color="danger"
+                      variant="soft"
+                      size="sm"
+                      disabled
+                    >
+                      <ChromeReaderMode />
+                    </IconButton>
+                  )}
                   {isAdmin && (
                     <IconButton
                       color="primary"

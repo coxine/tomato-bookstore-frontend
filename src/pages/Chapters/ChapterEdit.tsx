@@ -32,9 +32,7 @@ export default function ChapterEdit() {
         { label: '书籍详情', link: `/books/${initialChapterData.productId}` },
       ]}
     >
-      <EditChapterCard
-        initialChapterData={initialChapterData}
-      />
+      <EditChapterCard initialChapterData={initialChapterData} />
     </MainLayout>
   )
 }
