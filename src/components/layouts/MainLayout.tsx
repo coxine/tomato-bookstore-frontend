@@ -46,7 +46,7 @@ export default function MainLayout({
               zIndex: 1,
             }}
           >
-            <Box sx={{ px: { xs: 2, md: 6 } }}>
+            <Box sx={{ px: { xs: 0, md: 6 } }}>
               <Breadcrumbs separator="›" aria-label="breadcrumbs">
                 <Link to="/">
                   <Typography level="body-md" color="primary">
