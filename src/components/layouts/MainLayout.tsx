@@ -47,7 +47,11 @@ export default function MainLayout({
             }}
           >
             <Box sx={{ px: { xs: 0, md: 6 } }}>
-              <Breadcrumbs separator="›" aria-label="breadcrumbs">
+              <Breadcrumbs
+                separator="›"
+                aria-label="breadcrumbs"
+                sx={{ px: 2 }}
+              >
                 <Link to="/">
                   <Typography level="body-md" color="primary">
                     首页
