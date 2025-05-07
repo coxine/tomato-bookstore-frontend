@@ -58,6 +58,7 @@ export default function CreateChapterCard({
 
     console.log('Created chapter data:', chapterData)
 
+    // TODO 提交新创建的章节
     // Validate form
     if (!chapterData.name.trim()) {
       setErrors((prev) => ({ ...prev, name: '章节名称不能为空' }))

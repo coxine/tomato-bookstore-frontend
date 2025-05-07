@@ -21,7 +21,7 @@ import {
 
 import OrderItemCard from './OrderItemCard'
 
-const orderList: OrderDetail[] = [
+const orderList: OrderDetail[] = [ // TODO 获取用户订单数据
   {
     orderId: 50,
     totalAmount: 298.5,

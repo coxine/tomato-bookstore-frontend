@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { Chapter } from '../../types/chapter'
 import { chapterStatusFormatter } from '../../utils/formatter'
 
-const bookChapters: Chapter[] = [
+const bookChapters: Chapter[] = [ // TODO 获取章节列表
   {
     id: 1001,
     name: '第1章',

@@ -20,7 +20,7 @@ export default function ChapterEdit() {
   React.useEffect(() => {
     if (chapterId) {
       console.log('Fetching chapter data for', chapterId)
-      // TODO
+      // TODO 获取章节数据
     }
   }, [chapterId])
 
