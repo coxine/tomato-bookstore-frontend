@@ -40,7 +40,6 @@ export default function CreateAdCard() {
   })
 
   const [adData, setAdData] = useState<Advertisement>({
-    // id: '',
     title: '',
     content: '',
     imgUrl: '',
@@ -115,7 +114,6 @@ export default function CreateAdCard() {
     })
 
     setAdData({
-      // id: '',
       title: '',
       content: '',
       imgUrl: '',
