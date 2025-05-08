@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
 import MainLayout from '../../components/layouts/MainLayout'
@@ -17,7 +17,7 @@ export default function ChapterEdit() {
   }
 
   // Fetch chapter data when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     if (chapterId) {
       console.log('Fetching chapter data for', chapterId)
       // TODO 获取章节数据

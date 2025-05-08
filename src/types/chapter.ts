@@ -1,5 +1,5 @@
 export interface Chapter {
-  id: number
+  id?: number
   name: string
   content?: string
   status: ChapterState

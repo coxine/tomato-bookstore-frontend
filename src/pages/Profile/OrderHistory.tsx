@@ -6,11 +6,14 @@ import {
   Chip,
   Stack,
   useTheme,
+  Button,
 } from '@mui/joy'
 import { useMediaQuery } from '@mui/material'
 import { useState, useEffect } from 'react'
 
+import { orderGetUsers, orderToPay } from '../../api/order'
 import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { OrderDetail } from '../../types/order'
 import {
   datetimeFormatter,
@@ -21,32 +24,8 @@ import {
 
 import OrderItemCard from './OrderItemCard'
 
-const orderList: OrderDetail[] = [
-  // TODO 获取用户订单数据
-  {
-    orderId: 50,
-    totalAmount: 298.5,
-    paymentMethod: 'ALIPAY',
-    status: 'SUCCESS',
-    createTime: '2025-05-05T07:34:32.462+00:00',
-    name: 'test',
-    address: '123',
-    phone: '18723414746',
-    orderItems: [
-      {
-        productId: 15,
-        productTitle: '深入理解Java虚拟机',
-        quantity: 3,
-        price: 99.5,
-        cover:
-          'https://tomato-nju.oss-cn-nanjing.aliyuncs.com/017ac261-c14b-4adf-994d-c583afee7048.png',
-      },
-    ],
-  },
-]
-
 export default function OrderHistory() {
-  const [orders, setOrders] = useState<OrderDetail[]>(orderList)
+  const [orders, setOrders] = useState<OrderDetail[]>()
   const [isLoading, setIsLoading] = useState(false)
   const [expandedOrders, setExpandedOrders] = useState<number[]>([])
 
@@ -72,17 +51,47 @@ export default function OrderHistory() {
   }
   const maxDisplayItems = getMaxDisplayItems()
 
+  const fetchOrders = () => {
+    orderGetUsers().then((res) => {
+      if (res.data.code == '200') {
+        setOrders(res.data.data.reverse())
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！获取用户订单数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }
+
+  const pay = (orderId: number) => {
+    orderToPay(orderId).then((res) => {
+      if (res.data.code === '200') {
+        document.writeln(res.data.data.paymentForm)
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！前往支付宝支付失败，请刷新重新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }
+
   useEffect(() => {
     setIsLoading(true)
     setTimeout(() => {
-      setOrders(orderList)
+      fetchOrders()
       setIsLoading(false)
     }, 500)
   }, [])
 
   return (
     <Box>
-      {isLoading ? (
+      {isLoading || !orders ? (
         <Loading />
       ) : orders.length === 0 ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
@@ -126,6 +135,11 @@ export default function OrderHistory() {
                       >
                         {orderStatusFormatter(order.status).label}
                       </Chip>
+                      {order.status === 'PENDING' && ( // TODO: need to optimized
+                        <Button onClick={() => pay(order.orderId)}>
+                          前去支付
+                        </Button>
+                      )}
                     </Box>
                   </Box>
 

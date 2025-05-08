@@ -34,5 +34,5 @@ export interface OrderDetail {
   orderItems: OrderItem[]
 }
 
-export type OrderStatus = 'SUCCESS' | 'CANCELLED'
+export type OrderStatus = 'SUCCESS' | 'CANCELLED' | 'PENDING'
 export type PaymentMethod = 'ALIPAY' | 'WECHAT'
