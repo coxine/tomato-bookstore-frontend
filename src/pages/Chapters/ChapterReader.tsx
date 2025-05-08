@@ -1,4 +1,10 @@
-import { ArrowBack, ArrowForward, Menu as MenuIcon } from '@mui/icons-material'
+import {
+  ArrowBack,
+  ArrowForward,
+  Menu as MenuIcon,
+  VolumeUp,
+  Stop,
+} from '@mui/icons-material'
 import {
   Typography,
   TypographySystem,
@@ -14,7 +20,7 @@ import {
   Menu,
 } from '@mui/joy'
 import { OverridableStringUnion } from '@mui/types'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
 import MainLayout from '../../components/layouts/MainLayout'
@@ -38,7 +44,6 @@ const fontSizes: { value: keyof TypographySystem; name: string }[] = [
   { value: 'body-xs', name: '特小' },
 ]
 
-// Helper function to convert text with newlines to JSX elements with proper line breaks
 const renderTextWithLineBreaks = (text: string) => {
   return text.split('\n').map((line, index, array) => (
     <Typography key={index}>
@@ -57,18 +62,100 @@ export default function ChapterReader() {
     useState<
       OverridableStringUnion<ColorPaletteProp, TypographyPropsColorOverrides>
     >('neutral')
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
+    null
+  )
+
+  const handleSpeechToggle = () => {
+    if (isSpeaking && audioElement) {
+      audioElement.pause()
+      audioElement.currentTime = 0
+      setIsSpeaking(false)
+      return
+    }
+
+    if (chapter.content) {
+      playSpeech(chapter.content)
+    }
+  }
+
+  const prepareAudioChunk = (text: string, audio: HTMLAudioElement) => {
+    const blobUrl = URL.createObjectURL(new Blob([]))
+    audio.src = blobUrl
+
+    fetch('https://tts.cos.tg/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      mode: 'cors',
+      credentials: 'omit',
+      body: JSON.stringify({
+        input: text,
+        model: 'tts-1',
+        voice: 'zh-CN-YunxiNeural',
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`TTS API error: ${response.status}`)
+        }
+        return response.blob()
+      })
+      .then((blob) => {
+        const newBlobUrl = URL.createObjectURL(blob)
+        audio.src = newBlobUrl
+        URL.revokeObjectURL(blobUrl)
+        audio.load()
+      })
+      .catch((error) => {
+        console.error('Failed to fetch TTS audio:', error)
+        URL.revokeObjectURL(blobUrl)
+        setIsSpeaking(false)
+      })
+  }
+
+  const playSpeech = (text: string) => {
+    const audio = audioElement || new Audio()
+    prepareAudioChunk(text, audio)
+
+    audio.onplay = () => setIsSpeaking(true)
+    audio.onended = () => setIsSpeaking(false)
+    audio.onerror = () => {
+      console.error('TTS playback error')
+      setIsSpeaking(false)
+    }
+
+    setAudioElement(audio)
+
+    audio.play().catch((err) => {
+      console.error('Failed to play TTS:', err)
+      setIsSpeaking(false)
+    })
+  }
+
+  useEffect(() => {
+    return () => {
+      if (audioElement) {
+        audioElement.pause()
+        audioElement.src = ''
+      }
+    }
+  }, [audioElement])
 
   const chapter: Chapter = {
     // TODO 获取章节详情
     id: 1001,
     name: '第1章',
-    content: `他赠我很无力的一个相拥
-却是他拥有的所有
-十七岁那年搁浅我 一生的心动
-经年之后 我富有一切自由
-可以亲吻可以情衷
-独缺少十七岁某某
-于是一切富有都贫穷`,
+    content: `墨燃还没当皇帝的那会儿，总有人骂他是狗。
+
+乡人骂他狗玩意，堂弟骂他狗东西，他干娘最厉害，骂他狗儿子。
+
+当然，总也有过一些与狗相关的形容，不算太差。比如他那些露水情缘，总是带着几分佯怒，嗔他在榻上腰力如公狗，嘴上甜言勾了人的魂魄，身下凶器夺了卿卿性命，但转眼又去与旁人炫耀，搞得瓦肆间人人皆知他墨微雨人俊器猛，试过的饕足意满，没试过的心弛神摇。
+
+不得不说，这些人讲的很对，墨燃确实像是一只摇头摆尾的傻狗。`,
     state: 'FREE',
     productId: 15,
     previous: 1000,
@@ -178,8 +265,8 @@ export default function ChapterReader() {
         color={themeColor}
         sx={{
           mb: 1,
-          mx: { sx: 1, xs: 4 },
-          px: { xs: 0, md: 2 },
+          mx: { sx: 1, md: 4 },
+          px: { xs: 1, md: 2 },
           py: 2,
           borderRadius: 8,
         }}
@@ -231,6 +318,25 @@ export default function ChapterReader() {
           size="sm"
         >
           下一章
+        </Button>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          mt: 2,
+          gap: 2,
+        }}
+      >
+        <Button
+          onClick={handleSpeechToggle}
+          variant="soft"
+          startDecorator={isSpeaking ? <Stop /> : <VolumeUp />}
+          size="sm"
+          color={isSpeaking ? 'danger' : 'primary'}
+        >
+          {isSpeaking ? '停止朗读' : '朗读章节'}
         </Button>
       </Box>
     </MainLayout>
