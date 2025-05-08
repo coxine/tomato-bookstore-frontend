@@ -10,19 +10,19 @@ const bookChapters: Chapter[] = [
   {
     id: 1001,
     name: '第1章',
-    state: 'FREE',
+    status: 'FREE',
     productId: 15,
   },
   {
     id: 1002,
     name: '第2章',
-    state: 'CHARGED',
+    status: 'CHARGED',
     productId: 15,
   },
   {
     id: 1003,
     name: '第3章',
-    state: 'LOCKED',
+    status: 'LOCKED',
     productId: 15,
   },
 ]
@@ -49,13 +49,13 @@ export default function ChapterTable() {
               <td>{index + 1}</td>
               <td>{chapter.name}</td>
               <td>
-                <Chip color={chapterStatusFormatter(chapter.state).color}>
-                  {chapterStatusFormatter(chapter.state).label}
+                <Chip color={chapterStatusFormatter(chapter.status).color}>
+                  {chapterStatusFormatter(chapter.status).label}
                 </Chip>
               </td>
               <td>
                 <Box sx={{ display: 'flex', gap: 1 }}>
-                  {chapter.state === 'FREE' ? (
+                  {chapter.status === 'FREE' ? (
                     <IconButton
                       color="success"
                       variant="soft"

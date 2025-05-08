@@ -156,7 +156,7 @@ export default function ChapterReader() {
 当然，总也有过一些与狗相关的形容，不算太差。比如他那些露水情缘，总是带着几分佯怒，嗔他在榻上腰力如公狗，嘴上甜言勾了人的魂魄，身下凶器夺了卿卿性命，但转眼又去与旁人炫耀，搞得瓦肆间人人皆知他墨微雨人俊器猛，试过的饕足意满，没试过的心弛神摇。
 
 不得不说，这些人讲的很对，墨燃确实像是一只摇头摆尾的傻狗。`,
-    state: 'FREE',
+    status: 'FREE',
     productId: 15,
     previous: 1000,
     next: 1002,
@@ -167,25 +167,25 @@ export default function ChapterReader() {
     {
       id: 1000,
       name: '序章',
-      state: 'FREE',
+      status: 'FREE',
       productId: 15,
     },
     {
       id: 1001,
       name: '第1章',
-      state: 'FREE',
+      status: 'FREE',
       productId: 15,
     },
     {
       id: 1002,
       name: '第11451412章',
-      state: 'CHARGED',
+      status: 'CHARGED',
       productId: 15,
     },
     {
       id: 1003,
       name: '第3章',
-      state: 'LOCKED',
+      status: 'LOCKED',
       productId: 15,
     },
   ]

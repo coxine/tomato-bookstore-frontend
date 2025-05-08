@@ -2,7 +2,7 @@ export interface Chapter {
   id: number
   name: string
   content?: string
-  state: ChapterState
+  status: ChapterState
   productId: number
   previous?: number
   next?: number

@@ -11,7 +11,7 @@ export default function ChapterEdit() {
   const initialChapterData: Chapter = {
     id: 1001,
     name: '第1章',
-    state: 'FREE',
+    status: 'FREE',
     productId: 15,
     content: '梧桐枝桠疯长，爱意贯穿心脏。',
   }

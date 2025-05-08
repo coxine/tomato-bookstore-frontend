@@ -29,7 +29,7 @@ export default function CreateChapterCard({
     id: 0,
     name: '',
     productId: productId,
-    state: 'FREE',
+    status: 'FREE',
     content: '',
   })
 
@@ -121,8 +121,8 @@ export default function CreateChapterCard({
           <FormControl>
             <FormLabel>状态</FormLabel>
             <Select
-              value={chapterData.state}
-              onChange={(_, value) => handleChange('state', value || '')}
+              value={chapterData.status}
+              onChange={(_, value) => handleChange('status', value || '')}
               placeholder="选择章节状态"
               size="sm"
             >

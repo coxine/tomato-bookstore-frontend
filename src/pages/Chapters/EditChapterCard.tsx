@@ -114,8 +114,8 @@ export default function EditChapterCard({
           <FormControl>
             <FormLabel>状态</FormLabel>
             <Select
-              value={chapterData.state}
-              onChange={(_, value) => handleChange('state', value || '')}
+              value={chapterData.status}
+              onChange={(_, value) => handleChange('status', value || '')}
               placeholder="选择章节状态"
               size="sm"
             >
