@@ -54,7 +54,7 @@ export function BookActions({
         <Box sx={{ display: 'flex', gap: 2, pt: 1 }}>
           <Link to={`/books/edit/${book.id}`}>
             <Button color="primary" variant="soft" startDecorator={<Edit />}>
-              编辑商品
+              编辑书籍
             </Button>
           </Link>
           <Button
@@ -63,7 +63,7 @@ export function BookActions({
             startDecorator={<Delete />}
             onClick={onDeleteClick}
           >
-            删除商品
+            删除书籍
           </Button>
         </Box>
       )}

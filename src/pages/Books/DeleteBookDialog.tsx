@@ -20,8 +20,8 @@ export function DeleteBookDialog({
     productDelete(productId).then((res) => {
       if (res.data.code === '200') {
         showToast({
-          title: '删除商品',
-          message: '商品删除成功！',
+          title: '删除书籍',
+          message: '书籍删除成功！',
           severity: ToastSeverity.Success,
           duration: 3000,
         })
@@ -36,7 +36,7 @@ export function DeleteBookDialog({
       } else {
         showToast({
           title: '未知错误',
-          message: '服务器出错！删除商品失败，请重新尝试！',
+          message: '服务器出错！删除书籍失败，请重新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
         })
@@ -47,7 +47,7 @@ export function DeleteBookDialog({
 
   return (
     <AlertDialogModal
-      title="删除商品"
+      title="删除书籍"
       open={true}
       onClose={onClose}
       icon={<Delete />}
@@ -62,7 +62,7 @@ export function DeleteBookDialog({
         </Button>
       }
     >
-      <Typography>您确定要删除此商品吗？</Typography>
+      <Typography>您确定要删除这本书吗？</Typography>
     </AlertDialogModal>
   )
 }
