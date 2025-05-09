@@ -22,8 +22,11 @@ const renderTextWithLineBreaks = (text: string) => {
   return text.split('\n').map((line, index, array) => (
     <Typography key={index}>
       {line}
-      <br />
-      {index < array.length - 1 && <br />}
+      {index < array.length - 1 && (
+        <>
+          <br /> <br />
+        </>
+      )}
     </Typography>
   ))
 }

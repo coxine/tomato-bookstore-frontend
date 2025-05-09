@@ -1,6 +1,6 @@
-import { VolumeUp, Stop, Pause, PlayArrow } from '@mui/icons-material'
-import { Button, IconButton, ButtonGroup } from '@mui/joy'
-import { useEffect, useState } from 'react'
+import { VolumeUp, Pause, PlayArrow } from '@mui/icons-material'
+import { Button, ColorPaletteProp } from '@mui/joy'
+import { JSX, useEffect, useState } from 'react'
 
 import { generateSpeech } from '../../../api/tts'
 import {
@@ -9,33 +9,56 @@ import {
 } from '../../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../../types/chapter'
 
+enum PlaybackState {
+  NotRequested,
+  Playing,
+  Paused,
+}
+
+const playbackConfig: {
+  state: PlaybackState
+  text: string
+  decorator: JSX.Element
+  color: ColorPaletteProp
+}[] = [
+  {
+    state: PlaybackState.NotRequested,
+    text: '朗读章节',
+    decorator: <VolumeUp />,
+    color: 'primary',
+  },
+  {
+    state: PlaybackState.Playing,
+    text: '暂停',
+    decorator: <Pause />,
+    color: 'warning',
+  },
+  {
+    state: PlaybackState.Paused,
+    text: '恢复播放',
+    decorator: <PlayArrow />,
+    color: 'success',
+  },
+]
+
 export default function SpeechControl({ chapter }: { chapter: Chapter }) {
-  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [playbackState, setPlaybackState] = useState<PlaybackState>(
+    PlaybackState.NotRequested
+  )
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
     null
   )
 
-  const handleSpeechToggle = () => {
-    if (isSpeaking && audioElement) {
-      audioElement.pause()
-      audioElement.currentTime = 0
-      setIsSpeaking(false)
-      return
-    }
-
-    if (chapter.content) {
+  const handlePlaybackToggle = () => {
+    if (playbackState === PlaybackState.NotRequested && chapter.content) {
       playSpeech(chapter.content)
-    }
-  }
-
-  const handlePauseResumeToggle = () => {
-    if (audioElement) {
-      if (audioElement.paused) {
+    } else if (audioElement) {
+      if (playbackState === PlaybackState.Paused) {
         audioElement.play()
-        setIsSpeaking(true)
-      } else {
+        setPlaybackState(PlaybackState.Playing)
+      } else if (playbackState === PlaybackState.Playing) {
         audioElement.pause()
-        setIsSpeaking(false)
+        setPlaybackState(PlaybackState.Paused)
       }
     }
   }
@@ -47,7 +70,7 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
       audio.src = newBlobUrl
       audio.load()
     } catch {
-      setIsSpeaking(false)
+      setPlaybackState(PlaybackState.NotRequested)
     }
   }
 
@@ -61,11 +84,9 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
     const audio = audioElement || new Audio()
     await prepareAudioChunk(text, audio)
 
-    audio.onplay = () => setIsSpeaking(true)
-    audio.onended = () => setIsSpeaking(false)
-    audio.onerror = () => {
-      setIsSpeaking(false)
-    }
+    audio.onplay = () => setPlaybackState(PlaybackState.Playing)
+    audio.onended = () => setPlaybackState(PlaybackState.Paused)
+    audio.onerror = () => setPlaybackState(PlaybackState.NotRequested)
 
     setAudioElement(audio)
 
@@ -84,7 +105,7 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
-      setIsSpeaking(false)
+      setPlaybackState(PlaybackState.NotRequested)
     }
   }
 
@@ -97,27 +118,20 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
     }
   }, [audioElement])
 
+  const currentConfig = playbackConfig.find(
+    (config) => config.state === playbackState
+  )
+
   return (
-    <ButtonGroup>
-      <Button
-        onClick={handleSpeechToggle}
-        variant="soft"
-        size="sm"
-        color={isSpeaking ? 'danger' : 'primary'}
-        sx={{ width: { xs: '100%', sm: 'auto' } }}
-        startDecorator={isSpeaking ? <Stop /> : <VolumeUp />}
-      >
-        {isSpeaking ? '停止朗读' : '朗读章节'}
-      </Button>
-      <IconButton
-        onClick={handlePauseResumeToggle}
-        variant="soft"
-        size="sm"
-        color={audioElement?.paused ? 'success' : 'warning'}
-        sx={{ width: { xs: '100%', sm: 'auto' } }}
-      >
-        {audioElement?.paused ? <PlayArrow /> : <Pause />}
-      </IconButton>
-    </ButtonGroup>
+    <Button
+      onClick={handlePlaybackToggle}
+      variant="soft"
+      size="sm"
+      color={currentConfig?.color}
+      sx={{ width: { xs: '100%', sm: 'auto' } }}
+      startDecorator={currentConfig?.decorator}
+    >
+      {currentConfig?.text}
+    </Button>
   )
 }
