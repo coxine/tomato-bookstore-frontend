@@ -61,6 +61,7 @@ export default function ToastMessage({
         alignItems: 'flex-start',
         transition: 'opacity 0.5s',
         opacity: visible ? 1 : 0,
+        boxShadow: 'md',
       }}
       key={title}
     >
