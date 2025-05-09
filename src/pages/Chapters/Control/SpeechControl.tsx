@@ -1,6 +1,7 @@
 import { VolumeUp, Pause, PlayArrow } from '@mui/icons-material'
 import { Button, ColorPaletteProp } from '@mui/joy'
-import { JSX, useEffect, useState } from 'react'
+import { JSX, useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { generateSpeech } from '../../../api/tts'
 import {
@@ -45,19 +46,18 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
   const [playbackState, setPlaybackState] = useState<PlaybackState>(
     PlaybackState.NotRequested
   )
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
-    null
-  )
+  const audioElementRef = useRef<HTMLAudioElement | null>(null)
+  const location = useLocation()
 
   const handlePlaybackToggle = () => {
     if (playbackState === PlaybackState.NotRequested && chapter.content) {
       playSpeech(chapter.content)
-    } else if (audioElement) {
+    } else if (audioElementRef.current) {
       if (playbackState === PlaybackState.Paused) {
-        audioElement.play()
+        audioElementRef.current.play()
         setPlaybackState(PlaybackState.Playing)
       } else if (playbackState === PlaybackState.Playing) {
-        audioElement.pause()
+        audioElementRef.current.pause()
         setPlaybackState(PlaybackState.Paused)
       }
     }
@@ -71,24 +71,30 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
       audio.load()
     } catch {
       setPlaybackState(PlaybackState.NotRequested)
+      showToast({
+        title: '合成失败',
+        message: '请检查网络连接或重试',
+        severity: ToastSeverity.Danger,
+        duration: 3000,
+      })
     }
   }
 
   const playSpeech = async (text: string) => {
     showToast({
       title: '正在合成音频',
-      message: '请稍等片刻',
+      message: '合成音频耗时较长，请耐心等待',
       severity: ToastSeverity.Primary,
       duration: 3000,
     })
-    const audio = audioElement || new Audio()
+    const audio = audioElementRef.current || new Audio()
     await prepareAudioChunk(text, audio)
 
     audio.onplay = () => setPlaybackState(PlaybackState.Playing)
     audio.onended = () => setPlaybackState(PlaybackState.Paused)
     audio.onerror = () => setPlaybackState(PlaybackState.NotRequested)
 
-    setAudioElement(audio)
+    audioElementRef.current = audio
 
     try {
       await audio.play()
@@ -111,12 +117,12 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
 
   useEffect(() => {
     return () => {
-      if (audioElement) {
-        audioElement.pause()
-        audioElement.src = ''
+      if (audioElementRef.current) {
+        audioElementRef.current.pause()
+        setPlaybackState(PlaybackState.NotRequested)
       }
     }
-  }, [audioElement])
+  }, [location])
 
   const currentConfig = playbackConfig.find(
     (config) => config.state === playbackState
