@@ -331,7 +331,6 @@ export default function CartPage() {
 
           orderSubmit(selectedItemIds, shippingAddress, paymentMethod).then(
             (res) => {
-              console.log(1, res)
               if (res.data.code === '200') {
                 showToast({
                   title: '订单提交成功',

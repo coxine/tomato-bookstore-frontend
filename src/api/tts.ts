@@ -9,7 +9,6 @@ export async function generateSpeech(input: string): Promise<Blob> {
         input: input,
         model: 'tts-1',
         voice: 'zh-CN-YunxiNeural',
-        speed: 0.9,
       },
       {
         responseType: 'blob',

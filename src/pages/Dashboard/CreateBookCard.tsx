@@ -161,7 +161,6 @@ export default function CreateBookCard() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault() // 防止form的submit事件自动刷新页面
-    console.log('submit!')
     showToast({
       title: '正在提交',
       message: '请稍等...',
