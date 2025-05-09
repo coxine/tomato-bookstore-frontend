@@ -27,7 +27,7 @@ export const RenderInput = <T extends object>({
 }: RenderInputProps<T>) => {
   return (
     <Stack spacing={1}>
-      <FormLabel>{label}</FormLabel>
+      <FormLabel required={required}>{label}</FormLabel>
       <FormControl required={required}>
         <Input
           size="sm"

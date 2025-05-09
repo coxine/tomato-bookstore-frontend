@@ -1,38 +1,55 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { chapterGetInfo } from '../../api/chapter'
 import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 
 import EditChapterCard from './EditChapterCard'
 
 export default function ChapterEdit() {
   const { chapterId } = useParams()
-  const initialChapterData: Chapter = {
-    id: 1001,
-    name: '第1章',
-    status: 'FREE',
-    productId: 15,
-    content: '梧桐枝桠疯长，爱意贯穿心脏。',
-  }
+  const chapterIdNum = parseInt(chapterId || '0')
+  const [initialChapterData, setInitialChapterData] = useState<Chapter>()
 
   // Fetch chapter data when component mounts
   useEffect(() => {
-    if (chapterId) {
-      console.log('Fetching chapter data for', chapterId)
-      // TODO 获取章节数据
+    if (chapterIdNum) {
+      chapterGetInfo(chapterIdNum).then((res) => {
+        if (res.data.code === '200') {
+          setInitialChapterData(res.data.data)
+        } else {
+          showToast({
+            title: '未知错误',
+            message: '服务器出错！获取章节内容失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
     }
-  }, [chapterId])
+  }, [chapterIdNum])
 
   return (
-    <MainLayout
-      title="编辑章节"
-      breadcrumbsItems={[
-        { label: '购买书籍', link: '/books' },
-        { label: '书籍详情', link: `/books/${initialChapterData.productId}` },
-      ]}
-    >
-      <EditChapterCard initialChapterData={initialChapterData} />
-    </MainLayout>
+    <>
+      {!initialChapterData ? (
+        <Loading />
+      ) : (
+        <MainLayout
+          title="编辑章节"
+          breadcrumbsItems={[
+            { label: '购买书籍', link: '/books' },
+            {
+              label: '书籍详情',
+              link: `/books/${initialChapterData.productId}`,
+            },
+          ]}
+        >
+          <EditChapterCard initialChapterData={initialChapterData} />
+        </MainLayout>
+      )}
+    </>
   )
 }

@@ -259,7 +259,7 @@ export default function EditAdsCard({ initialAdsData }: EditAdsCardProps) {
             placeholder: '关联的商品ID',
           })}
           <Stack spacing={1}>
-            <FormLabel>广告内容</FormLabel>
+            <FormLabel required>广告内容</FormLabel>
             <FormControl required>
               <Textarea
                 minRows={3}

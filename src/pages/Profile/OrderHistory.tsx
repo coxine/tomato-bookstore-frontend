@@ -53,7 +53,7 @@ export default function OrderHistory() {
 
   const fetchOrders = () => {
     orderGetUsers().then((res) => {
-      if (res.data.code == '200') {
+      if (res.data.code === '200') {
         setOrders(res.data.data.reverse())
       } else {
         showToast({
@@ -136,8 +136,11 @@ export default function OrderHistory() {
                         {orderStatusFormatter(order.status).label}
                       </Chip>
                       {order.status === 'PENDING' && ( // TODO: need to optimized
-                        <Button onClick={() => pay(order.orderId)}>
-                          前去支付
+                        <Button
+                          onClick={() => pay(order.orderId)}
+                          color="success"
+                        >
+                          支付
                         </Button>
                       )}
                     </Box>

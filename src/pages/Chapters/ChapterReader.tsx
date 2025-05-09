@@ -21,9 +21,12 @@ import {
 } from '@mui/joy'
 import { OverridableStringUnion } from '@mui/types'
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 
+import { chapterGetAll, chapterGetInfo } from '../../api/chapter'
 import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 
 const themeColors: {
@@ -55,7 +58,20 @@ const renderTextWithLineBreaks = (text: string) => {
 }
 
 export default function ChapterReader() {
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
   const { chapterId } = useParams()
+  const chapterIdNum = parseInt(chapterId || '0')
+  const [chapter, setChapter] = useState<Chapter>({
+    id: 0,
+    name: '',
+    content: ``,
+    status: 'FREE',
+    productId: 0,
+    previous: 0,
+    next: 0,
+  })
+  const [bookChapters, setBookChapters] = useState<Chapter[]>([])
   console.log('chapterId', chapterId)
   const [fontSize, setFontSize] = useState<keyof TypographySystem>('body-md')
   const [themeColor, setThemeColor] =
@@ -66,6 +82,48 @@ export default function ChapterReader() {
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
     null
   )
+
+  useEffect(() => {
+    if (chapterIdNum) {
+      // 获取当前章节数据
+      chapterGetInfo(chapterIdNum).then((res) => {
+        if (res.data.code === '200') {
+          setChapter(res.data.data)
+          setIsLoading(false)
+          if (!res.data.data.productId) {
+            showToast({
+              title: '错误',
+              message: '书籍ID不存在',
+              severity: ToastSeverity.Danger,
+              duration: 3000,
+            })
+            navigate('/books')
+            return
+          } else {
+            chapterGetAll(res.data.data.productId).then((res) => {
+              if (res.data.code === '200') {
+                setBookChapters(res.data.data)
+              } else {
+                showToast({
+                  title: '未知错误',
+                  message: '服务器出错！获取章节目录失败，请刷新尝试！',
+                  severity: ToastSeverity.Warning,
+                  duration: 3000,
+                })
+              }
+            })
+          }
+        } else {
+          showToast({
+            title: '未知错误',
+            message: '服务器出错！获取章节内容失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
+  }, [chapterIdNum, navigate])
 
   const handleSpeechToggle = () => {
     if (isSpeaking && audioElement) {
@@ -137,6 +195,7 @@ export default function ChapterReader() {
   }
 
   useEffect(() => {
+    // 清除音频
     return () => {
       if (audioElement) {
         audioElement.pause()
@@ -145,200 +204,167 @@ export default function ChapterReader() {
     }
   }, [audioElement])
 
-  const chapter: Chapter = {
-    // TODO 获取章节详情
-    id: 1001,
-    name: '第1章',
-    content: `墨燃还没当皇帝的那会儿，总有人骂他是狗。
-
-乡人骂他狗玩意，堂弟骂他狗东西，他干娘最厉害，骂他狗儿子。
-
-当然，总也有过一些与狗相关的形容，不算太差。比如他那些露水情缘，总是带着几分佯怒，嗔他在榻上腰力如公狗，嘴上甜言勾了人的魂魄，身下凶器夺了卿卿性命，但转眼又去与旁人炫耀，搞得瓦肆间人人皆知他墨微雨人俊器猛，试过的饕足意满，没试过的心弛神摇。
-
-不得不说，这些人讲的很对，墨燃确实像是一只摇头摆尾的傻狗。`,
-    status: 'FREE',
-    productId: 15,
-    previous: 1000,
-    next: 1002,
-  }
-
-  const bookChapters: Chapter[] = [
-    // TODO 获取章节列表
-    {
-      id: 1000,
-      name: '序章',
-      status: 'FREE',
-      productId: 15,
-    },
-    {
-      id: 1001,
-      name: '第1章',
-      status: 'FREE',
-      productId: 15,
-    },
-    {
-      id: 1002,
-      name: '第11451412章',
-      status: 'CHARGED',
-      productId: 15,
-    },
-    {
-      id: 1003,
-      name: '第3章',
-      status: 'LOCKED',
-      productId: 15,
-    },
-  ]
-
   return (
-    <MainLayout
-      title="章节阅读"
-      breadcrumbsItems={[
-        { label: '购买书籍', link: '/books' },
-        { label: '书籍详情', link: `/books/${chapter.productId}` },
-      ]}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
-          justifyContent: 'space-between',
-          alignItems: { xs: 'flex-start', sm: 'center' },
-          pl: { xs: 0, md: 6 },
-          pr: { xs: 0, md: 4 },
-          mb: 2,
-          gap: 2,
-        }}
-      >
-        <Typography level="h3">{chapter.name}</Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-            width: { xs: '100%', sm: 'auto' },
-            justifyContent: { xs: 'space-between', sm: 'flex-end' },
-          }}
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <MainLayout
+          title="章节阅读"
+          breadcrumbsItems={[
+            { label: '购买书籍', link: '/books' },
+            { label: '书籍详情', link: `/books/${chapter.productId}` },
+          ]}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography level="body-sm">字体</Typography>
-            <Select
-              value={fontSize}
-              onChange={(_, value) =>
-                setFontSize(value as keyof TypographySystem)
-              }
-              size="sm"
-              sx={{ minWidth: 80 }}
-            >
-              {fontSizes.map((size) => (
-                <Option key={size.value} value={size.value}>
-                  <Typography level={size.value}>{size.name}</Typography>
-                </Option>
-              ))}
-            </Select>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography level="body-sm">主题</Typography>
-            <Select
-              value={themeColor}
-              onChange={(_, value) => setThemeColor(value as ColorPaletteProp)}
-              size="sm"
-              sx={{ minWidth: 100 }}
-            >
-              {themeColors.map((theme) => (
-                <Option key={theme.value} value={theme.value}>
-                  <Typography
-                    color={theme.value}
-                    level="body-sm"
-                    variant="soft"
-                  >
-                    {theme.name}
-                  </Typography>
-                </Option>
-              ))}
-            </Select>
-          </Box>
-        </Box>
-      </Box>
-      <Typography
-        level={fontSize}
-        color={themeColor}
-        sx={{
-          mb: 1,
-          mx: { sx: 1, md: 4 },
-          px: { xs: 1, md: 2 },
-          py: 2,
-          borderRadius: 8,
-        }}
-        variant="soft"
-      >
-        {renderTextWithLineBreaks(chapter.content ?? '')}
-      </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mt: 2,
-          gap: 2,
-        }}
-      >
-        <Button
-          component={Link}
-          to={`/chapters/${chapter.previous}`}
-          disabled={!chapter.previous}
-          variant="soft"
-          startDecorator={<ArrowBack />}
-          size="sm"
-        >
-          上一章
-        </Button>
-        <Dropdown>
-          <MenuButton
-            variant="outlined"
-            startDecorator={<MenuIcon />}
-            size="sm"
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              pl: { xs: 0, md: 6 },
+              pr: { xs: 0, md: 4 },
+              mb: 2,
+              gap: 2,
+            }}
           >
-            章节列表
-          </MenuButton>
-          <Menu>
-            {bookChapters.map((ch) => (
-              <MenuItem key={ch.id} component={Link} to={`/chapters/${ch.id}`}>
-                {ch.name}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Dropdown>
-        <Button
-          component={Link}
-          to={`/chapters/${chapter.next}`}
-          disabled={!chapter.next}
-          variant="soft"
-          endDecorator={<ArrowForward />}
-          size="sm"
-        >
-          下一章
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          mt: 2,
-          gap: 2,
-        }}
-      >
-        <Button
-          onClick={handleSpeechToggle}
-          variant="soft"
-          startDecorator={isSpeaking ? <Stop /> : <VolumeUp />}
-          size="sm"
-          color={isSpeaking ? 'danger' : 'primary'}
-        >
-          {isSpeaking ? '停止朗读' : '朗读章节'}
-        </Button>
-      </Box>
-    </MainLayout>
+            <Typography level="h3">{chapter.name}</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                width: { xs: '100%', sm: 'auto' },
+                justifyContent: { xs: 'space-between', sm: 'flex-end' },
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography level="body-sm">字体</Typography>
+                <Select
+                  value={fontSize}
+                  onChange={(_, value) =>
+                    setFontSize(value as keyof TypographySystem)
+                  }
+                  size="sm"
+                  sx={{ minWidth: 80 }}
+                >
+                  {fontSizes.map((size) => (
+                    <Option key={size.value} value={size.value}>
+                      <Typography level={size.value}>{size.name}</Typography>
+                    </Option>
+                  ))}
+                </Select>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography level="body-sm">主题</Typography>
+                <Select
+                  value={themeColor}
+                  onChange={(_, value) =>
+                    setThemeColor(value as ColorPaletteProp)
+                  }
+                  size="sm"
+                  sx={{ minWidth: 100 }}
+                >
+                  {themeColors.map((theme) => (
+                    <Option key={theme.value} value={theme.value}>
+                      <Typography
+                        color={theme.value}
+                        level="body-sm"
+                        variant="soft"
+                      >
+                        {theme.name}
+                      </Typography>
+                    </Option>
+                  ))}
+                </Select>
+              </Box>
+            </Box>
+          </Box>
+          <Typography
+            level={fontSize}
+            color={themeColor}
+            sx={{
+              mb: 1,
+              mx: { sx: 1, md: 4 },
+              px: { xs: 1, md: 2 },
+              py: 2,
+              borderRadius: 8,
+            }}
+            variant="soft"
+          >
+            {renderTextWithLineBreaks(chapter.content ?? '')}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mt: 2,
+              gap: 2,
+            }}
+          >
+            <Button
+              component={Link}
+              to={`/chapters/${chapter.previous}`}
+              disabled={!chapter.previous}
+              variant="soft"
+              startDecorator={<ArrowBack />}
+              size="sm"
+            >
+              上一章
+            </Button>
+            <Dropdown>
+              <MenuButton
+                variant="outlined"
+                startDecorator={<MenuIcon />}
+                size="sm"
+              >
+                章节列表
+              </MenuButton>
+              <Menu>
+                {bookChapters.map((ch) => (
+                  <MenuItem
+                    key={ch.id}
+                    component={Link}
+                    to={`/chapters/${ch.id}`}
+                  >
+                    {ch.name}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Dropdown>
+            <Button
+              component={Link}
+              to={`/chapters/${chapter.next}`}
+              disabled={!chapter.next}
+              variant="soft"
+              endDecorator={<ArrowForward />}
+              size="sm"
+            >
+              下一章
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mt: 2,
+              gap: 2,
+            }}
+          >
+            <Button
+              onClick={handleSpeechToggle}
+              variant="soft"
+              startDecorator={isSpeaking ? <Stop /> : <VolumeUp />}
+              size="sm"
+              color={isSpeaking ? 'danger' : 'primary'}
+            >
+              {isSpeaking ? '停止朗读' : '朗读章节'}
+            </Button>
+          </Box>
+        </MainLayout>
+      )}
+    </>
   )
 }

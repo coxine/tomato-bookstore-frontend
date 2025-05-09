@@ -46,7 +46,7 @@ export const chapterGetAll = (productId: number) => {
     })
 }
 
-export const chpaterGetInfo = (chapterId: number) => {
+export const chapterGetInfo = (chapterId: number) => {
   return axios
     .get<ApiResponse<Chapter>>(`${CHAPTER_MODULE}/${chapterId}`)
     .then((res) => {

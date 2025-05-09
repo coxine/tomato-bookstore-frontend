@@ -24,77 +24,6 @@ import {
   priceFormatter,
 } from '../../utils/formatter'
 
-// const orderList: OrderDetail[] = [
-//   {
-//     orderId: 46,
-//     totalAmount: 330.1,
-//     paymentMethod: 'ALIPAY',
-//     status: 'CANCELLED',
-//     createTime: '2025-04-18T15:18:55.269+00:00',
-//     name: 'test',
-//     address: '123',
-//     phone: '18723414746',
-//     orderItems: [
-//       {
-//         productId: 30,
-//         productTitle: '锦瑟',
-//         quantity: 10,
-//         price: 33.01,
-//         cover:
-//           'https://tomato-nju.oss-cn-nanjing.aliyuncs.com/8b55c9d2-7479-4c41-9d9f-d8a024d90514.jpeg',
-//       },
-//     ],
-//   },
-//   {
-//     orderId: 47,
-//     totalAmount: 330.1,
-//     paymentMethod: 'ALIPAY',
-//     status: 'CANCELLED',
-//     createTime: '2025-04-18T15:18:57.428+00:00',
-//     name: 'test',
-//     address: '123',
-//     phone: '18723414746',
-//     orderItems: [
-//       {
-//         productId: 30,
-//         productTitle: '锦瑟',
-//         quantity: 10,
-//         price: 33.01,
-//         cover:
-//           'https://tomato-nju.oss-cn-nanjing.aliyuncs.com/8b55c9d2-7479-4c41-9d9f-d8a024d90514.jpeg',
-//       },
-//       {
-//         productId: 30,
-//         productTitle: '锦瑟',
-//         quantity: 10,
-//         price: 33.01,
-//         cover:
-//           'https://tomato-nju.oss-cn-nanjing.aliyuncs.com/8b55c9d2-7479-4c41-9d9f-d8a024d90514.jpeg',
-//       },
-//     ],
-//   },
-//   {
-//     orderId: 50,
-//     totalAmount: 298.5,
-//     paymentMethod: 'ALIPAY',
-//     status: 'SUCCESS',
-//     createTime: '2025-05-05T07:34:32.462+00:00',
-//     name: 'test',
-//     address: '123',
-//     phone: '18723414746',
-//     orderItems: [
-//       {
-//         productId: 15,
-//         productTitle: '深入理解Java虚拟机',
-//         quantity: 3,
-//         price: 99.5,
-//         cover:
-//           'https://tomato-nju.oss-cn-nanjing.aliyuncs.com/017ac261-c14b-4adf-994d-c583afee7048.png',
-//       },
-//     ],
-//   },
-// ]
-
 const getColumns = (
   handleViewDetails: (order: OrderDetail) => void
 ): GridColDef<OrderDetail>[] => {
@@ -203,7 +132,7 @@ export default function OrdersDataTable() {
 
   const fetchAllOrders = () => {
     orderGetAll().then((res) => {
-      if (res.data.code == '200') {
+      if (res.data.code === '200') {
         setOrderList(res.data.data.reverse())
       } else {
         showToast({

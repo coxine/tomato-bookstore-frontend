@@ -34,7 +34,7 @@ export default function EditPasswordCard() {
         ...prev,
         confirmPassword: '',
       }))
-    } else if (field === 'newPassword' && value == formData.confirmPassword) {
+    } else if (field === 'newPassword' && value === formData.confirmPassword) {
       setErrors((prev) => ({ ...prev, confirmPassword: '' }))
     } else {
       setErrors((prev) => ({ ...prev, [field]: '' }))

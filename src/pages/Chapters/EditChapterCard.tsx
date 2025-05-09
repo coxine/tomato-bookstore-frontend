@@ -12,6 +12,7 @@ import {
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { chapterUpdate } from '../../api/chapter'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
@@ -26,10 +27,6 @@ export default function EditChapterCard({
   const navigate = useNavigate()
   const [chapterData, setChapterData] =
     React.useState<Chapter>(initialChapterData)
-  const [errors, setErrors] = React.useState({
-    name: '',
-    content: '',
-  })
 
   // 处理表单字段的通用变更
   const handleChange = (field: keyof Chapter, value: string) => {
@@ -37,38 +34,53 @@ export default function EditChapterCard({
       ...prev,
       [field]: value,
     }))
-
-    // Basic validation
-    if (field === 'name' && !value.trim()) {
-      setErrors((prev) => ({ ...prev, name: '章节名称不能为空' }))
-    } else if (field === 'name') {
-      setErrors((prev) => ({ ...prev, name: '' }))
-    }
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log('Edited chapter data:', chapterData)
-
-    // TODO 提交编辑后的章节
-    // Validate form
-    if (!chapterData.name.trim()) {
-      setErrors((prev) => ({ ...prev, name: '章节名称不能为空' }))
+    if (!initialChapterData.id) {
       showToast({
-        title: '提交失败',
-        message: '章节名称不能为空',
-        severity: ToastSeverity.Danger,
+        title: '意外错误',
+        message: '请刷新重试',
+        severity: ToastSeverity.Warning,
         duration: 3000,
       })
       return
     }
+
+    console.log('Edited chapter data:', chapterData)
 
     showToast({
       title: '正在提交',
       message: '请稍等...',
       severity: ToastSeverity.Primary,
       duration: 3000,
+    })
+
+    chapterUpdate(initialChapterData.id, chapterData).then((res) => {
+      if (res.data.code === '200') {
+        showToast({
+          title: '提交成功',
+          message: res.data.data,
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.data,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！提交章节数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
     })
 
     // Simulate successful update for now
@@ -100,7 +112,7 @@ export default function EditChapterCard({
     >
       <form id="edit-chapter-form" onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <FormControl error={!!errors.name}>
+          <FormControl required>
             <FormLabel required>章节名称</FormLabel>
             <Input
               value={chapterData.name}
@@ -108,7 +120,6 @@ export default function EditChapterCard({
               placeholder="请输入章节名称"
               size="sm"
             />
-            {errors.name && <FormControl error>{errors.name}</FormControl>}
           </FormControl>
 
           <FormControl>
