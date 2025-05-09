@@ -12,6 +12,7 @@ import {
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { chapterEnter } from '../../api/chapter'
 import InfoCard from '../../components/UI/InfoCard'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
@@ -26,15 +27,9 @@ export default function CreateChapterCard({
   const navigate = useNavigate()
 
   const [chapterData, setChapterData] = React.useState<Chapter>({
-    id: 0,
     name: '',
     productId: productId,
-    state: 'FREE',
-    content: '',
-  })
-
-  const [errors, setErrors] = React.useState({
-    name: '',
+    status: 'FREE',
     content: '',
   })
 
@@ -44,32 +39,12 @@ export default function CreateChapterCard({
       ...prev,
       [field]: value,
     }))
-
-    // Basic validation
-    if (field === 'name' && !value.trim()) {
-      setErrors((prev) => ({ ...prev, name: '章节名称不能为空' }))
-    } else if (field === 'name') {
-      setErrors((prev) => ({ ...prev, name: '' }))
-    }
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     console.log('Created chapter data:', chapterData)
-
-    // TODO 提交新创建的章节
-    // Validate form
-    if (!chapterData.name.trim()) {
-      setErrors((prev) => ({ ...prev, name: '章节名称不能为空' }))
-      showToast({
-        title: '提交失败',
-        message: '章节名称不能为空',
-        severity: ToastSeverity.Danger,
-        duration: 3000,
-      })
-      return
-    }
 
     showToast({
       title: '正在提交',
@@ -78,16 +53,31 @@ export default function CreateChapterCard({
       duration: 3000,
     })
 
-    // Simulate successful creation for now
-    setTimeout(() => {
-      showToast({
-        title: '提交成功',
-        message: '章节已创建！',
-        severity: ToastSeverity.Success,
-        duration: 3000,
-      })
-      navigate(`/books/${productId}`)
-    }, 1000)
+    chapterEnter(productId, chapterData).then((res) => {
+      if (res.data.code === '200') {
+        showToast({
+          title: '提交成功',
+          message: res.data.data,
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+        navigate(`/books/${productId}`)
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.data,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！提交章节数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
   }
 
   return (
@@ -107,7 +97,7 @@ export default function CreateChapterCard({
     >
       <form id="create-chapter-form" onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <FormControl error={!!errors.name}>
+          <FormControl required>
             <FormLabel required>章节名称</FormLabel>
             <Input
               value={chapterData.name}
@@ -115,14 +105,13 @@ export default function CreateChapterCard({
               placeholder="请输入章节名称"
               size="sm"
             />
-            {errors.name && <FormControl error>{errors.name}</FormControl>}
           </FormControl>
 
           <FormControl>
             <FormLabel>状态</FormLabel>
             <Select
-              value={chapterData.state}
-              onChange={(_, value) => handleChange('state', value || '')}
+              value={chapterData.status}
+              onChange={(_, value) => handleChange('status', value || '')}
               placeholder="选择章节状态"
               size="sm"
             >

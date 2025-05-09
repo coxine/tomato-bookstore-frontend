@@ -343,7 +343,6 @@ export default function CartPage() {
                   handleRemoveItem(itemId)
                 }) // 删除已购买商品
                 orderToPay(res.data.data.orderId).then((res) => {
-                  console.log(2, res)
                   if (res.data.code === '200') {
                     document.writeln(res.data.data.paymentForm)
                   } else {

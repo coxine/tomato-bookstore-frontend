@@ -13,7 +13,7 @@ const instance = axios.create({
 
 // 判断是否登录
 const hasToken = () => {
-  return !(sessionStorage.getItem('token') == '')
+  return !(sessionStorage.getItem('token') === '')
 }
 
 // 当前实例的拦截器，对所有向后端的请求进行处理，在其头部中加入token
