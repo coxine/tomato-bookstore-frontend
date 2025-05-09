@@ -135,8 +135,8 @@ export default function OrderHistory() {
                           onClick={() => pay(order.orderId)}
                           color="warning"
                           startDecorator={<ShoppingCartCheckout />}
-                          variant='soft'
-                          size='sm'
+                          variant="soft"
+                          size="sm"
                         >
                           继续支付
                         </Button>

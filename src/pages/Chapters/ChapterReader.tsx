@@ -3,6 +3,7 @@ import {
   TypographySystem,
   Box,
   ColorPaletteProp,
+  Grid,
 } from '@mui/joy'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -13,7 +14,9 @@ import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 
-import ChapterReaderControl from './ChapterReaderControl'
+import ChapterControl from './Control/ChapterControl'
+import SpeechControl from './Control/SpeechControl'
+import ThemeControl from './Control/ThemeControl'
 
 const renderTextWithLineBreaks = (text: string) => {
   return text.split('\n').map((line, index, array) => (
@@ -42,18 +45,18 @@ export default function ChapterReader() {
   const [bookChapters, setBookChapters] = useState<Chapter[]>([])
   const [fontSize, setFontSize] = useState<keyof TypographySystem>(
     (localStorage.getItem('fontSize') as keyof TypographySystem) || 'body-md'
-  );
+  )
   const [themeColor, setThemeColor] = useState<ColorPaletteProp>(
     (localStorage.getItem('themeColor') as ColorPaletteProp) || 'neutral'
-  );
+  )
 
   useEffect(() => {
-    localStorage.setItem('fontSize', fontSize);
-  }, [fontSize]);
+    localStorage.setItem('fontSize', fontSize)
+  }, [fontSize])
 
   useEffect(() => {
-    localStorage.setItem('themeColor', themeColor);
-  }, [themeColor]);
+    localStorage.setItem('themeColor', themeColor)
+  }, [themeColor])
 
   useEffect(() => {
     if (chapterIdNum) {
@@ -123,12 +126,34 @@ export default function ChapterReader() {
           >
             <Typography level="h3">{chapter.name}</Typography>
           </Box>
+          <Grid
+            container
+            gap={1}
+            sx={{
+              mx: { sx: 1, md: 6 },
+              pb: 2,
+              justifyItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Grid xs={12} sm="auto">
+              {' '}
+              <SpeechControl chapter={chapter} />
+            </Grid>
+            <Grid xs={12} sm="auto">
+              {' '}
+              <ThemeControl
+                setFontSize={setFontSize}
+                setThemeColor={setThemeColor}
+              />
+            </Grid>
+          </Grid>
           <Typography
             level={fontSize}
             color={themeColor}
             sx={{
               mb: 1,
-              mx: { sx: 1, md: 4 },
+              mx: { sx: 1, md: 6 },
               px: { xs: 1, md: 2 },
               py: 2,
               borderRadius: 8,
@@ -137,12 +162,15 @@ export default function ChapterReader() {
           >
             {renderTextWithLineBreaks(chapter.content ?? '')}
           </Typography>
-          <ChapterReaderControl
-            chapter={chapter}
-            bookChapters={bookChapters}
-            setFontSize={setFontSize}
-            setThemeColor={setThemeColor}
-          />
+          <Box
+            sx={{
+              mx: { sx: 1, md: 4 },
+              py: 2,
+              justifyItems: 'center',
+            }}
+          >
+            <ChapterControl chapter={chapter} bookChapters={bookChapters} />
+          </Box>
         </MainLayout>
       )}
     </>
