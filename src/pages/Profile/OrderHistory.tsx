@@ -1,3 +1,4 @@
+import { ShoppingCartCheckout } from '@mui/icons-material'
 import {
   Box,
   Card,
@@ -129,20 +130,23 @@ export default function OrderHistory() {
                           {paymentMethodFormatter(order.paymentMethod)}支付
                         </Chip>
                       )}
+                      {order.status === 'PENDING' && (
+                        <Button
+                          onClick={() => pay(order.orderId)}
+                          color="warning"
+                          startDecorator={<ShoppingCartCheckout />}
+                          variant='soft'
+                          size='sm'
+                        >
+                          继续支付
+                        </Button>
+                      )}
                       <Chip
                         color={orderStatusFormatter(order.status).color}
                         variant="solid"
                       >
                         {orderStatusFormatter(order.status).label}
                       </Chip>
-                      {order.status === 'PENDING' && ( // TODO: need to optimized
-                        <Button
-                          onClick={() => pay(order.orderId)}
-                          color="success"
-                        >
-                          支付
-                        </Button>
-                      )}
                     </Box>
                   </Box>
 

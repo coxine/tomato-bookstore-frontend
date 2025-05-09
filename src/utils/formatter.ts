@@ -38,7 +38,7 @@ export const chapterStatusFormatter = (params: ChapterState) => {
 export const orderStatusFormatter = (status: OrderStatus) => {
   switch (status) {
     case 'PENDING':
-      return { label: '等待支付', color: 'warning' as const }
+      return { label: '待支付', color: 'warning' as const }
     case 'CANCELLED':
       return { label: '已取消', color: 'neutral' as const }
     case 'SUCCESS':
