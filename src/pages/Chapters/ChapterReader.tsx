@@ -45,6 +45,7 @@ export default function ChapterReader() {
     previous: 0,
     next: 0,
   })
+  const [productId, setPorductId] = useState<number>()
   const [bookChapters, setBookChapters] = useState<Chapter[]>([])
   const [fontSize, setFontSize] = useState<keyof TypographySystem>(
     (localStorage.getItem('fontSize') as keyof TypographySystem) || 'body-md'
@@ -62,6 +63,7 @@ export default function ChapterReader() {
   }, [themeColor])
 
   useEffect(() => {
+    setIsLoading(true)
     if (chapterIdNum) {
       // 获取当前章节数据
       chapterGetInfo(chapterIdNum).then((res) => {
@@ -77,7 +79,8 @@ export default function ChapterReader() {
             })
             navigate('/books')
             return
-          } else {
+          } else if (res.data.data.productId !== productId) {
+            setPorductId(res.data.data.productId)
             chapterGetAll(res.data.data.productId).then((res) => {
               if (res.data.code === '200') {
                 setBookChapters(res.data.data)
@@ -104,17 +107,17 @@ export default function ChapterReader() {
   }, [chapterIdNum, navigate])
 
   return (
-    <>
+    <MainLayout
+      title="章节阅读"
+      breadcrumbsItems={[
+        { label: '购买书籍', link: '/books' },
+        { label: '书籍详情', link: `/books/${chapter.productId}` },
+      ]}
+    >
       {isLoading ? (
         <Loading />
       ) : (
-        <MainLayout
-          title="章节阅读"
-          breadcrumbsItems={[
-            { label: '购买书籍', link: '/books' },
-            { label: '书籍详情', link: `/books/${chapter.productId}` },
-          ]}
-        >
+        <>
           <Box
             sx={{
               display: 'flex',
@@ -174,8 +177,8 @@ export default function ChapterReader() {
           >
             <ChapterControl chapter={chapter} bookChapters={bookChapters} />
           </Box>
-        </MainLayout>
+        </>
       )}
-    </>
+    </MainLayout>
   )
 }
