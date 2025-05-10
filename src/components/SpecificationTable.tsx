@@ -1,6 +1,6 @@
 import { Table } from '@mui/joy'
 import { useTheme } from '@mui/material'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import { useMediaQuery } from '@mui/material/'
 import React from 'react'
 
 import { Specification } from '../types/specification'

@@ -1,6 +1,6 @@
 import { Box } from '@mui/joy'
 import type {} from '@mui/x-data-grid/themeAugmentation'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, ThemeProvider } from '@mui/material/'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { zhCN } from '@mui/x-data-grid/locales'
 

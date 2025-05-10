@@ -8,8 +8,19 @@ import {
   Sheet,
   Table,
   Chip,
+  ThemeProvider,
 } from '@mui/joy'
-import { GridColDef } from '@mui/x-data-grid'
+import {
+  FormControl,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material/'
+import {
+  GridColDef,
+  GridFilterInputValueProps,
+  GridFilterOperator,
+} from '@mui/x-data-grid'
 import { useEffect, useMemo, useState } from 'react'
 
 import { orderGetAll } from '../../api/order'
@@ -23,6 +34,83 @@ import {
   paymentMethodFormatter,
   priceFormatter,
 } from '../../utils/formatter'
+
+const OrderStatusInputValue = (props: GridFilterInputValueProps) => {
+  const { item, applyValue, focusElementRef } = props
+
+  const handleFilterChange = (event: SelectChangeEvent<unknown>) => {
+    applyValue({ ...item, value: event.target.value as string })
+  }
+
+  return (
+    <FormControl sx={{ minWidth: 120 }} size="small">
+      <Select
+        hiddenLabel
+        value={item.value || ''}
+        onChange={handleFilterChange}
+        displayEmpty
+        inputRef={focusElementRef}
+      >
+        <MenuItem value="">全部</MenuItem>
+        <MenuItem value="SUCCESS">已支付</MenuItem>
+        <MenuItem value="CANCELLED">已取消</MenuItem>
+        <MenuItem value="PENDING">待支付</MenuItem>
+      </Select>
+    </FormControl>
+  )
+}
+
+const orderStatusOperators: GridFilterOperator<OrderDetail, string>[] = [
+  {
+    label: '为',
+    value: 'equals',
+    getApplyFilterFn: (filterItem) => {
+      if (!filterItem.value) {
+        return null
+      }
+      return (value) => value === filterItem.value
+    },
+    InputComponent: OrderStatusInputValue,
+  },
+]
+
+const PaymentMethodInputValue = (props: GridFilterInputValueProps) => {
+  const { item, applyValue, focusElementRef } = props
+
+  const handleFilterChange = (event: SelectChangeEvent<unknown>) => {
+    applyValue({ ...item, value: event.target.value as string })
+  }
+
+  return (
+    <FormControl sx={{ minWidth: 120 }} size="small">
+      <Select
+        hiddenLabel
+        value={item.value || ''}
+        onChange={handleFilterChange}
+        displayEmpty
+        inputRef={focusElementRef}
+        defaultValue=""
+      >
+        <MenuItem value="">全部</MenuItem>
+        <MenuItem value="ALIPAY">支付宝</MenuItem>
+      </Select>
+    </FormControl>
+  )
+}
+
+const paymentMethodOperators: GridFilterOperator<OrderDetail, string>[] = [
+  {
+    label: '为',
+    value: 'equals',
+    getApplyFilterFn: (filterItem) => {
+      if (!filterItem.value) {
+        return null
+      }
+      return (value) => value === filterItem.value
+    },
+    InputComponent: PaymentMethodInputValue,
+  },
+]
 
 const getColumns = (
   handleViewDetails: (order: OrderDetail) => void
@@ -62,15 +150,34 @@ const getColumns = (
       headerName: '支付方式',
       width: 120,
       editable: false,
-      valueFormatter: paymentMethodFormatter,
+      filterOperators: paymentMethodOperators,
+      renderCell: (params) => {
+        return (
+          <ThemeProvider>
+            <Chip color="primary" variant="soft">
+              {paymentMethodFormatter(params.row.paymentMethod)}
+            </Chip>
+          </ThemeProvider>
+        )
+      },
     },
     {
       field: 'status',
       headerName: '订单状态',
       width: 120,
       editable: false,
-      valueFormatter: (params) => {
-        return orderStatusFormatter(params).label
+      filterOperators: orderStatusOperators,
+      renderCell: (params) => {
+        return (
+          <ThemeProvider>
+            <Chip
+              color={orderStatusFormatter(params.row.status).color}
+              variant="soft"
+            >
+              {orderStatusFormatter(params.row.status).label}
+            </Chip>
+          </ThemeProvider>
+        )
       },
     },
     {
