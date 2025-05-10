@@ -3,7 +3,7 @@ import { Tabs, TabList, Tab, tabClasses, TabPanel } from '@mui/joy'
 import MainLayout from '../../components/layouts/MainLayout'
 
 import AdsDataTable from './AdsDataTable'
-import BookDataTable from './BookDataTable'
+import BooksDataTable from './BooksDataTable'
 import CreateAdCard from './CreateAdCard'
 import CreateBookCard from './CreateBookCard'
 import OrdersDataTable from './OrdersDataTable'
@@ -48,7 +48,7 @@ export default function Dashboard() {
           </Tab>
         </TabList>
         <TabPanel value={0}>
-          <BookDataTable />
+          <BooksDataTable />
         </TabPanel>
         <TabPanel value={1}>
           <CreateBookCard />

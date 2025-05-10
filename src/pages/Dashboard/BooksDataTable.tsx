@@ -93,7 +93,7 @@ const getColumns = (
   ]
 }
 
-export default function BookDataTable() {
+export default function BooksDataTable() {
   const [bookList, setBookList] = useState<Book[]>()
   const [isLoading, setIsLoading] = useState(true)
   const [productId, setProductId] = useState<number>()

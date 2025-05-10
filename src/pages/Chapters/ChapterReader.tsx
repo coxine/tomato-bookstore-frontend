@@ -104,7 +104,7 @@ export default function ChapterReader() {
         }
       })
     }
-  }, [chapterIdNum, navigate])
+  }, [chapterIdNum, navigate, productId])
 
   return (
     <MainLayout
