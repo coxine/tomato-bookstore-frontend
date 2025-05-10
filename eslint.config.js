@@ -59,6 +59,11 @@ export default tseslint.config(
               group: ['@mui/joy/*'],
               message: '请使用命名导入: import { Component } from "@mui/joy"',
             },
+            {
+              group: ['@mui/material/*'],
+              message:
+                '请使用命名导入: import { Component } from "@mui/material"',
+            },
           ],
         },
       ],
