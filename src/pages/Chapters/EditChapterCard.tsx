@@ -49,8 +49,6 @@ export default function EditChapterCard({
       return
     }
 
-    console.log('Edited chapter data:', chapterData)
-
     showToast({
       title: '正在提交',
       message: '请稍等...',

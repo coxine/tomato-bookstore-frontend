@@ -44,8 +44,6 @@ export default function CreateChapterCard({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log('Created chapter data:', chapterData)
-
     showToast({
       title: '正在提交',
       message: '请稍等...',
