@@ -1,45 +1,11 @@
 import { Box } from '@mui/joy'
 import type {} from '@mui/x-data-grid/themeAugmentation'
-import { createTheme, ThemeProvider } from '@mui/material/'
+import { ThemeProvider } from '@mui/material/'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { zhCN } from '@mui/x-data-grid/locales'
+
+import { muiTheme } from '../../theme/muiTheme'
 
 import Loading from './Loading'
-
-const MuiTheme = createTheme(
-  {
-    colorSchemes: {
-      light: {
-        palette: {
-          DataGrid: {
-            bg: '#f8fafc',
-          },
-        },
-      },
-      dark: {
-        palette: {
-          DataGrid: {
-            bg: '#101417',
-          },
-        },
-      },
-    },
-    components: {
-      MuiDataGrid: {
-        styleOverrides: {
-          root: {
-            border: 0,
-            borderStyle: 'solid',
-            borderRadius: 10,
-            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-            padding: 10,
-          },
-        },
-      },
-    },
-  },
-  zhCN
-)
 
 interface DataGridComponentProps<T extends object> {
   rows: T[] | undefined
@@ -72,7 +38,7 @@ export default function DataGridComponent<T extends object>({
       {loading || !rows ? (
         <Loading />
       ) : (
-        <ThemeProvider theme={MuiTheme}>
+        <ThemeProvider theme={muiTheme}>
           <DataGrid
             rows={rows}
             columns={columns}

@@ -11,6 +11,7 @@ import { Stockpile } from '../../types/stockpile'
 import BookInfo from './BookInfo'
 import CartDialog from './CartDialog'
 import DeleteBookDialog from './DeleteBookDialog'
+import RatingDialog from './RatingDialog'
 
 export default function BookDetails() {
   const breadcrumbsItems = [{ label: '购买书籍', link: '/books' }]
@@ -22,6 +23,7 @@ export default function BookDetails() {
   const [showCartDialog, setShowCartDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [cartMode, setCartMode] = useState<'add' | 'buy'>('add')
+  const [showRatingDialog, setShowRatingDialog] = useState(false)
 
   const fecthStockpile = useCallback(() => {
     if (!productIdNum) return
@@ -74,6 +76,14 @@ export default function BookDetails() {
     setShowDeleteDialog(false)
   }
 
+  const onRatingClick = () => {
+    setShowRatingDialog(true)
+  }
+
+  const handleCloseRatingDialog = () => {
+    setShowRatingDialog(false)
+  }
+
   useEffect(() => {
     if (!productIdNum) {
       showToast({
@@ -116,10 +126,15 @@ export default function BookDetails() {
             />
           )}
 
+          {showRatingDialog && (
+            <RatingDialog onClose={handleCloseRatingDialog} />
+          )}
+
           <BookInfo
             bookDetails={bookDetails}
             stockpile={stockpile}
             onCartAction={handleCart}
+            onRatingClick={onRatingClick}
             onDeleteClick={handleDeleteConfirmation}
           />
         </>

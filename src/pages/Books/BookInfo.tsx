@@ -1,7 +1,9 @@
 import { Box, Typography, Divider } from '@mui/joy'
+import { Rating, ThemeProvider } from '@mui/material'
 import Markdown from 'react-markdown'
 
 import SpecificationTable from '../../components/SpecificationTable'
+import { muiTheme } from '../../theme/muiTheme'
 import { Book } from '../../types/book'
 import { Stockpile } from '../../types/stockpile'
 
@@ -12,6 +14,7 @@ interface BookInfoProps {
   bookDetails: Book
   stockpile?: Stockpile
   onCartAction: (mode: 'add' | 'buy') => void
+  onRatingClick: () => void
   onDeleteClick: () => void
 }
 
@@ -19,6 +22,7 @@ export function BookInfo({
   bookDetails,
   stockpile,
   onCartAction,
+  onRatingClick,
   onDeleteClick,
 }: BookInfoProps) {
   return (
@@ -99,6 +103,7 @@ export function BookInfo({
             book={bookDetails}
             onCartAction={onCartAction}
             onDeleteClick={onDeleteClick}
+            onRatingClick={onRatingClick}
           />
         </Box>
       </Box>
@@ -122,10 +127,19 @@ function BookDetailSection({ bookDetails }: { bookDetails: Book }) {
         <Typography level="title-lg" sx={{ mb: 1 }}>
           用户评价
         </Typography>
-        <Typography level="body-md" sx={{ color: 'warning.500' }}>
-          评分: {bookDetails.rate} / 10
-        </Typography>
-        {/* 未来可增加评分功能 */}
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+          <ThemeProvider theme={muiTheme}>
+            <Rating
+              readOnly
+              defaultValue={bookDetails.rate || 0}
+              precision={0.5}
+            />
+          </ThemeProvider>
+          <Typography level="body-lg" color="warning">
+            {bookDetails.rate} / 5
+          </Typography>
+        </Box>
       </Box>
 
       {bookDetails.specifications && bookDetails.specifications.length > 0 && (

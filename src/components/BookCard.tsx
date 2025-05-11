@@ -63,7 +63,7 @@ export default function BookCard({ book }: BookCardProps) {
             sx={{
               mt: 1,
               display: '-webkit-box',
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 'auto',
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
             }}
