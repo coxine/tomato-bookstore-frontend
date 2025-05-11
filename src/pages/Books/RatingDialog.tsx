@@ -10,7 +10,7 @@ export default function RatingDialog({ onClose }: { onClose: () => void }) {
   const [userRating, setUserRating] = useState<number | null>(null)
   const handleRatingSubmit = (ratingValue: number) => {
     setUserRating(ratingValue)
-    console.log('User rating:', userRating) // TODO 对接评分接口
+    console.log('User rating:', (userRating || 0) * 2) // TODO 对接评分接口
     onClose()
   }
 
@@ -55,6 +55,7 @@ export default function RatingDialog({ onClose }: { onClose: () => void }) {
             onChange={(_event, newValue) => {
               setUserRating(newValue)
             }}
+            precision={0.5}
             size="large"
           />
         </ThemeProvider>
