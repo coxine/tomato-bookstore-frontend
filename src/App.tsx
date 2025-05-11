@@ -3,7 +3,7 @@ import {
   CssVarsProvider as JoyCssVarsProvider,
   extendTheme,
 } from '@mui/joy'
-import { createTheme, ThemeProvider } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import './App.css'
@@ -22,6 +22,7 @@ import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
 import AdminRoute from './routes/AdminRoute'
 import PrivateRoute from './routes/PrivateRoute'
+import { muiTheme } from './theme/muiTheme'
 
 const customTheme = extendTheme({
   colorSchemes: {
@@ -38,20 +39,6 @@ const customTheme = extendTheme({
   },
 })
 
-const muiTheme = createTheme({
-  colorSchemes: {
-    light: {
-      palette: {
-        mode: 'light',
-      },
-    },
-    dark: {
-      palette: {
-        mode: 'dark',
-      },
-    },
-  },
-})
 function App() {
   return (
     <ThemeProvider theme={muiTheme}>

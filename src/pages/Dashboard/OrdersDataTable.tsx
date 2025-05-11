@@ -172,7 +172,7 @@ const getColumns = (
           <ThemeProvider>
             <Chip
               color={orderStatusFormatter(params.row.status).color}
-              variant="soft"
+              variant="solid"
             >
               {orderStatusFormatter(params.row.status).label}
             </Chip>
