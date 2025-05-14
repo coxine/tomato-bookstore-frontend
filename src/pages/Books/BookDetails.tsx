@@ -99,6 +99,22 @@ export default function BookDetails() {
     fecthStockpile()
   }, [fecthStockpile, fetchBook, navigate, productIdNum])
 
+  const updateRate = (rate: number) => {
+    if (!bookDetails) {
+      showToast({
+        title: '意外错误',
+        message: '不存在商品信息，请刷新重试！',
+        severity: ToastSeverity.Warning,
+        duration: 3000,
+      })
+      return
+    }
+    setBookDetails({
+      ...bookDetails,
+      rate: rate,
+    })
+  }
+
   return (
     <MainLayout title="书籍详情" breadcrumbsItems={breadcrumbsItems}>
       {!bookDetails || !productIdNum ? (
@@ -127,7 +143,11 @@ export default function BookDetails() {
           )}
 
           {showRatingDialog && (
-            <RatingDialog onClose={handleCloseRatingDialog} />
+            <RatingDialog
+              productId={productIdNum}
+              onChange={updateRate}
+              onClose={handleCloseRatingDialog}
+            />
           )}
 
           <BookInfo

@@ -132,7 +132,7 @@ function BookDetailSection({ bookDetails }: { bookDetails: Book }) {
           <ThemeProvider theme={muiTheme}>
             <Rating
               readOnly
-              defaultValue={(bookDetails.rate || 0) / 2}
+              value={(bookDetails.rate || 0) / 2}
               precision={0.5}
             />
           </ThemeProvider>
