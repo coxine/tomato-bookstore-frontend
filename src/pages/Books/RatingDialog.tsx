@@ -21,7 +21,6 @@ export default function RatingDialog({
 
   const handleRatingSubmit = (ratingValue: number) => {
     rateSubmit(productId, (ratingValue || 0) * 2).then((res) => {
-      console.log(res)
       if (res.data.code === '200') {
         setUserRating(ratingValue)
         onChange(res.data.data)
@@ -41,7 +40,7 @@ export default function RatingDialog({
       } else {
         showToast({
           title: '未知错误',
-          message: '服务器出错！获取商品库存失败，请刷新尝试！',
+          message: '服务器出错！提交评分失败，请刷新尝试！',
           severity: ToastSeverity.Warning,
           duration: 3000,
         })
