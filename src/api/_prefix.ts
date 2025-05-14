@@ -25,3 +25,6 @@ export const TTS_MODULE = `/v1/audio/speech`
 
 // 章节api路径
 export const CHAPTER_MODULE = `${PRODUCT_MODULE}/chapters`
+
+// tag api路径
+export const TAG_MODULE = `${API_MODULE}/tags`

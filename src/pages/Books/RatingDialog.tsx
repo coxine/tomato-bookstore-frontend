@@ -3,14 +3,50 @@ import { Box, Typography, Button } from '@mui/joy'
 import { Rating, ThemeProvider } from '@mui/material'
 import { useState } from 'react'
 
+import { rateSubmit } from '../../api/rate'
 import AlertDialogModal from '../../components/UI/AlertDialog'
+import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { muiTheme } from '../../theme/muiTheme'
 
-export default function RatingDialog({ onClose }: { onClose: () => void }) {
+export default function RatingDialog({
+  productId,
+  onChange,
+  onClose,
+}: {
+  productId: number
+  onChange: (rate: number) => void
+  onClose: () => void
+}) {
   const [userRating, setUserRating] = useState<number | null>(null)
+
   const handleRatingSubmit = (ratingValue: number) => {
-    setUserRating(ratingValue)
-    console.log('User rating:', (userRating || 0) * 2) // TODO 对接评分接口
+    rateSubmit(productId, (ratingValue || 0) * 2).then((res) => {
+      console.log(res)
+      if (res.data.code === '200') {
+        setUserRating(ratingValue)
+        onChange(res.data.data)
+        showToast({
+          title: '提交成功',
+          message: '评分已上传！',
+          severity: ToastSeverity.Success,
+          duration: 3000,
+        })
+      } else if (res.data.code === '400') {
+        showToast({
+          title: '提交失败',
+          message: res.data.msg,
+          severity: ToastSeverity.Danger,
+          duration: 3000,
+        })
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！获取商品库存失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
     onClose()
   }
 
