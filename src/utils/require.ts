@@ -25,7 +25,7 @@ instance.interceptors.request.use(
     return config
   },
   (error) => {
-    console.log('Axios request error: \n' + error)
+    console.error('Axios request error: \n' + error)
     showToast({
       title: '错误！',
       message: '页面出错，请刷新或者重新登录！',
@@ -46,7 +46,7 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
-    console.log('Axios response error: \n' + error)
+    console.error('Axios response error: \n' + error)
     showToast({
       title: '错误！',
       message: '服务器出错！请重新尝试！',

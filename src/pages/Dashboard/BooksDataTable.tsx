@@ -58,7 +58,6 @@ const getColumns = (
       sortable: false,
       filterable: false,
       renderCell: (row) => {
-        console.log(row)
         return (
           <CssVarsProvider>
             <Box
