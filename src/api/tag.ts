@@ -20,7 +20,7 @@ export const tagGetSimpleProduct = async (tagId: number) => {
       ...res.data,
       data: res.data.data.map((book) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { specifications, tags, ...bookSimple } = book // 利用对象解构排除字段
+        const { specifications, ...bookSimple } = book // 利用对象解构排除字段
         return bookSimple
       }),
     },

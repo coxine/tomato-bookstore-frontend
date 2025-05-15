@@ -28,6 +28,7 @@ export const productGetInfo = async (productId: number) => {
 }
 
 export const productUpdate = async (productUpdateInfo: Book) => {
+  console.log(productUpdateInfo)
   const res = await axios.put<ApiResponse<string>>(
     `${PRODUCT_MODULE}`,
     productUpdateInfo

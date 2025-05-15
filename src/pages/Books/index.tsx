@@ -28,7 +28,6 @@ export default function Books() {
   const [bookList, setBookList] = useState<Book[]>()
   const [adList, setAdList] = useState<Advertisement[]>()
   const numberOfAdsDisplayed = 2 // 随机生成广告数
-  // const [selectedTag, setSelectedTag] = useState<Tag | null>(null)
   const [showRecommendations, setShowRecommendations] = useState<boolean>(true)
   const [tags, setTags] = useState<Tag[]>()
 
@@ -64,7 +63,6 @@ export default function Books() {
 
   // Handle tag selection
   const handleTagSelect = (tag: Tag | null) => {
-    // setSelectedTag(tag)
     if (!tag) {
       productGetAllSimpleInfo().then((res) => {
         if (res.data.code === '200') {
