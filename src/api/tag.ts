@@ -12,7 +12,7 @@ export const tagGetAll = async () => {
 
 export const tagGetSimpleProduct = async (tagId: number) => {
   const res = await axios.get<ApiResponse<Book[]>>(
-    `${PRODUCT_MODULE}/bytag/${tagId}`
+    `${PRODUCT_MODULE}/byTag/${tagId}`
   )
   return {
     ...res,

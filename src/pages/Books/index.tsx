@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 
 import { adGetAllInfo } from '../../api/ad'
 import { productGetAllSimpleInfo } from '../../api/products'
+import { tagGetAll, tagGetSimpleProduct } from '../../api/tag'
 import AdCard from '../../components/AdCard'
 import Bookcard from '../../components/BookCard'
 import MainLayout from '../../components/layouts/MainLayout'
@@ -27,18 +28,24 @@ export default function Books() {
   const [bookList, setBookList] = useState<Book[]>()
   const [adList, setAdList] = useState<Advertisement[]>()
   const numberOfAdsDisplayed = 2 // 随机生成广告数
-  const [selectedTag, setSelectedTag] = useState<Tag | null>(null)
+  // const [selectedTag, setSelectedTag] = useState<Tag | null>(null)
   const [showRecommendations, setShowRecommendations] = useState<boolean>(true)
-  const tags: Tag[] = [
-    {
-      id: 2,
-      name: '悬疑',
-    },
-    {
-      id: 3,
-      name: '治愈',
-    },
-  ] // TODO fetch from server
+  const [tags, setTags] = useState<Tag[]>()
+
+  const fetchAllTag = () => {
+    tagGetAll().then((res) => {
+      if (res.data.code === '200') {
+        setTags(res.data.data)
+      } else {
+        showToast({
+          title: '未知错误',
+          message: '服务器出错！获取Tag数据失败，请刷新尝试！',
+          severity: ToastSeverity.Warning,
+          duration: 3000,
+        })
+      }
+    })
+  }
 
   // Load recommendation preference from localStorage
   useEffect(() => {
@@ -57,9 +64,34 @@ export default function Books() {
 
   // Handle tag selection
   const handleTagSelect = (tag: Tag | null) => {
-    setSelectedTag(tag)
-    console.log('Selected tag:', selectedTag ? selectedTag.name : 'All books')
-    // TODO update `bookList` based on selected tag
+    // setSelectedTag(tag)
+    if (!tag) {
+      productGetAllSimpleInfo().then((res) => {
+        if (res.data.code === '200') {
+          setBookList(res.data.data)
+        } else {
+          showToast({
+            title: '未知错误',
+            message: '服务器出错！获取商品数据失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    } else {
+      tagGetSimpleProduct(tag.id || 0).then((res) => {
+        if (res.data.code === '200') {
+          setBookList(res.data.data)
+        } else {
+          showToast({
+            title: '未知错误',
+            message: '服务器出错！获取商品数据失败，请刷新尝试！',
+            severity: ToastSeverity.Warning,
+            duration: 3000,
+          })
+        }
+      })
+    }
   }
 
   const fetchAllSimpleBook = () => {
@@ -102,11 +134,12 @@ export default function Books() {
   useEffect(() => {
     fetchAllSimpleBook()
     fetchAllAd()
+    fetchAllTag()
   }, [])
 
   return (
     <MainLayout title="购买书籍">
-      {!bookList || !adList ? (
+      {!bookList || !adList || !tags ? (
         <Loading />
       ) : (
         <>
