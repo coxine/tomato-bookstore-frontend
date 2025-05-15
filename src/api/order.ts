@@ -13,26 +13,27 @@ export const orderSubmit = async (
   },
   paymentMethod: string
 ) => {
-  const res = await axios
-    .post<ApiResponse<Order>>(`${CART_MODULE}/checkout`, {
-      cartItemIds: cartItemIds,
-      shipping_address: shippingAddress,
-      payment_method: paymentMethod,
-    })
+  const res = await axios.post<ApiResponse<Order>>(`${CART_MODULE}/checkout`, {
+    cartItemIds: cartItemIds,
+    shipping_address: shippingAddress,
+    payment_method: paymentMethod,
+  })
   return res
 }
 
 export const orderToPay = async (orderId: number) => {
-  const res = await axios
-    .post<ApiResponse<OrderForPay>>(`${ORDER_MODULE}/${orderId}/pay`)
+  const res = await axios.post<ApiResponse<OrderForPay>>(
+    `${ORDER_MODULE}/${orderId}/pay`
+  )
   return res
 }
 /**
  * 前端无需传入用户ID，由后端自动检测用户ID进行订单获取
  */
 export const orderGetUsers = async () => {
-  const res = await axios
-    .get<ApiResponse<OrderDetail[]>>(`${ORDER_MODULE}/userOrders`)
+  const res = await axios.get<ApiResponse<OrderDetail[]>>(
+    `${ORDER_MODULE}/userOrders`
+  )
   return res
 }
 
@@ -41,7 +42,8 @@ export const orderGetUsers = async () => {
  * 无权限时状态码400且data为报错消息（string）
  */
 export const orderGetAll = async () => {
-  const res = await axios
-    .get<ApiResponse<OrderDetail[]>>(`${ORDER_MODULE}/allOrders`)
+  const res = await axios.get<ApiResponse<OrderDetail[]>>(
+    `${ORDER_MODULE}/allOrders`
+  )
   return res
 }

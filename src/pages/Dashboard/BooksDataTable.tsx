@@ -1,5 +1,5 @@
 import { Delete, Edit, Launch } from '@mui/icons-material'
-import { Box, IconButton, CssVarsProvider, Link } from '@mui/joy'
+import { Box, IconButton, CssVarsProvider, Link, Chip } from '@mui/joy'
 import { GridColDef } from '@mui/x-data-grid'
 import { useEffect, useMemo, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { productGetAllSimpleInfo } from '../../api/products'
 import DataGridComponent from '../../components/UI/DataGridComponent'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Book } from '../../types/book'
+import { Tag } from '../../types/tag'
 import { priceFormatter } from '../../utils/formatter'
 import DeleteBookDialog from '../Books/DeleteBookDialog'
 
@@ -47,6 +48,38 @@ const getColumns = (
       editable: false,
       sortable: false,
       filterable: false,
+    },
+    {
+      field: 'tags',
+      headerName: '标签',
+      type: 'string',
+      width: 200,
+      editable: false,
+      sortable: false,
+      filterable: false,
+      renderCell: (row) => {
+        console.log(row)
+        return (
+          <CssVarsProvider>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
+                flexWrap: 'wrap',
+                gap: 0.5,
+              }}
+            >
+              {(row.value || []).map((tag: Tag) => (
+                <Chip key={tag.id} variant="soft" color="primary" size="md">
+                  {tag.name}
+                </Chip>
+              ))}
+            </Box>
+          </CssVarsProvider>
+        )
+      },
     },
     {
       field: 'actions',
@@ -129,7 +162,6 @@ export default function BooksDataTable() {
   useEffect(() => {
     fetchAllSimpleBook()
   }, [])
-
   return (
     <>
       <DataGridComponent

@@ -1,4 +1,5 @@
 import { Specification } from './specification'
+import { Tag } from './tag'
 
 export type Book = {
   id?: number
@@ -9,5 +10,5 @@ export type Book = {
   cover?: string
   detail?: string
   specifications?: Specification[]
-  tags?: Array<string>
+  tags?: Tag[]
 }

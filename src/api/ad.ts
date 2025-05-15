@@ -15,19 +15,18 @@ export const adUpdate = async (ad: Advertisement) => {
 }
 
 export const adCreate = async (ad: Advertisement) => {
-  const res = await axios
-    .post<ApiResponse<Advertisement>>(`${AD_MODULE}`, ad)
+  const res = await axios.post<ApiResponse<Advertisement>>(`${AD_MODULE}`, ad)
   return res
 }
 
 export const adDelete = async (adId: number) => {
-  const res = await axios
-    .delete<ApiResponse<string>>(`${AD_MODULE}/${adId}`)
+  const res = await axios.delete<ApiResponse<string>>(`${AD_MODULE}/${adId}`)
   return res
 }
 
 export const adGetInfo = async (adId: number) => {
-  const res = await axios
-    .get<ApiResponse<Advertisement>>(`${AD_MODULE}/${adId}`)
+  const res = await axios.get<ApiResponse<Advertisement>>(
+    `${AD_MODULE}/${adId}`
+  )
   return res
 }

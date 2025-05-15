@@ -10,8 +10,9 @@ interface UserLoginInfo {
 }
 
 export const userGetInfo = async (username: string) => {
-  const res = await axios
-    .get<ApiResponse<Profile>>(`${USER_MODULE}/${username}`)
+  const res = await axios.get<ApiResponse<Profile>>(
+    `${USER_MODULE}/${username}`
+  )
   return res
 }
 
@@ -44,20 +45,23 @@ export const userGetSimpleInfo = async (username: string) => {
 }
 
 export const userRegister = async (userInfo: Profile) => {
-  const res = await axios
-    .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
+  const res = await axios.post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
   return res
 }
 
 export const userLogin = async (userLoginInfo: UserLoginInfo) => {
-  const res = await axios
-    .post<ApiResponse<string>>(`${USER_MODULE}/login`, userLoginInfo)
+  const res = await axios.post<ApiResponse<string>>(
+    `${USER_MODULE}/login`,
+    userLoginInfo
+  )
   return res
 }
 
 export const userUpdate = async (userUpdateInfo: Profile) => {
-  const res = await axios
-    .put<ApiResponse<null>>(`${USER_MODULE}`, userUpdateInfo)
+  const res = await axios.put<ApiResponse<null>>(
+    `${USER_MODULE}`,
+    userUpdateInfo
+  )
   return res
 }
 
@@ -65,10 +69,9 @@ export const userUpdatePassword = async (
   oldPassword: string,
   newPassword: string
 ) => {
-  const res = await axios
-    .put<ApiResponse<string>>(`${USER_MODULE}/password`, {
-      password: oldPassword,
-      newPassword: newPassword,
-    })
+  const res = await axios.put<ApiResponse<string>>(`${USER_MODULE}/password`, {
+    password: oldPassword,
+    newPassword: newPassword,
+  })
   return res
 }
