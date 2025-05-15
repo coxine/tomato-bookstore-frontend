@@ -55,22 +55,18 @@ export default function BookCard({ book }: BookCardProps) {
             ￥{book.price.toFixed(2)}
           </Typography>
         )}
-
-        {book.description && (
-          <Typography
-            level="body-sm"
-            textColor="text.secondary"
-            sx={{
-              mt: 1,
-              display: '-webkit-box',
-              WebkitLineClamp: 'auto',
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {book.description}
-          </Typography>
-        )}
+        <Typography
+          level="body-sm"
+          textColor="text.secondary"
+          sx={{
+            display: '-webkit-box',
+            WebkitLineClamp: 'auto',
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {book.description}
+        </Typography>
       </CardContent>
     </Card>
   )

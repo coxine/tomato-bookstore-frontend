@@ -53,7 +53,7 @@ export default function AdCard({ ad }: AdCardProps) {
             sx={{
               mt: 1,
               display: '-webkit-box',
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 'auto',
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
             }}
