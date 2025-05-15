@@ -3,14 +3,13 @@ import {
   AdminPanelSettings,
   ExitToApp,
   HomeRounded,
-  SearchRounded,
   ShoppingCartRounded,
   Store,
 } from '@mui/icons-material'
 import {
   Box,
+  Divider,
   GlobalStyles,
-  Input,
   List,
   ListItem,
   ListItemButton,
@@ -90,11 +89,7 @@ export default function Sidebar() {
         <Typography level="title-lg">🍅 西红柿读书 </Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input
-        size="sm"
-        startDecorator={<SearchRounded />}
-        placeholder="Search"
-      />
+      <Divider />
       <Box
         sx={{
           minHeight: 0,
@@ -153,7 +148,7 @@ export default function Sidebar() {
             flexGrow: 0,
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
             '--List-gap': '8px',
-            mb: 2,
+            mb: 0,
           }}
         >
           <ListItem>
