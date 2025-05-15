@@ -55,14 +55,11 @@ export default function BookCard({ book }: BookCardProps) {
               width: '100%',
               flexWrap: 'wrap',
               gap: 0.5,
-              mt: 0.5
+              mt: 0.5,
             }}
           >
             {book.tags.map((tag) => (
-              <Chip
-                color='primary'
-                variant="soft"
-              >
+              <Chip color="primary" variant="soft">
                 {tag.name}
               </Chip>
             ))}
@@ -74,7 +71,7 @@ export default function BookCard({ book }: BookCardProps) {
             color="danger"
             fontWeight="lg"
             sx={{
-              mt: 0.5
+              mt: 0.5,
             }}
           >
             ￥{book.price.toFixed(2)}

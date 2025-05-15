@@ -77,22 +77,23 @@ export function BookInfo({
             </Typography>
           )}
 
-          {bookDetails.tags && (<Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: '100%',
-              width: '100%',
-              flexWrap: 'wrap',
-              gap: 0.5,
-            }}
-          >
-            {(bookDetails.tags || []).map((tag: Tag) => (
-              <Chip key={tag.id} variant="soft" color="primary" size="md">
-                {tag.name}
-              </Chip>
-            ))}
-          </Box>
+          {bookDetails.tags && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '100%',
+                width: '100%',
+                flexWrap: 'wrap',
+                gap: 0.5,
+              }}
+            >
+              {(bookDetails.tags || []).map((tag: Tag) => (
+                <Chip key={tag.id} variant="soft" color="primary" size="md">
+                  {tag.name}
+                </Chip>
+              ))}
+            </Box>
           )}
 
           <Typography level="h4" sx={{ color: 'danger.500' }}>

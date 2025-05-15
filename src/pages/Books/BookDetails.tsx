@@ -24,7 +24,6 @@ export default function BookDetails() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [cartMode, setCartMode] = useState<'add' | 'buy'>('add')
   const [showRatingDialog, setShowRatingDialog] = useState(false)
-
   const fecthStockpile = useCallback(() => {
     if (!productIdNum) return
     productGetStockpile(productIdNum).then((res) => {
