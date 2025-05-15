@@ -157,7 +157,7 @@ function BookOverview({ bookDetails }: { bookDetails: Book }) {
             />
           </ThemeProvider>
           <Typography level="body-lg" color="warning">
-            {bookDetails.rate} / 10
+            {bookDetails.rate?.toFixed(2)} / 10
           </Typography>
         </Box>
       </Box>
