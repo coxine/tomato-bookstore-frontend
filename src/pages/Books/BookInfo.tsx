@@ -1,4 +1,4 @@
-import { Box, Typography, Divider } from '@mui/joy'
+import { Box, Typography, Divider, Chip } from '@mui/joy'
 import { Rating, ThemeProvider } from '@mui/material'
 import Markdown from 'react-markdown'
 
@@ -6,6 +6,7 @@ import SpecificationTable from '../../components/SpecificationTable'
 import { muiTheme } from '../../theme/muiTheme'
 import { Book } from '../../types/book'
 import { Stockpile } from '../../types/stockpile'
+import { Tag } from '../../types/tag'
 
 import BookActions from './BookActions'
 import ChapterTable from './ChapterTable'
@@ -76,6 +77,24 @@ export function BookInfo({
             </Typography>
           )}
 
+          {bookDetails.tags && (<Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
+              flexWrap: 'wrap',
+              gap: 0.5,
+            }}
+          >
+            {(bookDetails.tags || []).map((tag: Tag) => (
+              <Chip key={tag.id} variant="soft" color="primary" size="md">
+                {tag.name}
+              </Chip>
+            ))}
+          </Box>
+          )}
+
           <Typography level="h4" sx={{ color: 'danger.500' }}>
             <Typography
               level="body-md"
@@ -98,7 +117,7 @@ export function BookInfo({
             </Typography>
           </Typography>
           <Divider sx={{ mb: 1 }} />
-          <BookDetailSection bookDetails={bookDetails} />
+          <BookOverview bookDetails={bookDetails} />
           <BookActions
             book={bookDetails}
             onCartAction={onCartAction}
@@ -113,7 +132,7 @@ export function BookInfo({
   )
 }
 
-function BookDetailSection({ bookDetails }: { bookDetails: Book }) {
+function BookOverview({ bookDetails }: { bookDetails: Book }) {
   return (
     <>
       {bookDetails.detail && (

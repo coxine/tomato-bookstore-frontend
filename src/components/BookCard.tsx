@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@mui/joy'
+import { Box, Card, CardContent, Chip, Typography } from '@mui/joy'
 
 import { Book } from '../types/book'
 
@@ -45,12 +45,37 @@ export default function BookCard({ book }: BookCardProps) {
         >
           {book.title}
         </Typography>
+        {book.tags && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 'auto',
+              width: '100%',
+              flexWrap: 'wrap',
+              gap: 0.5,
+              mt: 0.5
+            }}
+          >
+            {book.tags.map((tag) => (
+              <Chip
+                color='primary'
+                variant="soft"
+              >
+                {tag.name}
+              </Chip>
+            ))}
+          </Box>
+        )}
         {book.price !== undefined && (
           <Typography
             level="title-md"
             color="danger"
             fontWeight="lg"
-            sx={{ mt: 0.5 }}
+            sx={{
+              mt: 0.5
+            }}
           >
             ￥{book.price.toFixed(2)}
           </Typography>
@@ -59,6 +84,7 @@ export default function BookCard({ book }: BookCardProps) {
           level="body-sm"
           textColor="text.secondary"
           sx={{
+            mt: 0.5,
             display: '-webkit-box',
             WebkitLineClamp: 'auto',
             WebkitBoxOrient: 'vertical',
