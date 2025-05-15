@@ -57,6 +57,10 @@ const getColumns = (
       editable: false,
       sortable: false,
       filterable: false,
+      valueFormatter: (params) => {
+        const tags: Tag[] = params || []
+        return tags.map((tag) => tag.name).join(' ')
+      },
       renderCell: (row) => {
         return (
           <CssVarsProvider>
@@ -86,6 +90,7 @@ const getColumns = (
       width: 160,
       sortable: false,
       filterable: false,
+      disableExport: true,
       renderCell: (row) => {
         return (
           <CssVarsProvider>
@@ -167,6 +172,13 @@ export default function BooksDataTable() {
         rows={bookList}
         columns={columns}
         loading={isLoading}
+        slotProps={{
+          toolbar: {
+            csvOptions: {
+              fileName: `西红柿读书商城书籍报表_${new Date().toLocaleString()}`,
+            },
+          },
+        }}
       />
       {showDeleteDialog && productId && (
         <DeleteBookDialog

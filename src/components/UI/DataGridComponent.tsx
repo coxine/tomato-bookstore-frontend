@@ -1,7 +1,11 @@
 import { Box } from '@mui/joy'
 import type {} from '@mui/x-data-grid/themeAugmentation'
 import { ThemeProvider } from '@mui/material/'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import {
+  DataGrid,
+  GridColDef,
+  GridSlotsComponentsProps,
+} from '@mui/x-data-grid'
 
 import { muiTheme } from '../../theme/muiTheme'
 
@@ -14,6 +18,7 @@ interface DataGridComponentProps<T extends object> {
   rowHeight?: number
   showToolbar?: boolean
   loading?: boolean
+  slotProps?: GridSlotsComponentsProps
   getRowId?: (row: T) => string | number
 }
 
@@ -24,6 +29,7 @@ export default function DataGridComponent<T extends object>({
   rowHeight = 35,
   showToolbar = true,
   loading = false,
+  slotProps = {},
   getRowId,
 }: DataGridComponentProps<T>) {
   return (
@@ -51,6 +57,7 @@ export default function DataGridComponent<T extends object>({
             pageSizeOptions={[5, 10, 20, 100]}
             rowHeight={rowHeight}
             showToolbar={showToolbar}
+            slotProps={slotProps}
             sx={(theme) => ({
               color: theme.palette.text.primary,
             })}

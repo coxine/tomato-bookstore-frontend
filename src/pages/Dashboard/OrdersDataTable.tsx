@@ -151,6 +151,9 @@ const getColumns = (
       width: 120,
       editable: false,
       filterOperators: paymentMethodOperators,
+      valueFormatter: (params) => {
+        return paymentMethodFormatter(params)
+      },
       renderCell: (params) => {
         return (
           <ThemeProvider>
@@ -167,6 +170,9 @@ const getColumns = (
       width: 120,
       editable: false,
       filterOperators: orderStatusOperators,
+      valueFormatter: (params) => {
+        return orderStatusFormatter(params).label
+      },
       renderCell: (params) => {
         return (
           <ThemeProvider>
@@ -193,6 +199,7 @@ const getColumns = (
       width: 120,
       sortable: false,
       filterable: false,
+      disableExport: true,
       renderCell: (params) => {
         return (
           <CssVarsProvider>
@@ -266,6 +273,13 @@ export default function OrdersDataTable() {
         rows={orderList}
         columns={columns}
         loading={isLoading}
+        slotProps={{
+          toolbar: {
+            csvOptions: {
+              fileName: `西红柿读书商城订单报表_${new Date().toLocaleString()}`,
+            },
+          },
+        }}
         getRowId={(row: OrderDetail) => {
           return row.orderId
         }}

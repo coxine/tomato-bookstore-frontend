@@ -45,6 +45,7 @@ const getColumns = (
       width: 160,
       sortable: false,
       filterable: false,
+      disableExport: true,
       renderCell: (row) => {
         return (
           <CssVarsProvider>
@@ -123,7 +124,18 @@ export default function AdsDataTable() {
 
   return (
     <>
-      <DataGridComponent rows={adList} columns={columns} loading={isLoading} />
+      <DataGridComponent
+        rows={adList}
+        columns={columns}
+        loading={isLoading}
+        slotProps={{
+          toolbar: {
+            csvOptions: {
+              fileName: `西红柿读书商城广告报表_${new Date().toLocaleString()}`,
+            },
+          },
+        }}
+      />
       {showDeleteDialog && adId && (
         <DeleteAdDialog
           adId={adId}
