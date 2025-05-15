@@ -59,7 +59,7 @@ export default function BookCard({ book }: BookCardProps) {
             }}
           >
             {book.tags.map((tag) => (
-              <Chip color="primary" variant="soft">
+              <Chip color="primary" variant="soft" key={tag.id}>
                 {tag.name}
               </Chip>
             ))}

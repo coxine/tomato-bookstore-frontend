@@ -5,8 +5,8 @@ import Header from '../../components/Header'
 import BasicContainer from '../../components/layouts/BasicContainer'
 import TwoSidedLayout from '../../components/layouts/TwoSidedLayout'
 
-import AuthorCarousel from './AuthorCarousel'
 import BookCarousel from './BookCarousel'
+import BookRankings from './BookRankings'
 import HomePageImage from './HomePageImage'
 import HomePageWelcome from './HomePageWelcome'
 
@@ -47,9 +47,9 @@ export default function Home() {
                   mb: 2,
                 }}
               >
-                优秀作者
+                高分书籍
               </Typography>
-              <AuthorCarousel />
+              <BookRankings />
             </BasicContainer>
             <BasicContainer>
               <Typography
@@ -61,7 +61,7 @@ export default function Home() {
                   mb: 2,
                 }}
               >
-                精选书籍
+                编辑精选
               </Typography>
               <BookCarousel />
             </BasicContainer>

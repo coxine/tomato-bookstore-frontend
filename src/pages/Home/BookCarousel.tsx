@@ -1,5 +1,6 @@
 import { Grid } from '@mui/joy'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { adGetAllInfo } from '../../api/ad'
 import AdCard from '../../components/AdCard'
@@ -51,6 +52,8 @@ export default function BookCarousel() {
               flex: { xs: '1 1 50%', sm: '0 0 auto' },
               minWidth: { xs: 'auto', sm: 200 },
             }}
+            component={Link}
+            to={`/books/${ad.productId}`}
           >
             <AdCard ad={ad} />
           </Grid>
