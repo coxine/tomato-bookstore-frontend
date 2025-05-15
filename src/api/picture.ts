@@ -7,24 +7,22 @@ const PICTURE_ACCOUNT_MODULE = `${PICTURE_MODULE}/account`
 const PICTURE_PRODUCT_MODULE = `${PICTURE_MODULE}/product`
 const PICTURE_AD_MODULE = `${PICTURE_MODULE}/advertisements`
 
-export const imageAvatarUpload = (imageFile: FormData) => {
-  return axios
+export const imageAvatarUpload = async (imageFile: FormData) => {
+  const res = await axios
     .post<ApiResponse<string>>(`${PICTURE_ACCOUNT_MODULE}`, imageFile, {
       headers: {
         // 显式删除实例的默认 Content-Type，避免冲突
         'Content-Type': undefined,
       },
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const imageProductCoverUpload = (
+export const imageProductCoverUpload = async (
   productId: number,
   imageFile: FormData
 ) => {
-  return axios
+  const res = await axios
     .post<ApiResponse<string>>(
       `${PICTURE_PRODUCT_MODULE}/${productId}`,
       imageFile,
@@ -35,46 +33,38 @@ export const imageProductCoverUpload = (
         },
       }
     )
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const imageProductCoverUploadWithoutCreate = (imageFile: FormData) => {
-  return axios
+export const imageProductCoverUploadWithoutCreate = async (imageFile: FormData) => {
+  const res = await axios
     .post<ApiResponse<string>>(`${PICTURE_PRODUCT_MODULE}`, imageFile, {
       headers: {
         // 显式删除实例的默认 Content-Type，避免冲突
         'Content-Type': undefined,
       },
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const imageAdImageUpload = (adId: number, imageFile: FormData) => {
-  return axios
+export const imageAdImageUpload = async (adId: number, imageFile: FormData) => {
+  const res = await axios
     .post<ApiResponse<string>>(`${PICTURE_AD_MODULE}/${adId}`, imageFile, {
       headers: {
         // 显式删除实例的默认 Content-Type，避免冲突
         'Content-Type': undefined,
       },
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const imageAdImageUploadWithoutCreate = (imageFile: FormData) => {
-  return axios
+export const imageAdImageUploadWithoutCreate = async (imageFile: FormData) => {
+  const res = await axios
     .post<ApiResponse<string>>(`${PICTURE_AD_MODULE}`, imageFile, {
       headers: {
         // 显式删除实例的默认 Content-Type，避免冲突
         'Content-Type': undefined,
       },
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }

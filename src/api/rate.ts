@@ -3,10 +3,8 @@ import { axios } from '../utils/require'
 
 import { PRODUCT_MODULE } from './_prefix'
 
-export const rateSubmit = (productId: number, rate: number) => {
-  return axios
+export const rateSubmit = async (productId: number, rate: number) => {
+  const res = await axios
     .post<ApiResponse<number>>(`${PRODUCT_MODULE}/${productId}/rate/${rate}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }

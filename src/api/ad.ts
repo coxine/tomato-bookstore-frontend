@@ -4,38 +4,30 @@ import { axios } from '../utils/require'
 
 import { AD_MODULE } from './_prefix'
 
-export const adGetAllInfo = () => {
-  return axios.get<ApiResponse<Advertisement[]>>(`${AD_MODULE}`).then((res) => {
-    return res
-  })
+export const adGetAllInfo = async () => {
+  const res = await axios.get<ApiResponse<Advertisement[]>>(`${AD_MODULE}`)
+  return res
 }
 
-export const adUpdate = (ad: Advertisement) => {
-  return axios.put<ApiResponse<string>>(`${AD_MODULE}`, ad).then((res) => {
-    return res
-  })
+export const adUpdate = async (ad: Advertisement) => {
+  const res = await axios.put<ApiResponse<string>>(`${AD_MODULE}`, ad)
+  return res
 }
 
-export const adCreate = (ad: Advertisement) => {
-  return axios
+export const adCreate = async (ad: Advertisement) => {
+  const res = await axios
     .post<ApiResponse<Advertisement>>(`${AD_MODULE}`, ad)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const adDelete = (adId: number) => {
-  return axios
+export const adDelete = async (adId: number) => {
+  const res = await axios
     .delete<ApiResponse<string>>(`${AD_MODULE}/${adId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const adGetInfo = (adId: number) => {
-  return axios
+export const adGetInfo = async (adId: number) => {
+  const res = await axios
     .get<ApiResponse<Advertisement>>(`${AD_MODULE}/${adId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }

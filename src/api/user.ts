@@ -9,79 +9,66 @@ interface UserLoginInfo {
   password: string
 }
 
-export const userGetInfo = (username: string) => {
-  return axios
+export const userGetInfo = async (username: string) => {
+  const res = await axios
     .get<ApiResponse<Profile>>(`${USER_MODULE}/${username}`)
-    .then((res) => {
-      // .then部分由于没有其他处理，目前略显冗余，但方便以后增加逻辑(后均相同)
-      return res
-    })
+  return res
 }
 
-export const userGetRole = (username: string) => {
-  return userGetInfo(username).then((res) => {
-    return {
-      // 保持原有风格
-      ...res,
+export const userGetRole = async (username: string) => {
+  const res = await userGetInfo(username)
+  return {
+    // 保持原有风格
+    ...res,
+    data: {
+      ...res.data,
+      data: res.data.data.role,
+    },
+  }
+}
+
+export const userGetSimpleInfo = async (username: string) => {
+  const res = await userGetInfo(username)
+  return {
+    // 保持原有风格
+    ...res,
+    data: {
+      ...res.data,
       data: {
-        ...res.data,
-        data: res.data.data.role,
+        username: res.data.data.username,
+        telephone: res.data.data.telephone,
+        location: res.data.data.location,
       },
-    }
-  })
+    },
+  }
 }
 
-export const userGetSimpleInfo = (username: string) => {
-  return userGetInfo(username).then((res) => {
-    return {
-      // 保持原有风格
-      ...res,
-      data: {
-        ...res.data,
-        data: {
-          username: res.data.data.username,
-          telephone: res.data.data.telephone,
-          location: res.data.data.location,
-        },
-      },
-    }
-  })
-}
-
-export const userRegister = (userInfo: Profile) => {
-  return axios
+export const userRegister = async (userInfo: Profile) => {
+  const res = await axios
     .post<ApiResponse<null>>(`${USER_MODULE}`, userInfo)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const userLogin = (userLoginInfo: UserLoginInfo) => {
-  return axios
+export const userLogin = async (userLoginInfo: UserLoginInfo) => {
+  const res = await axios
     .post<ApiResponse<string>>(`${USER_MODULE}/login`, userLoginInfo)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const userUpdate = (userUpdateInfo: Profile) => {
-  return axios
+export const userUpdate = async (userUpdateInfo: Profile) => {
+  const res = await axios
     .put<ApiResponse<null>>(`${USER_MODULE}`, userUpdateInfo)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const userUpdatePassword = (
+export const userUpdatePassword = async (
   oldPassword: string,
   newPassword: string
 ) => {
-  return axios
+  const res = await axios
     .put<ApiResponse<string>>(`${USER_MODULE}/password`, {
       password: oldPassword,
       newPassword: newPassword,
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }

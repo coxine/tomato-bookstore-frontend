@@ -12,44 +12,34 @@ interface ChapterSimple {
   next?: number
 }
 
-export const chapterEnter = (productId: number, chapter: ChapterSimple) => {
-  return axios
+export const chapterEnter = async (productId: number, chapter: ChapterSimple) => {
+  const res = await axios
     .post<
       ApiResponse<string>
     >(`${PRODUCT_MODULE}/${productId}/chapters`, chapter)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const chapterUpdate = (chapterId: number, chapter: ChapterSimple) => {
-  return axios
+export const chapterUpdate = async (chapterId: number, chapter: ChapterSimple) => {
+  const res = await axios
     .put<ApiResponse<string>>(`${CHAPTER_MODULE}/${chapterId}`, chapter)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const chapterDelete = (chapterId: number) => {
-  return axios
+export const chapterDelete = async (chapterId: number) => {
+  const res = await axios
     .delete<ApiResponse<string>>(`${CHAPTER_MODULE}/${chapterId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const chapterGetAll = (productId: number) => {
-  return axios
+export const chapterGetAll = async (productId: number) => {
+  const res = await axios
     .get<ApiResponse<Chapter[]>>(`${PRODUCT_MODULE}/${productId}/chapters`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const chapterGetInfo = (chapterId: number) => {
-  return axios
+export const chapterGetInfo = async (chapterId: number) => {
+  const res = await axios
     .get<ApiResponse<Chapter>>(`${CHAPTER_MODULE}/${chapterId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }

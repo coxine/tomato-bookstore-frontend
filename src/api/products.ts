@@ -5,68 +5,55 @@ import { axios } from '../utils/require'
 
 import { PRODUCT_MODULE, PRODUCT_STOCKPILE_MODULE } from './_prefix'
 
-export const productGetAllSimpleInfo = () => {
-  return axios.get<ApiResponse<Book[]>>(`${PRODUCT_MODULE}`).then((res) => {
-    return {
-      ...res,
-      data: {
-        ...res.data,
-        data: res.data.data.map((book) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { specifications, tags, ...bookSimple } = book // 利用对象解构排除字段
-          return bookSimple
-        }),
-      },
-    }
-  })
+export const productGetAllSimpleInfo = async () => {
+  const res = await axios.get<ApiResponse<Book[]>>(`${PRODUCT_MODULE}`)
+  return {
+    ...res,
+    data: {
+      ...res.data,
+      data: res.data.data.map((book) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { specifications, tags, ...bookSimple } = book // 利用对象解构排除字段
+        return bookSimple
+      }),
+    },
+  }
 }
 
-export const productGetInfo = (productId: number) => {
-  return axios
+export const productGetInfo = async (productId: number) => {
+  const res = await axios
     .get<ApiResponse<Book>>(`${PRODUCT_MODULE}/${productId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const productUpdate = (productUpdateInfo: Book) => {
-  return axios
+export const productUpdate = async (productUpdateInfo: Book) => {
+  const res = await axios
     .put<ApiResponse<string>>(`${PRODUCT_MODULE}`, productUpdateInfo)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const productCreate = (productInfo: Book) => {
-  return axios
+export const productCreate = async (productInfo: Book) => {
+  const res = await axios
     .post<ApiResponse<Book>>(`${PRODUCT_MODULE}`, productInfo)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const productDelete = (productId: number) => {
-  return axios
+export const productDelete = async (productId: number) => {
+  const res = await axios
     .delete<ApiResponse<string>>(`${PRODUCT_MODULE}/${productId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const productUpdateStockpile = (productId: number, amount: number) => {
-  return axios
+export const productUpdateStockpile = async (productId: number, amount: number) => {
+  const res = await axios
     .patch<ApiResponse<string>>(`${PRODUCT_STOCKPILE_MODULE}/${productId}`, {
       amount: amount,
     })
-    .then((res) => {
-      return res
-    })
+  return res
 }
 
-export const productGetStockpile = (productId: number) => {
-  return axios
+export const productGetStockpile = async (productId: number) => {
+  const res = await axios
     .get<ApiResponse<Stockpile>>(`${PRODUCT_STOCKPILE_MODULE}/${productId}`)
-    .then((res) => {
-      return res
-    })
+  return res
 }
