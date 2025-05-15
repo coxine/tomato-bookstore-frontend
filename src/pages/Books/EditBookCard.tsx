@@ -113,7 +113,7 @@ export default function EditBookCard({
     if (newTag.trim()) {
       setBookData((prev) => ({
         ...prev,
-        tags: [...(prev.tags || []), newTag.trim()],
+        tags: [...(prev.tags || []), { name: newTag.trim() }],
       }))
       setNewTag('')
     }
@@ -447,7 +447,7 @@ export default function EditBookCard({
                     endDecorator={<HighlightOff />}
                     sx={{ mx: 0.5, mb: 0.5 }}
                   >
-                    {tag}
+                    {tag.name}
                   </Button>
                 ))}
             </Stack>
