@@ -39,7 +39,7 @@ export default function CartPage() {
 
   const [loading, setLoading] = useState(false) // 判断是否已经加载好数据
   const [cartData, setCartData] = useState<CartData>(mockCartData)
-  const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>(
+  const [selectedItems, setSelectedItems] = useState<Record<number, boolean>>(
     {}
   )
   const modifyQue = useRef<Record<number, number>>({}) // { [cartItemId]: quantity }

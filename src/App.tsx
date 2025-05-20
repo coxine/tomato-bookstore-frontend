@@ -12,6 +12,7 @@ import Register from './pages/Auth/Register'
 import Books from './pages/Books'
 import BookDetails from './pages/Books/BookDetails'
 import BookEdit from './pages/Books/BookEdit'
+import BookPurchase from './pages/Books/BookPurchase'
 import CartPage from './pages/Cart'
 import ChapterEdit from './pages/Chapters/ChapterEdit'
 import ChapterReader from './pages/Chapters/ChapterReader'
@@ -72,6 +73,14 @@ function App() {
                 <PrivateRoute>
                   <BookDetails />
                 </PrivateRoute>
+              }
+            />
+            <Route
+              path="/books/purchase/:productId"
+              element={
+                <AdminRoute>
+                  <BookPurchase />
+                </AdminRoute>
               }
             />
             <Route

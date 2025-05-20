@@ -2,6 +2,7 @@ import {
   AddShoppingCart,
   Delete,
   Edit,
+  ShoppingCartCheckout,
   Star,
   // Star,
   // ShoppingCartCheckout,
@@ -46,15 +47,16 @@ export function BookActions({
           >
             评分
           </Button>
+          <Link to={`/books/purchase/${book.id}`}>
+            <Button
+              color="primary"
+              variant="soft"
+              startDecorator={<ShoppingCartCheckout />}
+            >
+              未购章节
+            </Button>
+          </Link>
         </ButtonGroup>
-        {/* <Button
-          color="danger"
-          variant="soft"
-          startDecorator={<ShoppingCartCheckout />}
-          onClick={() => onCartAction('buy')}
-        >
-          立即购买
-        </Button> */}
       </Box>
 
       {isAdmin && (

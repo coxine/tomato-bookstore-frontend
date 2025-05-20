@@ -1,16 +1,8 @@
 import { ApiResponse } from '../types/apiResponse'
-import { Chapter, ChapterState } from '../types/chapter'
+import { Chapter, ChapterSimple } from '../types/chapter'
 import { axios } from '../utils/require'
 
 import { CHAPTER_MODULE, PRODUCT_MODULE } from './_prefix'
-
-interface ChapterSimple {
-  name: string
-  content?: string
-  status: ChapterState
-  previous?: number
-  next?: number
-}
 
 export const chapterEnter = async (
   productId: number,
@@ -51,6 +43,16 @@ export const chapterGetAll = async (productId: number) => {
 export const chapterGetInfo = async (chapterId: number) => {
   const res = await axios.get<ApiResponse<Chapter>>(
     `${CHAPTER_MODULE}/${chapterId}`
+  )
+  return res
+}
+
+/**
+ * 返回用户在对应productId书中，已购买的章节id数组
+ */
+export const chapterGetPurchased = async (productId: number) => {
+  const res = await axios.get<ApiResponse<number[]>>(
+    `${PRODUCT_MODULE}/${productId}/account/chapters`
   )
   return res
 }
