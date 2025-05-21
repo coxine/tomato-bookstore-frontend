@@ -12,6 +12,7 @@ import { Chapter } from '../../types/chapter'
 import { chapterStatusFormatter } from '../../utils/formatter'
 
 export default function BookPurchase() {
+  // TOOD: need to be adjusted
   const paymentMethod = 'ALIPAY'
   const username = sessionStorage.getItem('username')
   const navigate = useNavigate()
@@ -101,8 +102,6 @@ export default function BookPurchase() {
       .filter((item) => selectedItems[item.id || 0])
       .map((item) => item.id || 0)
 
-    console.log(selectedItems)
-    console.log(selectedItemIds)
     if (username != null) {
       userGetSimpleInfo(username).then((res) => {
         if (res.data.code === '200') {

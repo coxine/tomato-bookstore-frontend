@@ -1,14 +1,13 @@
 import { ApiResponse } from '../types/apiResponse'
-import { Order, OrderDetail, OrderForPay } from '../types/order'
+import {
+  Order,
+  OrderDetail,
+  OrderForPay,
+  ShippingAddress,
+} from '../types/order'
 import { axios } from '../utils/require'
 
 import { CART_MODULE, ORDER_MODULE, PRODUCT_MODULE } from './_prefix'
-
-interface ShippingAddress {
-  address: string
-  phone: string
-  name: string
-}
 
 export const orderSubmit = async (
   cartItemIds: number[],
@@ -36,7 +35,6 @@ export const orderGetUsers = async () => {
   const res = await axios.get<ApiResponse<OrderDetail[]>>(
     `${ORDER_MODULE}/userOrders`
   )
-  console.log(res)
   return res
 }
 

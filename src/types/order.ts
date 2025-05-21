@@ -39,3 +39,9 @@ export interface OrderDetail {
 
 export type OrderStatus = 'SUCCESS' | 'CANCELLED' | 'PENDING'
 export type PaymentMethod = 'ALIPAY' | 'WECHAT'
+
+export interface ShippingAddress {
+  address: string
+  phone: string
+  name: string
+}
