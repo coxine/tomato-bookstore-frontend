@@ -69,6 +69,7 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
       const newBlobUrl = URL.createObjectURL(blob)
       audio.src = newBlobUrl
       audio.load()
+      return true
     } catch {
       setPlaybackState(PlaybackState.NotRequested)
       showToast({
@@ -77,6 +78,7 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
         severity: ToastSeverity.Danger,
         duration: 3000,
       })
+      return false
     }
   }
 
@@ -88,7 +90,11 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
       duration: 3000,
     })
     const audio = audioElementRef.current || new Audio()
-    await prepareAudioChunk(text, audio)
+    const success = await prepareAudioChunk(text, audio)
+
+    if (!success) {
+      return
+    }
 
     audio.onplay = () => setPlaybackState(PlaybackState.Playing)
     audio.onended = () => setPlaybackState(PlaybackState.Paused)
