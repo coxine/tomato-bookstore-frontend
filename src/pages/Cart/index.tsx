@@ -425,7 +425,7 @@ export default function CartPage() {
       ) : (
         <Stack
           spacing={2}
-          sx={{ maxWidth: 1000, mx: 'auto', px: { xs: 2, md: 0 } }}
+          sx={{ mx: 'auto', px: { xs: 2, md: 6 } }}
         >
           <Stack direction="row" alignItems="center" spacing={1} sx={{ py: 1 }}>
             <FormControl orientation="horizontal" sx={{ gap: 1 }}>

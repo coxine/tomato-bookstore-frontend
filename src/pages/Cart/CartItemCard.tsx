@@ -110,20 +110,27 @@ const CartItemCard: React.FC<CartItemProps> = ({
       sx={{
         width: '100%',
         mb: 1,
+        position: 'relative',
       }}
     >
+      <Checkbox
+        checked={selected}
+        onChange={(e) => onSelectChange(item.cartItemId, e.target.checked)}
+        sx={{
+          position: 'absolute',
+          top: 32,
+          right: 32,
+          zIndex: 1,
+        }}
+      />
+
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
         alignItems="center"
         sx={{ p: 2 }}
       >
-        <Checkbox
-          checked={selected}
-          onChange={(e) => onSelectChange(item.cartItemId, e.target.checked)}
-        />
-
-        <Box sx={{ width: { xs: '100%', sm: '120px' }, textAlign: 'center' }}>
+        <Box sx={{ width: { xs: '100%', sm: '120px' } }}>
           <Box
             component="img"
             src={item.cover}
