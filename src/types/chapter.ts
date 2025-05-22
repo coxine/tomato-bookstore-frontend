@@ -9,3 +9,11 @@ export interface Chapter {
 }
 
 export type ChapterState = 'FREE' | 'LOCKED' | 'CHARGED'
+
+export interface ChapterSimple {
+  name: string
+  content?: string
+  status: ChapterState
+  previous?: number
+  next?: number
+}

@@ -1,3 +1,5 @@
+import { ChapterSimple } from './chapter'
+
 export interface Order {
   orderId: number
   username: string
@@ -20,6 +22,7 @@ export interface OrderItem {
   quantity: number
   price: number
   cover: string
+  chapters: ChapterSimple[]
 }
 
 export interface OrderDetail {
@@ -36,3 +39,9 @@ export interface OrderDetail {
 
 export type OrderStatus = 'SUCCESS' | 'CANCELLED' | 'PENDING'
 export type PaymentMethod = 'ALIPAY' | 'WECHAT'
+
+export interface ShippingAddress {
+  address: string
+  phone: string
+  name: string
+}
