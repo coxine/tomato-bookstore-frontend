@@ -1,6 +1,6 @@
 import { ShoppingCartCheckout } from '@mui/icons-material'
 import { Box, Typography, Table, Chip, Checkbox, Card, Button } from '@mui/joy'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { chapterGetAll, chapterGetPurchased } from '../../api/chapter'
@@ -12,8 +12,7 @@ import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 import { chapterStatusFormatter } from '../../utils/formatter'
 
-export default function BookPurchase() {
-  // TOOD: need to be adjusted
+export default function ChapterPurchase() {
   const paymentMethod = 'ALIPAY'
   const username = sessionStorage.getItem('username')
   const navigate = useNavigate()
@@ -25,6 +24,22 @@ export default function BookPurchase() {
     {}
   )
 
+  const eligibleChapters = useMemo(() => {
+    return bookChapters.filter(
+      chapter =>
+        chapter.status !== 'FREE' &&
+        chapter.status !== 'LOCKED' &&
+        !purchasedChapters.includes(chapter.id || 0)
+    )
+  }, [bookChapters, purchasedChapters])
+
+  const allEligibleSelected = useMemo(() => {
+    return (
+      eligibleChapters.length > 0 &&
+      eligibleChapters.every((chapter) => selectedItems[chapter.id || 0])
+    )
+  }, [eligibleChapters, selectedItems])
+
   const selectedItemsCount = bookChapters.filter(
     (item) => selectedItems[item.id || 0]
   ).length
@@ -33,8 +48,8 @@ export default function BookPurchase() {
     .filter((item) => selectedItems[item.id || 0])
     .reduce(
       (
-        sum //sum, item
-      ) => sum, //sum +  item.price * item.quantity
+        sum, item
+      ) => sum + (item.price ?? 0),
       0
     )
     .toFixed(2)
@@ -97,8 +112,19 @@ export default function BookPurchase() {
     }))
   }
 
+  const handleSelectAll = (checked: boolean) => {
+    const newSelection = { ...selectedItems }
+
+    eligibleChapters.forEach((chapter) => {
+      if (chapter.id) {
+        newSelection[chapter.id] = checked
+      }
+    })
+
+    setSelectedItems(newSelection)
+  }
+
   const handleCheckout = () => {
-    // 获取所有选中的商品ID
     const selectedItemIds = bookChapters
       .filter((item) => selectedItems[item.id || 0])
       .map((item) => item.id || 0)
@@ -106,31 +132,16 @@ export default function BookPurchase() {
     if (username != null) {
       userGetSimpleInfo(username).then((res) => {
         if (res.data.code === '200') {
-          if (!res.data.data.location && !res.data.data.telephone) {
+          if (!res.data.data.location || !res.data.data.telephone) {
             showToast({
-              title: '空地址和电话错误',
-              message: '请先完善个人信息！',
-              severity: ToastSeverity.Warning,
-              duration: 3000,
-            })
-            return
-          } else if (!res.data.data.location) {
-            showToast({
-              title: '空地址错误',
-              message: '请先完善个人信息！',
-              severity: ToastSeverity.Warning,
-              duration: 3000,
-            })
-            return
-          } else if (!res.data.data.telephone) {
-            showToast({
-              title: '空电话错误',
+              title: '个人信息不全',
               message: '请先完善个人信息！',
               severity: ToastSeverity.Warning,
               duration: 3000,
             })
             return
           }
+
           const shippingAddress = {
             address: res.data.data.location,
             phone: res.data.data.telephone,
@@ -205,61 +216,78 @@ export default function BookPurchase() {
         { label: '书籍详情', link: `/books/${productIdNum}` },
       ]}
     >
-      <Box className="chapter-table" sx={{ px: { xs: 2, sm: 5, md: 10 } }}>
-        {bookChapters.length === 0 ? (
+      <Box className="chapter-table" sx={{ px: { xs: 0, md: 6 } }}>
+        {!bookChapters ? (
           <Loading />
-        ) : (
-          //TODO Merge chapter status and purchased status
-          <Table className="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>章节名称</th>
-                <th>章节状态</th>
-                <th>购买状态</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookChapters.map((chapter) => (
-                <tr key={chapter.id}>
-                  <td>
+        ) :
+          bookChapters.length === 0 ? (
+            '该书籍暂无章节'
+          ) : (
+            <Table
+              className="table"
+            >
+              <thead>
+                <tr>
+                  <th style={{ textAlign: 'center', width: '10%' }}>
                     <Checkbox
-                      disabled={
-                        purchasedChapters.includes(chapter.id || 0) ||
-                        chapter.status === 'FREE' ||
-                        chapter.status === 'LOCKED'
+                      checked={allEligibleSelected}
+                      indeterminate={
+                        selectedItemsCount > 0 &&
+                        !allEligibleSelected &&
+                        eligibleChapters.length > 0
                       }
-                      onChange={(e) =>
-                        onSelectChange(chapter.id, e.target.checked)
-                      }
-                      sx={{
-                        verticalAlign: 'middle',
-                      }}
+                      disabled={eligibleChapters.length === 0}
+                      onChange={(e) => handleSelectAll(e.target.checked)}
+                      sx={{ verticalAlign: 'middle' }}
                     />
-                  </td>
-                  <td>{chapter.name}</td>
-                  <td>
-                    <Chip color={chapterStatusFormatter(chapter.status).color}>
-                      {chapterStatusFormatter(chapter.status).label}
-                    </Chip>
-                  </td>
-                  <td>
-                    {chapter.status === 'FREE'
-                      ? '——'
-                      : purchasedChapters.includes(chapter.id || 0)
-                        ? '已购买'
-                        : '未购买'}
-                  </td>
+                  </th>
+                  <th style={{ width: '45%' }}>名称</th>
+                  <th style={{ width: '20%' }}>状态</th>
+                  <th style={{ width: '25%' }}>价格</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
+              </thead>
+              <tbody>
+                {bookChapters.map((chapter) => (
+                  <tr key={chapter.id}>
+                    <td style={{ textAlign: 'center', }}>
+                      <Checkbox
+                        disabled={
+                          purchasedChapters.includes(chapter.id || 0) ||
+                          chapter.status === 'FREE' ||
+                          chapter.status === 'LOCKED'
+                        }
+                        onChange={(e) =>
+                          onSelectChange(chapter.id, e.target.checked)
+                        }
+                        sx={{
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                    </td>
+                    <td>{chapter.name}</td>
+                    <td>
+                      <Chip color={chapterStatusFormatter(chapter).color}>
+                        {chapterStatusFormatter(chapter).label}
+                      </Chip>
+                    </td>
+                    <td>
+                      {chapter.status === 'FREE'
+                        ? '-'
+                        : chapter.price
+                          ? `¥ ${chapter.price.toFixed(2)}`
+                          : '-'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
 
         <Card
           variant="outlined"
           sx={{
             p: 2,
+            mt: 2,
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'stretch', sm: 'center' },
@@ -294,6 +322,6 @@ export default function BookPurchase() {
           </Button>
         </Card>
       </Box>
-    </MainLayout>
+    </MainLayout >
   )
 }

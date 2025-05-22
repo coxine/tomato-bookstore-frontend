@@ -1,37 +1,40 @@
-import { ChapterState } from '../types/chapter'
+import { Chapter } from '../types/chapter'
 import { OrderStatus } from '../types/order'
 
-export const priceFormatter = (params: number) => {
-  return `¥${params.toFixed(2)}`
+export const priceFormatter = (priceValue: number) => {
+  return `¥${priceValue.toFixed(2)}`
 }
 
-export const orderAddressFormatter = (params: string) => {
-  return params.length > 20 ? `${params.slice(0, 20)}...` : params
+export const orderAddressFormatter = (fullAddress: string) => {
+  return fullAddress.length > 20 ? `${fullAddress.slice(0, 20)}...` : fullAddress
 }
 
-export const datetimeFormatter = (params: string) => {
-  return new Date(params).toLocaleString()
+export const datetimeFormatter = (dateString: string) => {
+  return new Date(dateString).toLocaleString()
 }
 
-export const paymentMethodFormatter = (params: string) => {
-  switch (params) {
+export const paymentMethodFormatter = (paymentMethod: string) => {
+  switch (paymentMethod) {
     case 'ALIPAY':
       return '支付宝'
     case 'WECHAT':
       return '微信'
     default:
-      return params
+      return paymentMethod
   }
 }
 
-export const chapterStatusFormatter = (params: ChapterState) => {
-  switch (params) {
+export const chapterStatusFormatter = (chapter: Chapter) => {
+  switch (chapter.status) {
     case 'FREE':
-      return { label: '免费试读', color: 'success' as const }
+      return { label: '免费', color: 'success' as const }
     case 'LOCKED':
       return { label: '锁定', color: 'danger' as const }
     case 'CHARGED':
-      return { label: '付费', color: 'warning' as const }
+      if (chapter.purchased) {
+        return { label: '已购', color: 'success' as const }
+      }
+      return { label: '未购', color: 'warning' as const }
   }
 }
 

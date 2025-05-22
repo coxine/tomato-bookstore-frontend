@@ -1,4 +1,4 @@
-import { ChapterSimple } from './chapter'
+import { Chapter } from './chapter'
 
 export interface Order {
   orderId: number
@@ -22,7 +22,7 @@ export interface OrderItem {
   quantity: number
   price: number
   cover: string
-  chapters: ChapterSimple[]
+  chapters: Chapter[]
 }
 
 export interface OrderDetail {

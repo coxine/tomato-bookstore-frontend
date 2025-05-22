@@ -3,7 +3,7 @@ import {
   Edit,
   ShoppingCartCheckout,
 } from '@mui/icons-material'
-import { Box, Chip, IconButton, Table, Typography } from '@mui/joy'
+import { Box, Button, Chip, IconButton, Table, Typography } from '@mui/joy'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
@@ -46,83 +46,84 @@ export default function ChapterTable() {
   }, [navigate, productIdNum])
 
   return (
-    <Box className="chapter-table" sx={{ px: { xs: 2, sm: 5, md: 10 } }}>
-      <Typography level="h4" sx={{ pb: 1 }}>
-        章节列表
+    <Box className="chapter-table" sx={{ px: { xs: 0, sm: 5, md: 6 } }}>
+      <Typography level="h4" sx={{ pb: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span>章节列表</span>
+        <Button
+          color="warning"
+          variant="soft"
+          component={Link}
+          to={`/books/purchase/${productIdNum}`}
+          startDecorator={<ShoppingCartCheckout />
+          }
+        >
+          购买章节
+        </Button>
       </Typography>
       {!bookChapters ? (
         '章节加载中'
-      ) : (
-        <Table className="table">
-          <thead>
-            <tr>
-              <th>章节编号</th>
-              <th>章节名称</th>
-              <th>章节状态</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookChapters.map((chapter, index) => (
-              <tr key={chapter.id}>
-                <td>{index + 1}</td>
-                <td>{chapter.name}</td>
-                <td>
-                  <Chip color={chapterStatusFormatter(chapter.status).color}>
-                    {chapterStatusFormatter(chapter.status).label}
-                  </Chip>
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    {chapter.status === 'FREE' ? (
-                      <IconButton
-                        color="success"
-                        variant="soft"
-                        size="sm"
-                        component={Link}
-                        to={`/chapters/${chapter.id}`}
-                      >
-                        <ChromeReaderMode />
-                      </IconButton>
-                    ) : (
-                      <IconButton
-                        color="danger"
-                        variant="soft"
-                        size="sm"
-                        disabled
-                      >
-                        <ChromeReaderMode />
-                      </IconButton>
-                    )}
-                    {
-                      <IconButton
-                        color="warning"
-                        variant="soft"
-                        size="sm"
-                        component={Link}
-                        to={`/books/purchase/${chapter.productId}`}
-                      >
-                        <ShoppingCartCheckout />
-                      </IconButton>
-                    }
-                    {isAdmin && (
-                      <IconButton
-                        color="primary"
-                        variant="soft"
-                        size="sm"
-                        component={Link}
-                        to={`/chapters/edit/${chapter.id}`}
-                      >
-                        <Edit />
-                      </IconButton>
-                    )}
-                  </Box>
-                </td>
+      ) :
+        bookChapters.length === 0 ? (
+          '该书籍暂无章节'
+        ) : (
+          <Table className="table">
+            <thead>
+              <tr>
+                <th style={{ width: '45%' }}>名称</th>
+                <th style={{ width: '20%' }}>状态</th>
+                <th style={{ width: '35%' }}>操作</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
-    </Box>
+            </thead>
+            <tbody>
+              {bookChapters.map((chapter) => (
+                <tr key={chapter.id}>
+                  <td>{chapter.name}</td>
+                  <td>
+                    <Chip color={chapterStatusFormatter(chapter).color}>
+                      {chapterStatusFormatter(chapter).label}
+                    </Chip>
+                  </td>
+                  <td>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      {chapter.status === 'FREE' ? (
+                        <IconButton
+                          color="success"
+                          variant="soft"
+                          size="sm"
+                          component={Link}
+                          to={`/chapters/${chapter.id}`}
+                        >
+                          <ChromeReaderMode />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          color="danger"
+                          variant="soft"
+                          size="sm"
+                          disabled
+                        >
+                          <ChromeReaderMode />
+                        </IconButton>
+                      )}
+                      {isAdmin && (
+                        <IconButton
+                          color="primary"
+                          variant="soft"
+                          size="sm"
+                          component={Link}
+                          to={`/chapters/edit/${chapter.id}`}
+                        >
+                          <Edit />
+                        </IconButton>
+                      )}
+                    </Box>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )
+      }
+    </Box >
   )
 }
