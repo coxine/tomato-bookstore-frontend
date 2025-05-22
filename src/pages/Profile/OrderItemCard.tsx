@@ -46,9 +46,15 @@ export default function OrderItemCard({
         >
           {item.productTitle}
         </Typography>
-        <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
-          ¥{item.price.toFixed(2)} × {item.quantity}
-        </Typography>
+        {item.fullyPurchased ? (
+          <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+            ¥{item.price.toFixed(2)} × {item.quantity}
+          </Typography>
+        ) : (
+          <Typography level="body-sm" sx={{ color: 'text.secondary' }}>
+            分章购买 {item.chapters.length} 章
+          </Typography>
+        )}
       </Box>
     </Box>
   )
