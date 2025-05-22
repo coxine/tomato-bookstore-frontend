@@ -32,7 +32,7 @@ export const chapterStatusFormatter = (chapter: Chapter) => {
       return { label: '锁定', color: 'danger' as const }
     case 'CHARGED':
       if (chapter.purchased) {
-        return { label: '已购', color: 'success' as const }
+        return { label: '已购', color: 'primary' as const }
       }
       return { label: '未购', color: 'warning' as const }
   }

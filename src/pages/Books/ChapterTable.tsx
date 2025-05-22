@@ -49,7 +49,7 @@ export default function ChapterTable() {
     <Box className="chapter-table" sx={{ px: { xs: 0, sm: 5, md: 6 } }}>
       <Typography level="h4" sx={{ pb: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span>章节列表</span>
-        <Button
+        {(bookChapters && bookChapters.length > 0) && (<Button
           color="warning"
           variant="soft"
           component={Link}
@@ -58,7 +58,7 @@ export default function ChapterTable() {
           }
         >
           购买章节
-        </Button>
+        </Button>)}
       </Typography>
       {!bookChapters ? (
         '章节加载中'
@@ -85,7 +85,7 @@ export default function ChapterTable() {
                   </td>
                   <td>
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                      {chapter.status === 'FREE' ? (
+                      {chapter.status === 'FREE' || (chapter.status === 'CHARGED' && chapter.purchased) ? (
                         <IconButton
                           color="success"
                           variant="soft"

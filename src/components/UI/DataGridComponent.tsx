@@ -1,5 +1,5 @@
 import { Box } from '@mui/joy'
-import type {} from '@mui/x-data-grid/themeAugmentation'
+import type { } from '@mui/x-data-grid/themeAugmentation'
 import { ThemeProvider } from '@mui/material/'
 import {
   DataGrid,
@@ -25,7 +25,7 @@ interface DataGridComponentProps<T extends object> {
 export default function DataGridComponent<T extends object>({
   rows,
   columns,
-  pageSize = 5,
+  pageSize = 10,
   rowHeight = 35,
   showToolbar = true,
   loading = false,
