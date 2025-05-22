@@ -423,10 +423,7 @@ export default function CartPage() {
           </Link>
         </Card>
       ) : (
-        <Stack
-          spacing={2}
-          sx={{ mx: 'auto', px: { xs: 2, md: 6 } }}
-        >
+        <Stack spacing={2} sx={{ mx: 'auto', px: { xs: 2, md: 6 } }}>
           <Stack direction="row" alignItems="center" spacing={1} sx={{ py: 1 }}>
             <FormControl orientation="horizontal" sx={{ gap: 1 }}>
               <Checkbox

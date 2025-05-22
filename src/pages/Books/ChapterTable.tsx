@@ -47,83 +47,91 @@ export default function ChapterTable() {
 
   return (
     <Box className="chapter-table" sx={{ px: { xs: 0, sm: 5, md: 6 } }}>
-      <Typography level="h4" sx={{ pb: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Typography
+        level="h4"
+        sx={{
+          pb: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <span>章节列表</span>
-        {(bookChapters && bookChapters.length > 0) && (<Button
-          color="warning"
-          variant="soft"
-          component={Link}
-          to={`/books/purchase/${productIdNum}`}
-          startDecorator={<ShoppingCartCheckout />
-          }
-        >
-          购买章节
-        </Button>)}
+        {bookChapters && bookChapters.length > 0 && (
+          <Button
+            color="warning"
+            variant="soft"
+            component={Link}
+            to={`/books/purchase/${productIdNum}`}
+            startDecorator={<ShoppingCartCheckout />}
+          >
+            购买章节
+          </Button>
+        )}
       </Typography>
       {!bookChapters ? (
         '章节加载中'
-      ) :
-        bookChapters.length === 0 ? (
-          '该书籍暂无章节'
-        ) : (
-          <Table className="table">
-            <thead>
-              <tr>
-                <th style={{ width: '45%' }}>名称</th>
-                <th style={{ width: '20%' }}>状态</th>
-                <th style={{ width: '35%' }}>操作</th>
+      ) : bookChapters.length === 0 ? (
+        '该书籍暂无章节'
+      ) : (
+        <Table className="table">
+          <thead>
+            <tr>
+              <th style={{ width: '45%' }}>名称</th>
+              <th style={{ width: '20%' }}>状态</th>
+              <th style={{ width: '35%' }}>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookChapters.map((chapter) => (
+              <tr key={chapter.id}>
+                <td>{chapter.name}</td>
+                <td>
+                  <Chip color={chapterStatusFormatter(chapter).color}>
+                    {chapterStatusFormatter(chapter).label}
+                  </Chip>
+                </td>
+                <td>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    {chapter.status === 'FREE' ||
+                    (chapter.status === 'CHARGED' && chapter.purchased) ? (
+                      <IconButton
+                        color="success"
+                        variant="soft"
+                        size="sm"
+                        component={Link}
+                        to={`/chapters/${chapter.id}`}
+                      >
+                        <ChromeReaderMode />
+                      </IconButton>
+                    ) : (
+                      <IconButton
+                        color="danger"
+                        variant="soft"
+                        size="sm"
+                        disabled
+                      >
+                        <ChromeReaderMode />
+                      </IconButton>
+                    )}
+                    {isAdmin && (
+                      <IconButton
+                        color="primary"
+                        variant="soft"
+                        size="sm"
+                        component={Link}
+                        to={`/chapters/edit/${chapter.id}`}
+                      >
+                        <Edit />
+                      </IconButton>
+                    )}
+                  </Box>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {bookChapters.map((chapter) => (
-                <tr key={chapter.id}>
-                  <td>{chapter.name}</td>
-                  <td>
-                    <Chip color={chapterStatusFormatter(chapter).color}>
-                      {chapterStatusFormatter(chapter).label}
-                    </Chip>
-                  </td>
-                  <td>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
-                      {chapter.status === 'FREE' || (chapter.status === 'CHARGED' && chapter.purchased) ? (
-                        <IconButton
-                          color="success"
-                          variant="soft"
-                          size="sm"
-                          component={Link}
-                          to={`/chapters/${chapter.id}`}
-                        >
-                          <ChromeReaderMode />
-                        </IconButton>
-                      ) : (
-                        <IconButton
-                          color="danger"
-                          variant="soft"
-                          size="sm"
-                          disabled
-                        >
-                          <ChromeReaderMode />
-                        </IconButton>
-                      )}
-                      {isAdmin && (
-                        <IconButton
-                          color="primary"
-                          variant="soft"
-                          size="sm"
-                          component={Link}
-                          to={`/chapters/edit/${chapter.id}`}
-                        >
-                          <Edit />
-                        </IconButton>
-                      )}
-                    </Box>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )
-      }
-    </Box >
+            ))}
+          </tbody>
+        </Table>
+      )}
+    </Box>
   )
 }

@@ -6,7 +6,9 @@ export const priceFormatter = (priceValue: number) => {
 }
 
 export const orderAddressFormatter = (fullAddress: string) => {
-  return fullAddress.length > 20 ? `${fullAddress.slice(0, 20)}...` : fullAddress
+  return fullAddress.length > 20
+    ? `${fullAddress.slice(0, 20)}...`
+    : fullAddress
 }
 
 export const datetimeFormatter = (dateString: string) => {

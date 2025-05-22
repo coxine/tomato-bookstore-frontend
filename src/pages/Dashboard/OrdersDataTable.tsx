@@ -146,6 +146,25 @@ const getColumns = (
       valueFormatter: priceFormatter,
     },
     {
+      field: 'fullyPurchased',
+      headerName: '购买形式',
+      width: 90,
+      editable: false,
+      renderCell: (params) => {
+        const isFullyPurchased = params.row.orderItems[0].fullyPurchased
+        return (
+          <ThemeProvider>
+            <Chip
+              color={isFullyPurchased ? 'success' : 'warning'}
+              variant="soft"
+            >
+              {isFullyPurchased ? '全书' : '章节'}
+            </Chip>
+          </ThemeProvider>
+        )
+      },
+    },
+    {
       field: 'paymentMethod',
       headerName: '支付方式',
       width: 120,
@@ -156,11 +175,13 @@ const getColumns = (
       },
       renderCell: (params) => {
         return (
-          <ThemeProvider>
-            <Chip color="primary" variant="soft">
-              {paymentMethodFormatter(params.row.paymentMethod)}
-            </Chip>
-          </ThemeProvider>
+          params.row.status === 'SUCCESS' && (
+            <ThemeProvider>
+              <Chip color="primary" variant="soft">
+                {paymentMethodFormatter(params.row.paymentMethod)}
+              </Chip>
+            </ThemeProvider>
+          )
         )
       },
     },

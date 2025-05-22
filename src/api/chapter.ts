@@ -4,10 +4,7 @@ import { axios } from '../utils/require'
 
 import { CHAPTER_MODULE, PRODUCT_MODULE } from './_prefix'
 
-export const chapterEnter = async (
-  productId: number,
-  chapter: Chapter
-) => {
+export const chapterEnter = async (productId: number, chapter: Chapter) => {
   const res = await axios.post<ApiResponse<string>>(
     `${PRODUCT_MODULE}/${productId}/chapters`,
     chapter
@@ -15,10 +12,7 @@ export const chapterEnter = async (
   return res
 }
 
-export const chapterUpdate = async (
-  chapterId: number,
-  chapter: Chapter
-) => {
+export const chapterUpdate = async (chapterId: number, chapter: Chapter) => {
   const res = await axios.put<ApiResponse<string>>(
     `${CHAPTER_MODULE}/${chapterId}`,
     chapter

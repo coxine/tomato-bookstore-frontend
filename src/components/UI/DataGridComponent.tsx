@@ -1,5 +1,5 @@
 import { Box } from '@mui/joy'
-import type { } from '@mui/x-data-grid/themeAugmentation'
+import type {} from '@mui/x-data-grid/themeAugmentation'
 import { ThemeProvider } from '@mui/material/'
 import {
   DataGrid,

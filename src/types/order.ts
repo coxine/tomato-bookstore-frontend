@@ -22,6 +22,7 @@ export interface OrderItem {
   quantity: number
   price: number
   cover: string
+  fullyPurchased?: boolean
   chapters: Chapter[]
 }
 

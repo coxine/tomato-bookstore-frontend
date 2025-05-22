@@ -26,7 +26,7 @@ export default function ChapterPurchase() {
 
   const eligibleChapters = useMemo(() => {
     return bookChapters.filter(
-      chapter =>
+      (chapter) =>
         chapter.status !== 'FREE' &&
         chapter.status !== 'LOCKED' &&
         !purchasedChapters.includes(chapter.id || 0)
@@ -46,12 +46,7 @@ export default function ChapterPurchase() {
 
   const selectedItemsAmount = bookChapters
     .filter((item) => selectedItems[item.id || 0])
-    .reduce(
-      (
-        sum, item
-      ) => sum + (item.price ?? 0),
-      0
-    )
+    .reduce((sum, item) => sum + (item.price ?? 0), 0)
     .toFixed(2)
 
   const fetchChapters = useCallback(async () => {
@@ -219,69 +214,66 @@ export default function ChapterPurchase() {
       <Box className="chapter-table" sx={{ px: { xs: 0, md: 6 } }}>
         {!bookChapters ? (
           <Loading />
-        ) :
-          bookChapters.length === 0 ? (
-            '该书籍暂无章节'
-          ) : (
-            <Table
-              className="table"
-            >
-              <thead>
-                <tr>
-                  <th style={{ textAlign: 'center', width: '10%' }}>
+        ) : bookChapters.length === 0 ? (
+          '该书籍暂无章节'
+        ) : (
+          <Table className="table">
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'center', width: '10%' }}>
+                  <Checkbox
+                    checked={allEligibleSelected}
+                    indeterminate={
+                      selectedItemsCount > 0 &&
+                      !allEligibleSelected &&
+                      eligibleChapters.length > 0
+                    }
+                    disabled={eligibleChapters.length === 0}
+                    onChange={(e) => handleSelectAll(e.target.checked)}
+                    sx={{ verticalAlign: 'middle' }}
+                  />
+                </th>
+                <th style={{ width: '45%' }}>名称</th>
+                <th style={{ width: '20%' }}>状态</th>
+                <th style={{ width: '25%' }}>价格</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookChapters.map((chapter) => (
+                <tr key={chapter.id}>
+                  <td style={{ textAlign: 'center' }}>
                     <Checkbox
-                      checked={allEligibleSelected}
-                      indeterminate={
-                        selectedItemsCount > 0 &&
-                        !allEligibleSelected &&
-                        eligibleChapters.length > 0
+                      disabled={
+                        purchasedChapters.includes(chapter.id || 0) ||
+                        chapter.status === 'FREE' ||
+                        chapter.status === 'LOCKED'
                       }
-                      disabled={eligibleChapters.length === 0}
-                      onChange={(e) => handleSelectAll(e.target.checked)}
-                      sx={{ verticalAlign: 'middle' }}
+                      onChange={(e) =>
+                        onSelectChange(chapter.id, e.target.checked)
+                      }
+                      sx={{
+                        verticalAlign: 'middle',
+                      }}
                     />
-                  </th>
-                  <th style={{ width: '45%' }}>名称</th>
-                  <th style={{ width: '20%' }}>状态</th>
-                  <th style={{ width: '25%' }}>价格</th>
+                  </td>
+                  <td>{chapter.name}</td>
+                  <td>
+                    <Chip color={chapterStatusFormatter(chapter).color}>
+                      {chapterStatusFormatter(chapter).label}
+                    </Chip>
+                  </td>
+                  <td>
+                    {chapter.status === 'FREE'
+                      ? '-'
+                      : chapter.price
+                        ? `¥ ${chapter.price.toFixed(2)}`
+                        : '-'}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {bookChapters.map((chapter) => (
-                  <tr key={chapter.id}>
-                    <td style={{ textAlign: 'center', }}>
-                      <Checkbox
-                        disabled={
-                          purchasedChapters.includes(chapter.id || 0) ||
-                          chapter.status === 'FREE' ||
-                          chapter.status === 'LOCKED'
-                        }
-                        onChange={(e) =>
-                          onSelectChange(chapter.id, e.target.checked)
-                        }
-                        sx={{
-                          verticalAlign: 'middle',
-                        }}
-                      />
-                    </td>
-                    <td>{chapter.name}</td>
-                    <td>
-                      <Chip color={chapterStatusFormatter(chapter).color}>
-                        {chapterStatusFormatter(chapter).label}
-                      </Chip>
-                    </td>
-                    <td>
-                      {chapter.status === 'FREE'
-                        ? '-'
-                        : chapter.price
-                          ? `¥ ${chapter.price.toFixed(2)}`
-                          : '-'}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
+              ))}
+            </tbody>
+          </Table>
+        )}
 
         <Card
           variant="outlined"
@@ -322,6 +314,6 @@ export default function ChapterPurchase() {
           </Button>
         </Card>
       </Box>
-    </MainLayout >
+    </MainLayout>
   )
 }
