@@ -64,6 +64,7 @@ export default function EditChapterCard({
           severity: ToastSeverity.Success,
           duration: 3000,
         })
+        navigate(`/books/${initialChapterData.productId}`)
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
@@ -80,17 +81,6 @@ export default function EditChapterCard({
         })
       }
     })
-
-    // Simulate successful update for now
-    setTimeout(() => {
-      showToast({
-        title: '提交成功',
-        message: '章节已更新！',
-        severity: ToastSeverity.Success,
-        duration: 3000,
-      })
-      navigate(`/books/${initialChapterData.productId}`)
-    }, 1000)
   }
 
   return (
