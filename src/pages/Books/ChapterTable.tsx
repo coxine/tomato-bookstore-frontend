@@ -1,4 +1,8 @@
-import { ChromeReaderMode, Edit } from '@mui/icons-material'
+import {
+  ChromeReaderMode,
+  Edit,
+  ShoppingCartCheckout,
+} from '@mui/icons-material'
 import { Box, Chip, IconButton, Table, Typography } from '@mui/joy'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -90,6 +94,17 @@ export default function ChapterTable() {
                         <ChromeReaderMode />
                       </IconButton>
                     )}
+                    {
+                      <IconButton
+                        color="warning"
+                        variant="soft"
+                        size="sm"
+                        component={Link}
+                        to={`/books/purchase/${chapter.productId}`}
+                      >
+                        <ShoppingCartCheckout />
+                      </IconButton>
+                    }
                     {isAdmin && (
                       <IconButton
                         color="primary"

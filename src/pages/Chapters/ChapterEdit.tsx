@@ -33,23 +33,21 @@ export default function ChapterEdit() {
   }, [chapterIdNum])
 
   return (
-    <>
+    <MainLayout
+      title="编辑章节"
+      breadcrumbsItems={[
+        { label: '购买书籍', link: '/books' },
+        {
+          label: '书籍详情',
+          link: `/books/${initialChapterData?.productId || 0}`,
+        },
+      ]}
+    >
       {!initialChapterData ? (
         <Loading />
       ) : (
-        <MainLayout
-          title="编辑章节"
-          breadcrumbsItems={[
-            { label: '购买书籍', link: '/books' },
-            {
-              label: '书籍详情',
-              link: `/books/${initialChapterData.productId}`,
-            },
-          ]}
-        >
-          <EditChapterCard initialChapterData={initialChapterData} />
-        </MainLayout>
+        <EditChapterCard initialChapterData={initialChapterData} />
       )}
-    </>
+    </MainLayout>
   )
 }

@@ -7,6 +7,7 @@ import { chapterGetAll, chapterGetPurchased } from '../../api/chapter'
 import { orderSubmitWithChapter, orderToPay } from '../../api/order'
 import { userGetSimpleInfo } from '../../api/user'
 import MainLayout from '../../components/layouts/MainLayout'
+import Loading from '../../components/UI/Loading'
 import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
 import { Chapter } from '../../types/chapter'
 import { chapterStatusFormatter } from '../../utils/formatter'
@@ -19,7 +20,7 @@ export default function BookPurchase() {
   const { productId } = useParams()
   const productIdNum = parseInt(productId || '0')
   const [bookChapters, setBookChapters] = useState<Chapter[]>([])
-  const [purchasedChapters, setPurchasedChapters] = useState<number[]>()
+  const [purchasedChapters, setPurchasedChapters] = useState<number[]>([])
   const [selectedItems, setSelectedItems] = useState<Record<number, boolean>>(
     {}
   )
@@ -198,41 +199,44 @@ export default function BookPurchase() {
 
   return (
     <MainLayout
-      title="未购章节"
+      title="购买章节"
       breadcrumbsItems={[
         { label: '购买书籍', link: '/books' },
         { label: '书籍详情', link: `/books/${productIdNum}` },
       ]}
     >
       <Box className="chapter-table" sx={{ px: { xs: 2, sm: 5, md: 10 } }}>
-        <Typography level="h4" sx={{ pb: 1 }}>
-          章节列表
-        </Typography>
-        {!bookChapters || !purchasedChapters ? (
-          '章节加载中'
+        {bookChapters.length === 0 ? (
+          <Loading />
         ) : (
+          //TODO Merge chapter status and purchased status
           <Table className="table">
             <thead>
               <tr>
                 <th></th>
-                <th>章节编号</th>
                 <th>章节名称</th>
                 <th>章节状态</th>
                 <th>购买状态</th>
               </tr>
             </thead>
             <tbody>
-              {bookChapters.map((chapter, index) => (
+              {bookChapters.map((chapter) => (
                 <tr key={chapter.id}>
                   <td>
                     <Checkbox
-                      disabled={purchasedChapters.includes(chapter.id || 0)}
+                      disabled={
+                        purchasedChapters.includes(chapter.id || 0) ||
+                        chapter.status === 'FREE' ||
+                        chapter.status === 'LOCKED'
+                      }
                       onChange={(e) =>
                         onSelectChange(chapter.id, e.target.checked)
                       }
+                      sx={{
+                        verticalAlign: 'middle',
+                      }}
                     />
                   </td>
-                  <td>{index + 1}</td>
                   <td>{chapter.name}</td>
                   <td>
                     <Chip color={chapterStatusFormatter(chapter.status).color}>

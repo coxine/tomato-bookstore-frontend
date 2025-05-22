@@ -67,7 +67,7 @@ export default function EditChapterCard({
       } else if (res.data.code === '400') {
         showToast({
           title: '提交失败',
-          message: res.data.data,
+          message: res.data.msg,
           severity: ToastSeverity.Danger,
           duration: 3000,
         })

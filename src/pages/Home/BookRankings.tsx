@@ -9,7 +9,6 @@ import { Book } from '../../types/book'
 
 export default function BookRankings() {
   const bookCount = 5
-  console.log('bookCount', bookCount)
   const [bookRankings, setBookRankings] = useState<Book[]>([])
 
   const fetchRank = () => {

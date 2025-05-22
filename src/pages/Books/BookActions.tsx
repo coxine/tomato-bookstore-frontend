@@ -1,12 +1,4 @@
-import {
-  AddShoppingCart,
-  Delete,
-  Edit,
-  ShoppingCartCheckout,
-  Star,
-  // Star,
-  // ShoppingCartCheckout,
-} from '@mui/icons-material'
+import { AddShoppingCart, Delete, Edit, Star } from '@mui/icons-material'
 import { Box, Button, ButtonGroup } from '@mui/joy'
 import { Link } from 'react-router-dom'
 
@@ -47,15 +39,6 @@ export function BookActions({
           >
             评分
           </Button>
-          <Link to={`/books/purchase/${book.id}`}>
-            <Button
-              color="primary"
-              variant="soft"
-              startDecorator={<ShoppingCartCheckout />}
-            >
-              未购章节
-            </Button>
-          </Link>
         </ButtonGroup>
       </Box>
 
