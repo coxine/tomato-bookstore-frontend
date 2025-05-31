@@ -1,16 +1,9 @@
-import { MenuBookOutlined } from '@mui/icons-material'
-import { Box, IconButton, Typography } from '@mui/joy'
+import { Box, Typography } from '@mui/joy'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import ColorSchemeToggle from '../UI/ColorSchemeToggle'
 
 export default function AuthLayout({ children }: React.PropsWithChildren) {
-  const navigate = useNavigate()
-  const backToHome = () => {
-    navigate('/')
-  }
-
   return (
     <>
       <Box
@@ -43,15 +36,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
             sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              <IconButton
-                variant="soft"
-                color="primary"
-                size="sm"
-                onClick={backToHome}
-              >
-                <MenuBookOutlined />
-              </IconButton>
-              <Typography level="title-lg">西红柿读书</Typography>
+              <Typography level="title-lg">🍅 西红柿读书</Typography>
             </Box>
             <ColorSchemeToggle />
           </Box>
