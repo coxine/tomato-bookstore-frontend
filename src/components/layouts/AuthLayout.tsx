@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/joy'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import ColorSchemeToggle from '../UI/ColorSchemeToggle'
 
@@ -36,7 +37,9 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
             sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-              <Typography level="title-lg">🍅 西红柿读书</Typography>
+              <Typography level="title-lg" component={Link} to={'/'}>
+                🍅 西红柿读书
+              </Typography>
             </Box>
             <ColorSchemeToggle />
           </Box>
