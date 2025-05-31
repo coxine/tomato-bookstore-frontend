@@ -101,6 +101,7 @@ export default function OrderHistory() {
       ) : (
         <Stack spacing={2}>
           {orders.map((order) => {
+            const isFullyPurchased = order.orderItems[0]?.fullyPurchased
             const isOpen = isExpanded(order.orderId)
             const showOverlay =
               order.orderItems.length > maxDisplayItems && !isOpen
@@ -126,10 +127,24 @@ export default function OrderHistory() {
                       }}
                     >
                       {order.status === 'SUCCESS' && (
-                        <Chip color="primary">
-                          {paymentMethodFormatter(order.paymentMethod)}支付
+                        <Chip color="success" variant="soft">
+                          {isFullyPurchased ? '全本购买' : '分章购买'}
                         </Chip>
                       )}
+
+                      {order.status === 'SUCCESS' ? (
+                        <Chip color="primary" variant="solid">
+                          {paymentMethodFormatter(order.paymentMethod)}支付
+                        </Chip>
+                      ) : (
+                        <Chip
+                          color={orderStatusFormatter(order.status).color}
+                          variant="solid"
+                        >
+                          {orderStatusFormatter(order.status).label}
+                        </Chip>
+                      )}
+
                       {order.status === 'PENDING' && (
                         <Button
                           onClick={() => pay(order.orderId)}
@@ -141,12 +156,6 @@ export default function OrderHistory() {
                           继续支付
                         </Button>
                       )}
-                      <Chip
-                        color={orderStatusFormatter(order.status).color}
-                        variant="solid"
-                      >
-                        {orderStatusFormatter(order.status).label}
-                      </Chip>
                     </Box>
                   </Box>
 
@@ -227,7 +236,7 @@ export default function OrderHistory() {
                         level="body-sm"
                         sx={{ color: 'text.secondary' }}
                       >
-                        下单于: {datetimeFormatter(order.createTime)}
+                        {datetimeFormatter(order.createTime)}
                       </Typography>
                       <Typography
                         level="body-md"

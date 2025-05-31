@@ -96,11 +96,13 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
           bottom: '0',
           left: '0',
           backdropFilter: 'blur(10px)',
-          background: 'linear-gradient(225deg,rgb(19, 157, 172) 0%,rgb(102, 132, 192) 100%)',
+          background:
+            'linear-gradient(225deg,rgb(19, 157, 172) 0%,rgb(102, 132, 192) 100%)',
 
           [theme.getColorSchemeSelector('dark')]: {
             backdropFilter: 'blur(20px)',
-            background: 'linear-gradient(225deg,rgb(2, 5, 39) 0%,rgb(7, 42, 51) 100%)',
+            background:
+              'linear-gradient(225deg,rgb(2, 5, 39) 0%,rgb(7, 42, 51) 100%)',
           },
         })}
       />
