@@ -95,15 +95,12 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
           top: '0',
           bottom: '0',
           left: '0',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backdropFilter: 'blur(10px)',
+          background: 'linear-gradient(225deg,rgb(19, 157, 172) 0%,rgb(102, 132, 192) 100%)',
 
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
           [theme.getColorSchemeSelector('dark')]: {
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+            backdropFilter: 'blur(20px)',
+            background: 'linear-gradient(225deg,rgb(2, 5, 39) 0%,rgb(7, 42, 51) 100%)',
           },
         })}
       />
