@@ -103,6 +103,8 @@ export default function CartDialog({
           }}
         >
           <Box>
+            <Typography level="title-lg">{bookDetails.title}</Typography>
+
             <Typography
               level="body-md"
               sx={{ color: 'danger.500', fontSize: '1.3rem' }}
@@ -121,9 +123,6 @@ export default function CartDialog({
               >
                 {!stockpile ? '库存加载中...' : `剩余 ${stockpile.amount} 本`}
               </span>
-            </Typography>
-            <Typography level="body-sm" sx={{ color: 'neutral.500' }}>
-              {bookDetails.title}
             </Typography>
           </Box>
 

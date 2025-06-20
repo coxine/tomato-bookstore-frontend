@@ -428,6 +428,13 @@ export default function CartPage() {
             <FormControl orientation="horizontal" sx={{ gap: 1 }}>
               <Checkbox
                 checked={isAllSelected}
+                indeterminate={
+                  cartData.items.length > 0 &&
+                  cartData.items.some(
+                    (item) => selectedItems[item.cartItemId]
+                  ) &&
+                  !isAllSelected
+                }
                 onChange={(e) => handleSelectAll(e.target.checked)}
               />
               <FormLabel>全选</FormLabel>

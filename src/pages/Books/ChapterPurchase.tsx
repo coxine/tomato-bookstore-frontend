@@ -243,6 +243,7 @@ export default function ChapterPurchase() {
                 <tr key={chapter.id}>
                   <td style={{ textAlign: 'center' }}>
                     <Checkbox
+                      checked={selectedItems[chapter.id || 0] || false}
                       disabled={
                         purchasedChapters.includes(chapter.id || 0) ||
                         chapter.status === 'FREE' ||

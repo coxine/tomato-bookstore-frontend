@@ -145,14 +145,14 @@ const CartItemCard: React.FC<CartItemProps> = ({
         </Box>
 
         <Stack spacing={1} sx={{ flexGrow: 1, width: '100%' }}>
-          <Typography level="title-md">{item.title}</Typography>
+          <Typography level="title-lg">{item.title}</Typography>
           <Typography level="body-sm" noWrap>
             {item.description}
           </Typography>
 
           <Box sx={{ display: { xs: 'block', sm: 'none' }, width: '100%' }}>
             <Typography
-              level="title-md"
+              level="body-lg"
               color="danger"
               fontWeight="lg"
               sx={{ mb: 1 }}
@@ -169,7 +169,7 @@ const CartItemCard: React.FC<CartItemProps> = ({
             spacing={2}
             sx={{ display: { xs: 'none', sm: 'flex' } }}
           >
-            <Typography level="title-md" color="danger" fontWeight="lg">
+            <Typography level="body-lg" color="danger" fontWeight="lg">
               ¥{item.price.toFixed(2)}
             </Typography>
 
