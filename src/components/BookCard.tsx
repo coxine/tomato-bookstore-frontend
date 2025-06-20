@@ -29,7 +29,8 @@ export default function BookCard({ book }: BookCardProps) {
             width: 100,
             height: 140,
             objectFit: 'cover',
-            borderRadius: '4px',
+            borderRadius: '8px',
+            px: 0.5,
           }}
         />
       )}
