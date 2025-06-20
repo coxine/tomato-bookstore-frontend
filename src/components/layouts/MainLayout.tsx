@@ -2,8 +2,7 @@ import { Box, Breadcrumbs, Typography } from '@mui/joy'
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-import Sidebar from '../Sidebar'
-import SidebarHeader from '../SidebarHeader'
+import Header from '../Header'
 
 type breadcrumbsItem = {
   label: string
@@ -19,22 +18,16 @@ export default function MainLayout({
   breadcrumbsItems?: breadcrumbsItem[]
 }>) {
   return (
-    <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
-      <Sidebar />
-      <SidebarHeader />
+    <Box sx={{ minHeight: '100dvh' }}>
+      <Header />
       <Box
         component="main"
         className="MainContent"
         sx={{
-          pt: { xs: 'calc(20px + var(--Header-height))', md: 3 },
+          pt: 'calc(var(--Header-height, 60px) + 20px)',
           pb: { xs: 2, sm: 2, md: 3 },
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: 0,
-          height: '100dvh',
-          gap: 1,
-          overflow: 'auto',
+          px: { xs: 2, md: 4 },
+          minHeight: 'calc(100dvh - var(--Header-height, 60px))',
         }}
       >
         <Box sx={{ flex: 1, width: '100%' }}>

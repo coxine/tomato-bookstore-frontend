@@ -53,7 +53,7 @@ export default function Login() {
               severity: ToastSeverity.Success,
               duration: 3000,
             })
-            navigate('/profile')
+            navigate('/books')
           } else {
             sessionStorage.removeItem('token')
             showToast({

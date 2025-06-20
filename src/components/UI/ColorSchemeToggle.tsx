@@ -1,5 +1,5 @@
 import { DarkModeRounded, LightModeRounded } from '@mui/icons-material'
-import { IconButton, IconButtonProps, useColorScheme } from '@mui/joy'
+import { IconButton, IconButtonProps, Tooltip, useColorScheme } from '@mui/joy'
 import { useColorScheme as useMUIColorScheme } from '@mui/material'
 import React, { useEffect } from 'react'
 
@@ -30,16 +30,18 @@ function ColorSchemeToggle(props: IconButtonProps) {
   }
 
   return (
-    <IconButton
-      aria-label="toggle light/dark mode"
-      size="sm"
-      variant="outlined"
-      disabled={!mounted}
-      onClick={handleToggleMode}
-      {...other}
-    >
-      {mode === 'light' ? <DarkModeRounded /> : <LightModeRounded />}
-    </IconButton>
+    <Tooltip title={mode === 'light' ? '切换到深色模式' : '切换到浅色模式'}>
+      <IconButton
+        aria-label="toggle light/dark mode"
+        size="sm"
+        variant="soft"
+        disabled={!mounted}
+        onClick={handleToggleMode}
+        {...other}
+      >
+        {mode === 'light' ? <DarkModeRounded /> : <LightModeRounded />}
+      </IconButton>
+    </Tooltip>
   )
 }
 
