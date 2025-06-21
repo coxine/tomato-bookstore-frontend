@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import { getFilteredNavigationItems } from '../../config/navigationConfig'
 
-
 export default function DesktopNavigation() {
   const { main, user } = getFilteredNavigationItems()
 

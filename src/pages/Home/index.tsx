@@ -5,7 +5,7 @@ import Header from '../../components/Header'
 import BasicContainer from '../../components/layouts/BasicContainer'
 import TwoSidedLayout from '../../components/layouts/TwoSidedLayout'
 
-import BookCarousel from './BookCarousel'
+import AdCarousel from './AdCarousel'
 import BookRankings from './BookRankings'
 import HomePageImage from './HomePageImage'
 import HomePageWelcome from './HomePageWelcome'
@@ -63,7 +63,7 @@ export default function Home() {
               >
                 编辑精选
               </Typography>
-              <BookCarousel />
+              <AdCarousel />
             </BasicContainer>
           </>
         )}
