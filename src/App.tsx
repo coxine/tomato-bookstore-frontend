@@ -78,9 +78,9 @@ function App() {
             <Route
               path="/books/purchase/:productId"
               element={
-                <AdminRoute>
+                <PrivateRoute>
                   <ChapterPurchase />
-                </AdminRoute>
+                </PrivateRoute>
               }
             />
             <Route
