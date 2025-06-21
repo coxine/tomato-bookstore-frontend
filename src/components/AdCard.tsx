@@ -27,8 +27,8 @@ export default function AdCard({ ad }: AdCardProps) {
       <CardContent
         sx={{
           flex: 1,
-          pl: { xs: 2, sm: 4, md: 6 },
-          pr: { xs: 1, sm: 2 },
+          pl: { xs: 6, md: 6 },
+          pr: { xs: 0, sm: 2 },
         }}
       >
         <Typography
@@ -36,12 +36,22 @@ export default function AdCard({ ad }: AdCardProps) {
           component="h3"
           sx={{
             mb: 1,
+            fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
           }}
         >
           {ad.title}
         </Typography>
 
-        {ad.content && <Typography level="body-lg">{ad.content}</Typography>}
+        {ad.content && (
+          <Typography
+            level="body-lg"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+            }}
+          >
+            {ad.content}
+          </Typography>
+        )}
       </CardContent>
 
       {/* 右侧图片 */}
@@ -53,11 +63,11 @@ export default function AdCard({ ad }: AdCardProps) {
           sx={{
             height: '100%',
             width: { xs: 'auto', sm: 'auto' },
-            maxWidth: { xs: '30%', sm: '40%', md: 'none' },
+            maxWidth: { xs: '50%', sm: '40%', md: 'none' },
             objectFit: 'contain',
             borderRadius: 'md',
             flexShrink: 0,
-            pr: { xs: 2, sm: 4, md: 8 },
+            pr: { xs: 6, md: 8 },
           }}
         />
       )}
