@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 import { getFilteredNavigationItems } from '../../config/navigationConfig'
 
-import NavigationButton from './NavigationButton'
 
 export default function DesktopNavigation() {
   const { main, user } = getFilteredNavigationItems()
@@ -32,7 +31,17 @@ export default function DesktopNavigation() {
       <Divider orientation="vertical" sx={{ mx: 1 }} />
 
       {user.map((item) => (
-        <NavigationButton key={item.path} item={item} variant="icon" />
+        <Button
+          key={item.path}
+          component={Link}
+          to={item.path}
+          variant="soft"
+          color="primary"
+          size="sm"
+          startDecorator={item.icon}
+        >
+          {item.label}
+        </Button>
       ))}
 
       <Divider orientation="vertical" sx={{ mx: 1 }} />
