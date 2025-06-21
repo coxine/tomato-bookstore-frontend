@@ -54,7 +54,7 @@ export default function OrderHistory() {
 
   const fetchOrders = () => {
     orderGetUsers().then((res) => {
-      if (res.data.code === '200') {
+      if (res.data.code === '200' && res.data.data !== null) {
         setOrders(res.data.data.reverse())
       } else {
         showToast({
