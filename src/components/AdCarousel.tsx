@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { adGetAllInfo } from '../../api/ad'
-import AdCard from '../../components/AdCard'
-import Carousel from '../../components/UI/Carousel'
-import { showToast, ToastSeverity } from '../../components/UI/ToastMessageUtils'
-import { Advertisement } from '../../types/advertisement'
+import { adGetAllInfo } from '../api/ad'
+import { Advertisement } from '../types/advertisement'
+
+import AdCard from './AdCard'
+import Carousel from './UI/Carousel'
+import { showToast, ToastSeverity } from './UI/ToastMessageUtils'
 
 interface AdCarouselProps {
   /** 自动播放 */
   autoPlay?: boolean
   /** 播放间隔(毫秒) */
   interval?: number
-  /** 一次显示多少个广告 */
-  itemsPerView?: number
   /** 是否显示指示器 */
   showDots?: boolean
   /** 是否显示箭头 */
@@ -29,11 +28,10 @@ interface AdCarouselProps {
 export default function AdCarousel({
   autoPlay = true,
   interval = 4000,
-  itemsPerView = 3,
   showDots = true,
   showArrows = true,
-  height = '300px',
-  minHeight = '250px',
+  height = '200px',
+  minHeight = '160px',
   gap = 16,
 }: AdCarouselProps) {
   const [adList, setAdList] = useState<Advertisement[]>([])
@@ -92,8 +90,8 @@ export default function AdCarousel({
       items={adList}
       renderItem={renderAdItem}
       autoPlay={autoPlay}
+      itemsPerView={1}
       interval={interval}
-      itemsPerView={itemsPerView}
       showDots={showDots}
       showArrows={showArrows}
       height={height}

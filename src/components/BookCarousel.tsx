@@ -32,7 +32,6 @@ interface BookCarouselProps {
 export default function BookCarousel({
   autoPlay = true,
   interval = 6000,
-  itemsPerView = 4,
   showDots = true,
   showArrows = true,
   height = '350px',
@@ -105,7 +104,6 @@ export default function BookCarousel({
       renderItem={renderBookItem}
       autoPlay={autoPlay}
       interval={interval}
-      itemsPerView={itemsPerView}
       showDots={showDots}
       showArrows={showArrows}
       height={height}

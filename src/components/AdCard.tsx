@@ -13,57 +13,54 @@ export default function AdCard({ ad }: AdCardProps) {
       variant="outlined"
       sx={{
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
-        p: 1,
+        justifyContent: 'space-between',
+        p: { xs: 1, sm: 1.5, md: 2 },
         width: '100%',
         height: '100%',
+        gap: { xs: 1, sm: 1.5, md: 2 },
+        overflow: 'hidden',
       }}
     >
+      {/* 左侧文字内容 */}
+      <CardContent
+        sx={{
+          flex: 1,
+          pl: { xs: 2, sm: 4, md: 6 },
+          pr: { xs: 1, sm: 2 },
+        }}
+      >
+        <Typography
+          level="h2"
+          component="h3"
+          sx={{
+            mb: 1,
+          }}
+        >
+          {ad.title}
+        </Typography>
+
+        {ad.content && <Typography level="body-lg">{ad.content}</Typography>}
+      </CardContent>
+
+      {/* 右侧图片 */}
       {ad.imgUrl && (
         <Box
           component="img"
           src={ad.imgUrl}
           alt={ad.title}
           sx={{
-            width: 100,
-            height: 140,
-            objectFit: 'cover',
-            borderRadius: '4px',
+            height: '100%',
+            width: { xs: 'auto', sm: 'auto' },
+            maxWidth: { xs: '30%', sm: '40%', md: 'none' },
+            objectFit: 'contain',
+            borderRadius: 'md',
+            flexShrink: 0,
+            pr: { xs: 2, sm: 4, md: 8 },
           }}
         />
       )}
-
-      <CardContent sx={{ textAlign: 'center', width: '100%' }}>
-        <Typography
-          level="title-lg"
-          sx={{
-            mt: 1,
-            whiteSpace: 'normal',
-            wordBreak: 'break-word',
-          }}
-        >
-          {ad.title}
-        </Typography>
-
-        {ad.content && (
-          <Typography
-            level="body-sm"
-            textColor="text.secondary"
-            sx={{
-              mt: 1,
-              display: '-webkit-box',
-              WebkitLineClamp: 'auto',
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            「编辑精选」
-            <br />
-            {ad.content}
-          </Typography>
-        )}
-      </CardContent>
     </Card>
   )
 }

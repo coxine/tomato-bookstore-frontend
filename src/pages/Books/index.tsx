@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 import { adGetAllInfo } from '../../api/ad'
 import { productGetAllSimpleInfo } from '../../api/products'
 import { tagGetAll, tagGetSimpleProduct } from '../../api/tag'
-import AdCard from '../../components/AdCard'
+import AdCarousel from '../../components/AdCarousel'
 import Bookcard from '../../components/BookCard'
 import MainLayout from '../../components/layouts/MainLayout'
 import Loading from '../../components/UI/Loading'
@@ -27,7 +27,6 @@ import { Tag } from '../../types/tag'
 export default function Books() {
   const [bookList, setBookList] = useState<Book[]>()
   const [adList, setAdList] = useState<Advertisement[]>()
-  const numberOfAdsDisplayed = 2 // 随机生成广告数
   const [showRecommendations, setShowRecommendations] = useState<boolean>(true)
   const [tags, setTags] = useState<Tag[]>()
 
@@ -122,13 +121,6 @@ export default function Books() {
     })
   }
 
-  // Function to get random ads from adList
-  const getRandomAds = (count: number) => {
-    if (!adList) return []
-    const shuffled = [...adList].sort(() => 0.5 - Math.random())
-    return shuffled.slice(0, Math.min(count, adList.length))
-  }
-
   useEffect(() => {
     fetchAllSimpleBook()
     fetchAllAd()
@@ -141,6 +133,19 @@ export default function Books() {
         <Loading />
       ) : (
         <>
+          {showRecommendations && (
+            <Box
+              sx={{
+                px: { xs: 1, md: 5 },
+                mb: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+              }}
+            >
+              <AdCarousel />
+            </Box>
+          )}
           <Box
             sx={{
               display: 'flex',
@@ -184,14 +189,6 @@ export default function Books() {
               mt: 2,
             }}
           >
-            {showRecommendations &&
-              getRandomAds(numberOfAdsDisplayed).map((ad) => (
-                <Grid key={ad.id} xs={6} sm={4} md={2.4}>
-                  <Link to={`/books/${ad.productId}`}>
-                    <AdCard ad={ad} />
-                  </Link>
-                </Grid>
-              ))}
             {bookList.map((book) => (
               <Grid key={book.id} xs={6} sm={4} md={2.4}>
                 <Link to={`/books/${book.id}`}>

@@ -14,10 +14,10 @@ interface CarouselProps<T> {
   interval?: number
   /** 是否显示指示器 */
   showDots?: boolean
+  /** 每行展示内容数量 */
+  itemsPerView?: number
   /** 是否显示箭头 */
   showArrows?: boolean
-  /** 一次显示多少个项目 (已被响应式设计替代，仅作为备用) */
-  itemsPerView?: number
   /** 项目间距 */
   gap?: number
   /** 加载状态 */
@@ -34,6 +34,7 @@ export default function Carousel<T>({
   autoPlay = false,
   interval = 3000,
   showDots = true,
+  itemsPerView = undefined,
   showArrows = true,
   gap = 16,
   loading = false,
@@ -45,6 +46,9 @@ export default function Carousel<T>({
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'))
 
   const getResponsiveItemsPerView = () => {
+    if (itemsPerView) {
+      return itemsPerView
+    }
     if (isMobile) {
       return 1
     } else if (isTablet) {
@@ -237,13 +241,13 @@ export default function Carousel<T>({
       {showArrows && (
         <>
           <IconButton
-            variant="solid"
+            variant="outlined"
             color="neutral"
             size="sm"
             onClick={prevSlide}
             sx={{
               position: 'absolute',
-              left: 8,
+              left: 20,
               top: '50%',
               transform: 'translateY(-50%)',
               zIndex: 1,
@@ -257,13 +261,13 @@ export default function Carousel<T>({
             <ArrowBack />
           </IconButton>
           <IconButton
-            variant="solid"
+            variant="outlined"
             color="neutral"
             size="sm"
             onClick={nextSlide}
             sx={{
               position: 'absolute',
-              right: 8,
+              right: 20,
               top: '50%',
               transform: 'translateY(-50%)',
               zIndex: 1,

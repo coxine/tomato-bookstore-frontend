@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/joy'
 
+import AdCarousel from '../../components/AdCarousel'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import BasicContainer from '../../components/layouts/BasicContainer'
 import TwoSidedLayout from '../../components/layouts/TwoSidedLayout'
 
-import AdCarousel from './AdCarousel'
 import BookRankings from './BookRankings'
 import HomePageImage from './HomePageImage'
 import HomePageWelcome from './HomePageWelcome'
@@ -63,7 +63,7 @@ export default function Home() {
               >
                 编辑精选
               </Typography>
-              <AdCarousel />
+              <AdCarousel height={'300px'} />
             </BasicContainer>
           </>
         )}

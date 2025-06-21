@@ -74,7 +74,7 @@ export default function MainLayout({
               </Typography>
             </Box>
           </Box>
-          <Box sx={{ px: 2 }}>{children}</Box>
+          <Box sx={{ px: { xs: 0, sm: 1, md: 2 } }}>{children}</Box>
         </Box>
       </Box>
     </Box>

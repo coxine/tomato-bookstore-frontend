@@ -11,8 +11,8 @@ import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <Sheet
-      variant="solid"
-      color="neutral"
+      variant="soft"
+      color="primary"
       invertedColors
       sx={{
         display: 'flex',
