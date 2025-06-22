@@ -12,6 +12,7 @@ import { Chapter } from '../../../types/chapter'
 
 enum PlaybackState {
   NotRequested,
+  Loading,
   Playing,
   Paused,
 }
@@ -27,6 +28,12 @@ const playbackConfig: {
     text: '朗读章节',
     decorator: <VolumeUp />,
     color: 'primary',
+  },
+  {
+    state: PlaybackState.Loading,
+    text: '加载中...',
+    decorator: <VolumeUp />,
+    color: 'neutral',
   },
   {
     state: PlaybackState.Playing,
@@ -50,6 +57,11 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
   const location = useLocation()
 
   const handlePlaybackToggle = () => {
+    // 防止在加载状态时重复点击
+    if (playbackState === PlaybackState.Loading) {
+      return
+    }
+
     if (playbackState === PlaybackState.NotRequested && chapter.content) {
       playSpeech(chapter.content)
     } else if (audioElementRef.current) {
@@ -83,6 +95,9 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
   }
 
   const playSpeech = async (text: string) => {
+    // 设置加载状态
+    setPlaybackState(PlaybackState.Loading)
+
     showToast({
       title: '正在合成音频',
       message: '合成音频耗时较长，请耐心等待',
@@ -140,6 +155,7 @@ export default function SpeechControl({ chapter }: { chapter: Chapter }) {
       variant="soft"
       size="sm"
       color={currentConfig?.color}
+      disabled={playbackState === PlaybackState.Loading}
       sx={{ width: { xs: '100%', sm: 'auto' } }}
       startDecorator={currentConfig?.decorator}
     >
