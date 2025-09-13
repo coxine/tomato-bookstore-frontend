@@ -20,7 +20,7 @@
     "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^6.5.0",
     "@mui/x-data-grid": "^8.0.0-beta.3",
-    "axios": "^1.8.4",
+    "axios": "^1.12.0",
     "prettier": "^3.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.1.1",
