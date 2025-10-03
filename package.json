@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@eslint/config-array": "^0.20.0",
-    "@eslint/js": "^9.30.0",
+    "@eslint/js": "^9.36.0",
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.7",
